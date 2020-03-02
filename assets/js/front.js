@@ -8,7 +8,7 @@ window.FontAwesomeConfig = {
 
 //Event listener for toggling nav bar
 window.addEventListener("resize", toggleNav);
-window.onload = toggleNav();
+window.onload = toggleNav;
 
 //Toggles type of menu depending on window size
 function toggleNav() {
