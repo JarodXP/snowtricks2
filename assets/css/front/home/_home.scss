@@ -1,0 +1,58 @@
+@import "trick_grid";
+
+#home-header{
+  height: calc(100vh - #{$mobile-nav-height});
+  display: grid;
+  grid-template-rows: 90% 10%;
+  background-image: url("/images/home-header.jpg");
+  background-size: cover;
+  background-position: bottom;
+}
+
+#home-header h1{
+  color: $contrast-color;
+  font-size: 3rem;
+  align-self: start;
+  justify-self: start;
+  padding: 0 10%;
+  text-shadow: 2px 2px black;
+}
+
+#home-header h1>p{
+  text-align: center;
+  font-size: 2.5rem;
+  @include transform(rotate(-8deg));
+  padding-bottom: 6%;
+  border-bottom-left-radius: 15%;
+  border-bottom-right-radius: 15%;
+  border-bottom: 6px solid white;
+  box-shadow: 0 2px black;
+}
+
+.scroll-arrow{
+  align-self: center;
+  justify-self: end;
+}
+
+.scroll-arrow>a{
+  color: $contrast-color;
+  font-size: 2rem;
+  padding: 10px;
+  margin: 0 10px 0 10px;
+}
+
+.scroll-arrow>a>i{
+  border-radius:50%;
+}
+
+@media (orientation:landscape) and (min-width: 576px){
+
+  #home-header{
+    height: calc(100vh - #{$desktop-nav-height});
+  }
+
+  .scroll-arrow>a{
+    font-size: 3rem;
+    margin: 0 30px 0 30px;
+  }
+}

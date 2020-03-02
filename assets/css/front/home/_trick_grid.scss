@@ -1,0 +1,45 @@
+#section-trick{
+  margin: 50px 0;
+
+  &>.btn-load{
+    margin: 5% auto;
+  }
+}
+
+#trick-list{
+  width: 90%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
+  grid-gap: 20px;
+}
+
+.trick-card{
+  position: relative;
+  display: block;
+  border-radius: 5px;
+  box-shadow: 2px 2px 8px $dark-primary-color;
+}
+
+.trick-image{
+  height: 100px;
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.trick-text{
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 15px;
+}
+
+.trick-text a{
+  text-decoration: none;
+  color: $primary-color;
+}
+
+.trick-icons{
+  margin-left: 10px;
+}
