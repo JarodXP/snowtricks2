@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <!--Desktop nav-->
+    <nav id="desktop-front-nav" class="front-nav">
+        <div id="nav-logo">SNOWTRICKS</div>
+        <ul id="front-menu">
+            <li class="menu-item"><a href="/">Home</a></li>
+            <li class="menu-item"><a href="/#tricks">Tricks</a></li>
+            <li class="menu-item"><a href="/sign-in">Sign In</a></li>
+            <li class="menu-item"><a href="/sign-up">Sign Up</a></li>
+        </ul>
+    </nav>
+    <!--end Desktop nav-->
+
+    <!--Mobile nav-->
+    <nav id="mobile-front-nav" class="hidden front-nav">
+        <ul id="front-menu">
+            <li class="menu-item"><a href="/"><i class="fas fa-igloo"></i></a></li>
+            <li class="menu-item"><a href="/#tricks"><i class="fas fa-snowboarding"></i></a></li>
+            <li class="menu-item"><a href="/sign-in"><i class="fas fa-sign-in-alt"></i></a></li>
+        </ul>
+    </nav>
+    <!--end Mobile nav-->
+
+    <div id="main-wrapper">
+
+        {% block mainContent %}{% endblock %}
+
+    </div>
+
+    <footer>
+        <p>Copyright</p>
+        <p><a>Confidentialité</a></p>
+    </footer>
+
+{% endblock %}
+
+{% block footerScripts %}
+    {{ parent() }}
+
+    {# Encore JS : front#}
+    {{ encore_entry_script_tags('front') }}
+
+{% endblock %}
