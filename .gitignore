@@ -27,3 +27,10 @@ yarn-error.log
 
 #PHP version
 /.php-version
+
+###> friendsofphp/php-cs-fixer ###
+/.php_cs
+/.php_cs.cache
+###< friendsofphp/php-cs-fixer ###
+/.php_cs.
+/.php_cs.dist
