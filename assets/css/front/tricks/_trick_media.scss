@@ -1,0 +1,48 @@
+#trick-medias{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#media-slider-element{
+  display: flex;
+  justify-content: space-between;
+  color: $contrast-color;
+  margin-bottom: 15%;
+}
+
+.media-slider-arrow{
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  margin: 0 10px;
+
+  &>i{
+    border-radius: 50%;
+  }
+}
+
+#media-slider-bar{
+  margin-top: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.media-slider-thumbnail{
+  width: 120px;
+  height: 90px;
+  margin: 0 2%;
+  object-fit: cover;
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+
+  #media-slider-element{
+    margin-bottom: 0;
+  }
+
+  #media-slider-toggle{
+    margin-top: 20px;
+  }
+}

@@ -5,8 +5,11 @@
 {% block metaDescription %}Fiche détaillée du trick Ollie{% endblock %}
 
 {% block stylesheets %}
+
     {# Encore links #}
     {{ parent() }}
+    {{ encore_entry_link_tags('trick_page') }}
+
 {% endblock %}
 
 {% block mainContent %}
@@ -55,6 +58,7 @@
             <div class="divider"></div>
 
             <form id="comment-form">
+                <label for="comment" class="hidden"></label>
                 <textarea id="comment" class="form-text-component" name="comment"></textarea>
                 <button class="button-style">Envoyer</button>
             </form>
@@ -112,6 +116,8 @@
 
 {% block footerScripts %}
 
+    {# Encore scripts #}
     {{ parent() }}
+    {{ encore_entry_script_tags('trick_page') }}
 
 {% endblock %}
