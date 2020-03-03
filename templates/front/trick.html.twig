@@ -1,0 +1,117 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}Ollie{% endblock %}
+
+{% block metaDescription %}Fiche détaillée du trick Ollie{% endblock %}
+
+{% block stylesheets %}
+    {# Encore links #}
+    {{ parent() }}
+{% endblock %}
+
+{% block mainContent %}
+
+    <div id="card-background">
+        <img src="/images/ollie.jpg" alt="">
+    </div>
+
+    <article id="trick-card">
+        <div id="trick-main-image">
+            <img src="/images/ollie.jpg" alt="trick ollie">
+            <h1>Ollie</h1>
+        </div>
+
+        <section id="trick-medias">
+            <div id="media-slider-element">
+                <div class="media-slider-arrow"><i class="fas fa-chevron-circle-left clickable"></i></div>
+                <div id="media-slider-bar">
+                    <img class="media-slider-thumbnail" src="/images/ollie.jpg" alt="trick ollie">
+                    <img class="media-slider-thumbnail" src="/images/ollie.jpg" alt="trick ollie">
+                    <img class="media-slider-thumbnail" src="/images/ollie.jpg" alt="trick ollie">
+                    <iframe class="media-slider-thumbnail" src="https://www.youtube.com/embed/H_tSuAipjWc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <iframe class="media-slider-thumbnail" src="https://www.youtube.com/embed/2iYibvfBiXE" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <img class="media-slider-thumbnail" src="/images/ollie.jpg" alt="trick ollie">
+                </div>
+                <div class="media-slider-arrow"><i class="fas fa-chevron-circle-right clickable"></i></div>
+            </div>
+
+            <div id="media-slider-toggle">
+                <a class="button-style">Voir les medias</a>
+            </div>
+        </section>
+
+        <section id="trick-description">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim tortor, eu porttitor quam tincidunt id. Phasellus viverra, tellus vel lacinia dictum, nunc felis sagittis nisi, vel interdum tortor ex ac quam. Nunc mollis magna nisl, eget elementum elit faucibus at nullam.</p>
+            <p>Cras ut nisl vitae mauris lacinia tempor. Nunc et porttitor elit. In accumsan turpis risus, fringilla lobortis nibh suscipit sed. Sed efficitur suscipit orci et convallis. Proin a ligula eget magna fringilla luctus. Aenean molestie sem eu malesuada accumsan. Praesent maximus sed. </p>
+
+            <div id="trick-tags">
+                <p>Straight Airs</p>
+                <p>Créé le: 26/02/2019</p>
+                <p>Modifié le: 03/01/2020</p>
+            </div>
+        </section>
+
+        <section id="comments">
+            <div class="divider"></div>
+
+            <form id="comment-form">
+                <textarea id="comment" class="form-text-component" name="comment"></textarea>
+                <button class="button-style">Envoyer</button>
+            </form>
+
+            <div class="comment-group">
+                <div class="avatarContainer">
+                    <div class="comment-avatar">
+                        <img src="/images/avatar.jpg">
+                    </div>
+                </div>
+                <p class="comment-content">J'adore ce trick!</p>
+            </div>
+
+            <div class="comment-group">
+                <div class="avatarContainer">
+                    <div class="comment-avatar">
+                        <img src="/images/avatar.jpg">
+                    </div>
+                </div>
+                <p class="comment-content">J'adore ce trick!</p>
+            </div>
+
+            <div class="comment-group">
+                <div class="avatarContainer">
+                    <div class="comment-avatar">
+                        <img src="/images/avatar.jpg">
+                    </div>
+                </div>
+                <p class="comment-content">J'adore ce trick!</p>
+            </div>
+
+            <div class="comment-group">
+                <div class="avatarContainer">
+                    <div class="comment-avatar">
+                        <img src="/images/avatar.jpg">
+                    </div>
+                </div>
+                <p class="comment-content">J'adore ce trick!</p>
+            </div>
+
+            <div class="comment-group">
+                <div class="avatarContainer">
+                    <div class="comment-avatar">
+                        <img src="/images/avatar.jpg">
+                    </div>
+                </div>
+                <p class="comment-content">J'adore ce trick!</p>
+            </div>
+
+            <a href="" class="btn-load">Charger plus</a>
+        </section>
+
+    </article>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+{% endblock %}
