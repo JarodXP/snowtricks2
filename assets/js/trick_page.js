@@ -1,35 +1,146 @@
 import '../css/front/tricks/trick_page.scss';
 
-const toggleBtn = document.getElementById('media-slider-toggle');
-const mediaSection = document.getElementById('media-slider-element');
+const mediaSlider = {
+    toggleBtn: document.getElementById('media-slider-toggle'),
+    mediaSection: document.getElementById('media-slider-element'),
+    sliderBar: document.getElementById('media-slider-bar'),
+    leftArrow: document.getElementById('slider-left-arrow'),
+    rightArrow: document.getElementById('slider-right-arrow'),
+
+    //Adds an event listener for the arrows
+    setArrowsListeners() {
+        this.leftArrow.addEventListener('click', this.moveSliderRight.bind(this));
+        this.rightArrow.addEventListener('click', this.moveSliderLeft.bind(this));
+    },
+
+    //Displays media section depending on the window size
+    displayMediaBarByViewport() {
+        if (document.body.clientWidth < 576) {
+            this.mediaSection.classList.add('hidden');
+            this.toggleBtn.classList.remove('hidden');
+        } else {
+            this.mediaSection.classList.remove('hidden');
+            this.toggleBtn.classList.add('hidden');
+        }
+    },
+
+    //Displays media section depending on the toggle button
+    displayMediaBarByToggleBtn() {
+        this.mediaSection.classList.toggle('hidden');
+
+        if (this.mediaSection.classList.contains('hidden')) {
+            this.toggleBtn.firstElementChild.textContent = 'Voir les medias ';
+        } else {
+            this.toggleBtn.firstElementChild.textContent = 'Masquer les medias ';
+        }
+    },
+
+    //Gets the overflowing elements on the right
+    getRightOverflowElements() {
+        let outsideRightElements = [];
+
+        //Counts the number of thumbnails overflowing the slider element on the right
+        for (let i = 0; i < this.sliderBar.childElementCount; i++) {
+            if (this.sliderBar.children[i].offsetLeft + this.sliderBar.children[i].offsetWidth >
+                this.sliderBar.offsetLeft + this.sliderBar.offsetWidth) {
+                outsideRightElements.push(this.sliderBar.children[i]);
+            }
+        }
+
+        return outsideRightElements;
+    },
+
+    //Gets the overflowing elements on the left
+    getLeftOverflowElements() {
+        let outsideLeftElements = [];
+
+        //Counts the number of thumbnails overflowing the slider element on the left
+        for (let i = 0; i < this.sliderBar.childElementCount; i++) {
+            if (this.sliderBar.children[i].offsetLeft < this.sliderBar.offsetLeft) {
+                outsideLeftElements.push(this.sliderBar.children[i]);
+            }
+        }
+
+        return outsideLeftElements;
+    },
+
+    //Moves the slider thumbnails to the left
+    moveSliderLeft() {
+        //Changes the margin left of the first element
+        if (this.getRightOverflowElements().length > 0) {
+
+            //Sets the number of items to move left
+            let nbItemsLeft = this.getLeftOverflowElements().length;
+
+            //Sets the margin that should be offset to hide the element
+            let marginOffset = parseInt(this.sliderBar.children[0].offsetWidth, 10) +
+                2 * parseInt(window.getComputedStyle(this.sliderBar.children[0]).getPropertyValue('margin-right'), 10);
+
+            //Sets the first thumbnail new margin-left
+            this.sliderBar.children[0].style.marginLeft = '-' + ((nbItemsLeft + 1) * marginOffset) + 'px';
+
+            this.displayArrows();
+
+        }
+        this.displayArrows();
+    },
+
+    //Moves the slider thumbnails to the left
+    moveSliderRight() {
+
+        //Changes the margin left of the first element
+        if (this.getLeftOverflowElements().length > 0) {
+
+            //Sets the number of items to move right
+            let nbItemsLeft = this.getLeftOverflowElements().length;
+
+            //Sets the margin that should be offset to hide the element
+            let marginOffset = parseInt(this.sliderBar.children[0].offsetWidth, 10) +
+                2 * parseInt(window.getComputedStyle(this.sliderBar.children[0]).getPropertyValue('margin-right'), 10);
+
+            //Sets the first thumbnail new margin-left
+            this.sliderBar.children[0].style.marginLeft = '-' + ((nbItemsLeft - 1) * marginOffset) + 'px';
+
+            this.displayArrows();
+        }
+        this.displayArrows();
+
+    },
+
+    //Displays the arrows depending on the overflow
+    displayArrows() {
+        if(this.getLeftOverflowElements().length === 0){
+            this.leftArrow.children[0].classList.add('hidden');
+        }
+        else {
+            this.leftArrow.children[0].classList.remove('hidden');
+        }
+
+        if(this.getRightOverflowElements().length === 0){
+            this.rightArrow.children[0].classList.add('hidden');
+        }
+        else {
+            this.rightArrow.children[0].classList.remove('hidden');
+        }
+    }
+};
 
 //Event listeners for media section visibility
-window.addEventListener("resize", displayMedia);
-window.onload = displayMedia;
+window.addEventListener("resize", mediaSlider.displayMediaBarByViewport.bind(mediaSlider));
+window.addEventListener('load', mediaSlider.displayMediaBarByViewport.bind(mediaSlider));
+window.addEventListener('load', mediaSlider.displayArrows.bind(mediaSlider));
 
-//Displays media section depending on the window size
-function displayMedia(){
-    if(document.body.clientWidth < 576){
-        mediaSection.classList.add('hidden');
-        toggleBtn.classList.remove('hidden');
-    }
-    else {
-        mediaSection.classList.remove('hidden');
-        toggleBtn.classList.add('hidden');
-    }
-}
+mediaSlider.toggleBtn.addEventListener('click',mediaSlider.displayMediaBarByToggleBtn.bind(mediaSlider));
 
-//Toggles media-section visibility
-toggleBtn.addEventListener('click',function () {
-    mediaSection.classList.toggle('hidden');
+//Event listeners for the media slider arrows
+mediaSlider.setArrowsListeners();
 
-    if(mediaSection.classList.contains('hidden')){
-        toggleBtn.firstElementChild.textContent = 'Voir les medias ';
-    }
-    else{
-        toggleBtn.firstElementChild.textContent = 'Masquer les medias ';
-    }
-});
+
+
+
+
+
+
 
 
 

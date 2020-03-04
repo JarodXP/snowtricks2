@@ -5,14 +5,15 @@
 }
 
 #media-slider-element{
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 5% 90% 5%;
   color: $contrast-color;
   margin-bottom: 15%;
 }
 
 .media-slider-arrow{
   display: flex;
+  justify-content: center;
   align-items: center;
   font-size: 2rem;
   margin: 0 10px;
@@ -23,6 +24,7 @@
 }
 
 #media-slider-bar{
+  width: 100%;
   margin-top: 20px;
   overflow: hidden;
   display: flex;
@@ -32,8 +34,12 @@
 .media-slider-thumbnail{
   width: 120px;
   height: 90px;
-  margin: 0 2%;
+  margin: 1% 2%;
+  border-radius: 5px;
+  border: 1px solid $secondary-color;
+  box-shadow: 2px 2px 5px $dark-primary-color;
   object-fit: cover;
+  transition: margin-left 0.5s ease-out;
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
@@ -44,5 +50,10 @@
 
   #media-slider-toggle{
     margin-top: 20px;
+  }
+
+  #carouselTrickMedia{
+    width: 150% !important;
+    left: -25% !important;
   }
 }
