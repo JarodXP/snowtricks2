@@ -1,5 +1,5 @@
 #comment-form{
-  width: 90%;
+  width: 80%;
   margin: 0 auto;
   display: flex;
   justify-content: center;
@@ -13,6 +13,7 @@
 
   &>button{
     max-height: 40px;
+    margin: 0 auto;
   }
 }
 
@@ -21,7 +22,7 @@
   height: 50px;
   border-radius: 50%;
   border: 2px solid $secondary-color;
-  margin: auto;
+  margin: 0 20px 0 auto;
 
   &>img{
     display: block;
@@ -39,16 +40,15 @@
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 
   &>.avatarContainer{
-    width: 30%;
     min-width: 60px;
   }
 
   &>.comment-content{
-    width:70%;
+    width:80%;
     max-width: calc(100% - 60px);
     border-radius: 5px;
     border: 1px solid darkgray;
@@ -68,6 +68,10 @@
       width: 70%;
       margin-bottom: 0;
       margin-right: 20px;
+    }
+
+    &>button{
+      margin: 0 0 0 auto;
     }
   }
 
