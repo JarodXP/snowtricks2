@@ -12,6 +12,17 @@
 
 {% endblock %}
 
+{% block headerScripts %}
+
+    {{ parent() }}
+
+    {% if edit == true %}
+        {# TinyMCE #}
+        {{ tinyMCE() | raw }}
+    {% endif %}
+
+{% endblock %}
+
 {% block mainContent %}
 
     <div id="card-background">
@@ -20,6 +31,7 @@
 
     <article id="trick-card">
         <div id="trick-main-image">
+            {{ editModeBtns(edit) | raw }}
             <img src="/images/ollie.jpg" alt="trick ollie">
             <h1>Ollie</h1>
         </div>
@@ -28,97 +40,147 @@
             <div id="media-slider-element">
                 <div id="slider-left-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-left clickable"></i></div>
                 <div id="media-slider-bar">
-                    <img class="media-slider-thumbnail" data-toggle="modal" data-target="#carouselLightBox" src="/images/ollie.jpg" alt="trick ollie">
-                    <img class="media-slider-thumbnail" data-toggle="modal" data-target="#carouselLightBox" src="/images/ollie.jpg" alt="trick ollie">
-                    <img class="media-slider-thumbnail" data-toggle="modal" data-target="#carouselLightBox" src="/images/ollie.jpg" alt="trick ollie">
-                    <div class="media-slider-thumbnail" data-toggle="modal" data-target="#carouselLightBox">
-                        <iframe src="https://www.youtube.com/embed/H_tSuAipjWc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
+                        <img src="/images/ollie.jpg" alt="trick ollie">
+                        {{ editModeBtns(edit) | raw }}
                     </div>
-                    <div class="media-slider-thumbnail" data-toggle="modal" data-target="#carouselLightBox">
-                        <iframe src="https://www.youtube.com/embed/H_tSuAipjWc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw  }}>
+                        <img src="/images/ollie.jpg" alt="trick ollie">
+                        {{ editModeBtns(edit) | raw }}
                     </div>
-                    <img class="media-slider-thumbnail" data-toggle="modal" data-target="#carouselLightBox" src="/images/avatar.jpg" alt="Third slide">
+                    <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw  }}>
+                        <img src="/images/ollie.jpg" alt="trick ollie">
+                        {{ editModeBtns(edit) | raw }}
+                    </div>
+                    <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw  }}>
+                        <iframe src="https://www.youtube.com/embed/H_tSuAipjWc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        {{ editModeBtns(edit) | raw }}
+                    </div>
+                    <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
+                        <iframe src="https://www.youtube.com/embed/H_tSuAipjWc" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        {{ editModeBtns(edit) | raw }}
+                    </div>
+                    <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
+                        <img src="/images/ollie.jpg" alt="trick ollie">
+                        {{ editModeBtns(edit) | raw }}
+                    </div>
                 </div>
                 <div id="slider-right-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-right clickable"></i></div>
             </div>
 
             <div id="media-slider-toggle">
-                <a class="button-style">Voir les medias</a>
+                <a class="jxp-btn-contrast">Voir les medias</a>
             </div>
         </section>
 
         <section id="trick-description">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim tortor, eu porttitor quam tincidunt id. Phasellus viverra, tellus vel lacinia dictum, nunc felis sagittis nisi, vel interdum tortor ex ac quam. Nunc mollis magna nisl, eget elementum elit faucibus at nullam.</p>
-            <p>Cras ut nisl vitae mauris lacinia tempor. Nunc et porttitor elit. In accumsan turpis risus, fringilla lobortis nibh suscipit sed. Sed efficitur suscipit orci et convallis. Proin a ligula eget magna fringilla luctus. Aenean molestie sem eu malesuada accumsan. Praesent maximus sed. </p>
 
-            <div id="trick-tags">
-                <p>Straight Airs</p>
-                <p>Créé le: 26/02/2019</p>
-                <p>Modifié le: 03/01/2020</p>
-            </div>
+            {% if edit == true %}
+                <form id="edit-trick-form" class="jxp-form">
+                    <div id="group-title" class="jxp-form-section">
+                        <label for="trick-title">Titre: </label>
+                        <input id="trick-title" class="jxp-form-input">
+                    </div>
+
+                    <div id="group-description" class="jxp-form-section">
+                        <label for="description">Description de la figure: </label>
+                        <textarea id="description" class="tiny-area" cols="60" rows="50"></textarea>
+                    </div>
+
+                    <div id="group-cat" class="jxp-form-section">
+                        <label for="trick-group">Trick Group :</label>
+                        <input list="trick-group-list" type="text" id="trick-group" class="jxp-form-input">
+                        <datalist id="trick-group-list">
+                            <option value="Stances">
+                            <option value="Straight Airs">
+                            <option value="Grabs">
+                            <option value="Spins">
+                        </datalist>
+                    </div>
+
+                    <div class="jxp-group-btn">
+                        <button class="jxp-btn-save">Enregistrer</button>
+                        <button class="jxp-btn-remove">Supprimer</button>
+                    </div>
+                </form>
+
+            {% else %}
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim tortor, eu porttitor quam tincidunt id. Phasellus viverra, tellus vel lacinia dictum, nunc felis sagittis nisi, vel interdum tortor ex ac quam. Nunc mollis magna nisl, eget elementum elit faucibus at nullam.</p>
+                <p>Cras ut nisl vitae mauris lacinia tempor. Nunc et porttitor elit. In accumsan turpis risus, fringilla lobortis nibh suscipit sed. Sed efficitur suscipit orci et convallis. Proin a ligula eget magna fringilla luctus. Aenean molestie sem eu malesuada accumsan. Praesent maximus sed. </p>
+
+                <div id="trick-tags">
+                    <p>Straight Airs</p>
+                    <p>Créé le: 26/02/2019</p>
+                    <p>Modifié le: 03/01/2020</p>
+                </div>
+            {% endif %}
         </section>
 
-        <section id="comments">
-            <div class="divider"></div>
+        {% if edit != true %}
+            <section id="comments">
+                <div class="divider"></div>
 
-            <form id="comment-form">
-                <label for="comment" class="hidden"></label>
-                <textarea id="comment" class="form-text-component" name="comment"></textarea>
-                <button class="button-style">Envoyer</button>
-            </form>
+                <form id="comment-form">
+                    <label for="comment" class="hidden"></label>
+                    <textarea id="comment" class="jxp-form-input" name="comment"></textarea>
+                    <button class="button-style">Envoyer</button>
+                </form>
 
-            <div class="comment-group">
-                <div class="avatarContainer">
-                    <div class="comment-avatar">
-                        <img src="/images/avatar.jpg">
+                <div class="comment-group">
+                    <div class="avatarContainer">
+                        <div class="comment-avatar">
+                            <img src="/images/avatar.jpg">
+                        </div>
                     </div>
+                    <p class="comment-content">J'adore ce trick!</p>
                 </div>
-                <p class="comment-content">J'adore ce trick!</p>
-            </div>
 
-            <div class="comment-group">
-                <div class="avatarContainer">
-                    <div class="comment-avatar">
-                        <img src="/images/avatar.jpg">
+                <div class="comment-group">
+                    <div class="avatarContainer">
+                        <div class="comment-avatar">
+                            <img src="/images/avatar.jpg">
+                        </div>
                     </div>
+                    <p class="comment-content">J'adore ce trick!</p>
                 </div>
-                <p class="comment-content">J'adore ce trick!</p>
-            </div>
 
-            <div class="comment-group">
-                <div class="avatarContainer">
-                    <div class="comment-avatar">
-                        <img src="/images/avatar.jpg">
+                <div class="comment-group">
+                    <div class="avatarContainer">
+                        <div class="comment-avatar">
+                            <img src="/images/avatar.jpg">
+                        </div>
                     </div>
+                    <p class="comment-content">J'adore ce trick!</p>
                 </div>
-                <p class="comment-content">J'adore ce trick!</p>
-            </div>
 
-            <div class="comment-group">
-                <div class="avatarContainer">
-                    <div class="comment-avatar">
-                        <img src="/images/avatar.jpg">
+                <div class="comment-group">
+                    <div class="avatarContainer">
+                        <div class="comment-avatar">
+                            <img src="/images/avatar.jpg">
+                        </div>
                     </div>
+                    <p class="comment-content">J'adore ce trick!</p>
                 </div>
-                <p class="comment-content">J'adore ce trick!</p>
-            </div>
 
-            <div class="comment-group">
-                <div class="avatarContainer">
-                    <div class="comment-avatar">
-                        <img src="/images/avatar.jpg">
+                <div class="comment-group">
+                    <div class="avatarContainer">
+                        <div class="comment-avatar">
+                            <img src="/images/avatar.jpg">
+                        </div>
                     </div>
+                    <p class="comment-content">J'adore ce trick!</p>
                 </div>
-                <p class="comment-content">J'adore ce trick!</p>
-            </div>
 
-            <a href="" class="btn-load">Charger plus</a>
-        </section>
+                <a href="" class="jxp-btn-load">Charger plus</a>
+            </section>
+
+        {% endif %}
 
     </article>
 
-    <!-- Lightbox -->
-    <div class="modal fade" id="carouselLightBox" tabindex="-1" role="dialog" aria-hidden="true">
+    {% if edit != true %}
+        <!-- Lightbox -->
+        <div class="modal fade" id="carouselLightBox" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content" id="carouselTrickMedia">
                 <div class="modal-body">
@@ -159,7 +221,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div><!--end Lightbox-->
+    {% endif %}
+
 {% endblock %}
 
 {% block footerScripts %}

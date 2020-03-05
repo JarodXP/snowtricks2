@@ -1,0 +1,38 @@
+.block-edit{
+  background-color: white;
+  color: $contrast-color;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px $dark-primary-color;
+}
+
+.tox-tinymce{
+  max-height: 400px;
+  width: 100%;
+}
+
+#group-title,#group-cat{
+  &>label, &>.jxp-form-input{
+    width: 100%;
+  }
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+  #group-title,#group-cat{
+    width: 80%;
+    justify-content: center;
+
+    &>label{
+      width: 20%;
+    }
+    &>.jxp-form-input{
+      width: 50%;
+    }
+  }
+
+  #group-description>label{
+    margin-bottom: 20px;
+  }
+}

@@ -33,19 +33,17 @@
 
 .media-slider-thumbnail{
   width: 120px;
-  height: 90px;
   margin: 1% 2%;
   border-radius: 5px;
   border: 1px solid $secondary-color;
   box-shadow: 2px 2px 5px $dark-primary-color;
-  object-fit: cover;
   transition: margin-left 0.5s ease-out;
-}
 
-.media-slider-thumbnail>iframe{
-  width: inherit;
-  height: inherit;
-  border-radius: inherit;
+  &>img, &>iframe{
+    width: inherit;
+    height: 90px;
+    object-fit: cover;
+  }
 }
 
 .carousel-control-prev-icon, .carousel-control-next-icon{

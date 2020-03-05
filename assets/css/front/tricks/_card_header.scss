@@ -3,6 +3,18 @@
   height: 50vh;
   position: relative;
 
+  &>.block-edit{
+    position: absolute;
+    width: 50px;
+    top: 10px;
+    right: 10px;
+    z-index: 1;
+
+    &>i{
+      display: block;
+    }
+  }
+
   &>img{
     display: block;
     width: 100%;
