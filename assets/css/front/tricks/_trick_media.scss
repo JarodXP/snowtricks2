@@ -1,0 +1,79 @@
+#trick-medias{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+#media-slider-element{
+  display: grid;
+  grid-template-columns: 5% 90% 5%;
+  color: $contrast-color;
+  margin-bottom: 15%;
+}
+
+.media-slider-arrow{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  margin: 0 10px;
+
+  &>i{
+    border-radius: 50%;
+  }
+}
+
+#media-slider-bar{
+  width: 100%;
+  margin-top: 20px;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+}
+
+.media-slider-thumbnail{
+  width: 120px;
+  height: 90px;
+  margin: 1% 2%;
+  border-radius: 5px;
+  border: 1px solid $secondary-color;
+  box-shadow: 2px 2px 5px $dark-primary-color;
+  object-fit: cover;
+  transition: margin-left 0.5s ease-out;
+}
+
+.media-slider-thumbnail>iframe{
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon{
+  width: 30px;
+  height: 30px;
+  filter: invert(45%) sepia(91%) saturate(3362%) hue-rotate(15deg) brightness(92%) contrast(93%);
+}
+
+.carousel-control-prev-icon{
+  background-image: url("/images/chevron-left-solid.svg");
+}
+
+.carousel-control-next-icon{
+  background-image: url("/images/chevron-right-solid.svg");
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+
+  #media-slider-element{
+    margin-bottom: 0;
+  }
+
+  #media-slider-toggle{
+    margin-top: 20px;
+  }
+
+  #carouselTrickMedia{
+    width: 150% !important;
+    left: -25% !important;
+  }
+}

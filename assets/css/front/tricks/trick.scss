@@ -1,0 +1,70 @@
+@import "card_header";
+@import "trick_media";
+@import "trick_tags";
+@import "comments";
+
+#card-background{
+  display: none;
+}
+
+#trick-card{
+  width: 100%;
+  background-color: whitesmoke;
+
+  & .divider{
+    margin-bottom: 15%;
+  }
+
+  & .button-style{
+    background-color: $contrast-color;
+    margin: 0 auto;
+  }
+
+  & section{
+    padding: 0 5%;
+    margin: 15% 0;
+  }
+}
+
+
+@media (orientation:landscape) and (min-width: 576px){
+  #card-background{
+    width: 100%;
+    height: 100vh;
+    display: block;
+    background-color: $background-color;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+
+    &>img{
+      width: 100%;
+      height: 50vh;
+      object-fit: cover;
+      filter: blur(3px);
+    }
+  }
+
+  #trick-card{
+    width: 70%;
+    margin: calc(#{$desktop-nav-height} + 10px) auto 50px auto;
+    background: whitesmoke;
+    box-shadow: 10px 10px 15px $dark-primary-color;
+    border-radius: 10px;
+    padding-bottom: 5%;
+
+    & .divider{
+      margin-bottom: 15%;
+    }
+
+    &>img{
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    & section{
+      margin: 5% 0;
+    }
+  }
+}
