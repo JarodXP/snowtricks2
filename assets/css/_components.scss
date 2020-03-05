@@ -1,6 +1,44 @@
+/************FORMS*************/
 
-.button-style{
-  @extend .clickable;
+.jxp-form{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.jxp-form-section{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px  auto;
+
+  &>label{
+    margin-bottom: 10px;
+    display: block;
+  }
+}
+
+.jxp-form-input{
+  border-radius: 5px;
+  border: 1px solid darkgray;
+  line-height: 1.5rem;
+  display: block;
+}
+
+/************BUTTONS*************/
+
+.jxp-group-btn{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.jxp-btn{
+  @extend .jxp-clickable;
 
   display: block;
   max-width: 160px;
@@ -8,15 +46,27 @@
   text-wrap: normal;
   text-align: center;
   border-radius: 5px;
-  background-color: $primary-color;
   color: white;
   padding: 10px 20px;
   border: none;
   text-decoration: none;
+  margin: 5px auto;
 }
 
-.btn-load{
-  @extend .button-style;
+.jxp-btn-primary{
+  @extend .jxp-btn;
+
+  background-color: $primary-color;
+}
+
+.jxp-btn-contrast{
+  @extend .jxp-btn;
+
+  background-color: $contrast-color;
+}
+
+.jxp-btn-load{
+  @extend .jxp-btn;
 
   background-color: $contrast-color;
 
@@ -28,19 +78,42 @@
   }
 }
 
-.clickable{
+.jxp-btn-remove{
+  @extend .jxp-btn;
+
+  background-color: darkred;
+  color: white;
+
+  &:after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f2ed";
+    margin-left: 15px;
+  }
+}
+
+ .jxp-btn-save{
+   @extend .jxp-btn;
+
+   background-color: forestgreen;
+   color: white;
+
+   &:after{
+     font-family: "Font Awesome 5 Free";
+     font-weight: 900;
+     content: "\f0c7";
+     margin-left: 15px;
+   }
+ }
+
+.jxp-clickable{
   box-shadow: 5px 5px 5px $dark-primary-color;
   cursor: pointer;
 }
 
-.clickable:active{
+.jxp-clickable:active{
   font-size: calc(100%);
   box-shadow: 2px 2px 2px $dark-primary-color;
-}
-
-.form-text-component{
-  border-radius: 5px;
-  border: 1px solid darkgray;
 }
 
 .divider{
@@ -54,17 +127,25 @@
 
 @media (orientation:landscape) and (min-width: 576px){
 
-  .clickable{
+  .jxp-clickable{
     box-shadow: none;
   }
 
-  .clickable:hover{
+  .jxp-clickable:hover{
     font-size: calc(100% + 0.2rem);
     box-shadow: 5px 5px 5px $dark-primary-color;
   }
 
-  .clickable:active{
+  .jxp-clickable:active{
     font-size: calc(100%);
     box-shadow: 2px 2px 2px $dark-primary-color;
+  }
+
+  .jxp-form-section>label{
+    margin-bottom: 0;
+  }
+
+  .jxp-group-btn{
+    flex-direction: row;
   }
 }
