@@ -6,11 +6,35 @@ const mediaSlider = {
     sliderBar: document.getElementById('media-slider-bar'),
     leftArrow: document.getElementById('slider-left-arrow'),
     rightArrow: document.getElementById('slider-right-arrow'),
+    thumbnails: document.getElementsByClassName('media-slider-thumbnail'),
 
     //Adds an event listener for the arrows
     setArrowsListeners() {
         this.leftArrow.addEventListener('click', this.moveSliderRight.bind(this));
         this.rightArrow.addEventListener('click', this.moveSliderLeft.bind(this));
+
+        for(let i = 0; i < this.thumbnails.length; i++)
+        {
+            this.thumbnails[i].addEventListener('click',function () {
+                mediaSlider.setCarouselActive(i);
+            });
+        }
+    },
+
+    //Define Carousel's active image
+    setCarouselActive(childIndex){
+        //gets the carousel image collection
+        const carouselElements = document.getElementsByClassName('carousel-item');
+
+        //unsets previous active elements
+        for (const element of carouselElements){
+            if(element.classList.contains('active')){
+                element.classList.remove('active');
+            }
+        }
+
+        //sets the active image
+        carouselElements[childIndex].classList.add('active');
     },
 
     //Displays media section depending on the window size

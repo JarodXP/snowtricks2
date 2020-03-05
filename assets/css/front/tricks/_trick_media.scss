@@ -42,6 +42,26 @@
   transition: margin-left 0.5s ease-out;
 }
 
+.media-slider-thumbnail>iframe{
+  width: inherit;
+  height: inherit;
+  border-radius: inherit;
+}
+
+.carousel-control-prev-icon, .carousel-control-next-icon{
+  width: 30px;
+  height: 30px;
+  filter: invert(45%) sepia(91%) saturate(3362%) hue-rotate(15deg) brightness(92%) contrast(93%);
+}
+
+.carousel-control-prev-icon{
+  background-image: url("/images/chevron-left-solid.svg");
+}
+
+.carousel-control-next-icon{
+  background-image: url("/images/chevron-right-solid.svg");
+}
+
 @media (orientation:landscape) and (min-width: 576px) {
 
   #media-slider-element{
