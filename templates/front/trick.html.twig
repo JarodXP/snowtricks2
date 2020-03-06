@@ -2,24 +2,13 @@
 
 {% block title %}Ollie{% endblock %}
 
-{% block metaDescription %}Fiche détaillée du trick Ollie{% endblock %}
+{% block metaDescription %}Fiche détaillée du trick de snowboard Ollie{% endblock %}
 
 {% block stylesheets %}
 
     {# Encore links #}
     {{ parent() }}
     {{ encore_entry_link_tags('trick_page') }}
-
-{% endblock %}
-
-{% block headerScripts %}
-
-    {{ parent() }}
-
-    {% if edit == true %}
-        {# TinyMCE #}
-        {{ tinyMCE() | raw }}
-    {% endif %}
 
 {% endblock %}
 
@@ -231,5 +220,10 @@
     {# Encore scripts #}
     {{ parent() }}
     {{ encore_entry_script_tags('trick_page') }}
+
+    {% if edit == true %}
+        {# TinyMCE #}
+        {{ tinyMCE() | raw }}
+    {% endif %}
 
 {% endblock %}
