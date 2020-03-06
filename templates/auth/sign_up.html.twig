@@ -1,33 +1,32 @@
-{% extends 'front/layout.html.twig' %}
+{% extends 'auth/layout.html.twig' %}
 
 {% block title %}Sign Up{% endblock %}
 
-{% block mainContent %}
-    <div id="sign-up">
-        <h1>Sign Up</h1>
-        <form class="jxp-form">
-            <div class="jxp-form-section">
-                <label for="username">Username</label>
-                <input id="username" type="text" name="username" class="jxp-form-input">
-            </div>
-            <div class="jxp-form-section">
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" class="jxp-form-input">
-            </div>
-            <div class="jxp-form-section">
-                <label for="password">Password</label>
-                <input id="password" type="password" name="password" class="jxp-form-input" autocomplete="new-password"
-                required>
-            </div>
-            <div class="jxp-form-section">
-                <label for="password-check">Check Password</label>
-                <input id="password-check" type="password" name="password-check" class="jxp-form-input"
-                       autocomplete="new-password" required>
-            </div>
-            <div class="jxp-group-btn">
-                <button class="jxp-btn-contrast">Create Account</button>
-                <button class="jxp-btn-primary">Cancel</button>
-            </div>
-        </form>
+{% block formH1 %}Sign Up{% endblock %}
+
+{% block formContent %}
+    <div class="jxp-form-section">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" class="jxp-form-input">
+    </div>
+    <div class="jxp-form-section">
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" class="jxp-form-input">
+    </div>
+    <div class="jxp-form-section">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" class="jxp-form-input" autocomplete="new-password"
+               required>
+    </div>
+    <div class="jxp-form-section">
+        <label for="password-check">Check Password</label>
+        <input id="password-check" type="password" name="password-check" class="jxp-form-input"
+               autocomplete="new-password" required>
+    </div>
+    <div class="jxp-group-btn">
+        <button class="jxp-btn-contrast">Create Account</button>
+        <button class="jxp-btn-primary">Cancel</button>
+    </div>
+    </form>
     </div>
 {% endblock %}

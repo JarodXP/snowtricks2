@@ -1,0 +1,27 @@
+{% extends 'auth/layout.html.twig' %}
+
+{% block title %}Sign In{% endblock %}
+
+{% block formH1 %}Sign In{% endblock %}
+
+{% block formContent %}
+
+    <div class="jxp-form-section">
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" class="jxp-form-input">
+    </div>
+
+    <div class="jxp-form-section">
+        <label for="password">Password</label>
+        <input id="password" type="password" name="password" class="jxp-form-input" autocomplete="new-password"
+               required>
+    </div>
+
+    <p><a href="/auth/forgot-password">Forgot password?</a></p>
+
+    <div class="jxp-group-btn">
+        <button class="jxp-btn-contrast">Login</button>
+        <button class="jxp-btn-primary">Cancel</button>
+    </div>
+
+{% endblock %}
