@@ -15,7 +15,7 @@ class TrickController extends AbstractController
     public function displayTrickAction(string $trickName)
     {
         return $this->render('front\trick.html.twig',[
-            'edit' => true
+            'edit' => false
         ]);
     }
 }
