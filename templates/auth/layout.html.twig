@@ -1,0 +1,13 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block mainContent %}
+    <div id="form-wrapper">
+        <h1>{% block formH1 %}Sign Up{% endblock %}</h1>
+
+        <form class="jxp-form">
+
+        {% block formContent %}{% endblock %}
+
+        </form>
+    </div>
+{% endblock %}
