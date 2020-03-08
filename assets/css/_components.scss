@@ -6,7 +6,13 @@
   flex-wrap: wrap;
 }
 
-.jxp-form-section{
+.jxp-form-multifields{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.jxp-form-field-block{
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -138,7 +144,7 @@
     box-shadow: 2px 2px 2px $dark-primary-color;
   }
 
-  .jxp-form-section>label{
+  .jxp-form-field-block>label{
     margin-bottom: 0;
   }
 
