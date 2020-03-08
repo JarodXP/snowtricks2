@@ -9,25 +9,6 @@
   box-shadow: 0 -5px 10px $dark-primary-color;
 }
 
-#front-menu{
-  display: flex;
-  justify-content: space-between;
-  padding: 0 10%;
-}
-
-.menu-item{
-  font-size: 1.5rem;
-  text-shadow: 1px 1px $dark-primary-color;
-  margin: 1px 5px;
-  list-style-type: none;
-  padding: 0 5px;
-}
-
-.menu-item>a{
-  text-decoration: none;
-  color: white;
-}
-
 @media (orientation:landscape) and (min-width: 576px) {
 
   .front-nav {
@@ -37,23 +18,5 @@
     justify-content: space-between;
     height: $desktop-nav-height;
     box-shadow: 0 5px 10px $dark-primary-color;
-  }
-
-  #nav-logo {
-    font-family: $font-stack-title;
-    color: white;
-    margin-left: 5%;
-    padding: 10px 0;
-    @include transform(rotate(-8deg));
-    text-shadow: 1px 1px 1px $dark-primary-color;
-  }
-
-  #front-menu {
-    margin-right: 5%;
-    padding: 0;
-  }
-
-  .menu-item {
-    font-size: 1rem;
   }
 }
