@@ -1,7 +1,7 @@
 :root{
   width: 100%;
   font-family: $font-stack-text;
-  font-size: 1em;
+  font-size: 0.8em;
   color: #042d38;
 }
 
@@ -15,6 +15,7 @@ body{
   display: flex;
   justify-content: space-between;
   padding: 0 10%;
+  align-items: center;
 }
 
 .menu-item{
@@ -44,6 +45,9 @@ h1 {
 }
 
 @media (orientation:landscape) and (min-width: 576px){
+  :root{
+    font-size: 1em;
+  }
 
   #main-wrapper{
     margin-top: $desktop-nav-height;
