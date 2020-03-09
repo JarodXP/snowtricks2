@@ -1,0 +1,44 @@
+.jxp-form{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.jxp-form-multifields{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.jxp-form-field-block{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px  auto;
+
+  &>label{
+    margin-bottom: 10px;
+    display: block;
+  }
+}
+
+.jxp-form-input{
+  border-radius: 5px;
+  border: 1px solid darkgray;
+  line-height: 1.5rem;
+  display: block;
+  height: max-content;
+  padding: 5px;
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+  .jxp-form-field-block>label{
+    margin-bottom: 0;
+  }
+
+  .jxp-group-btn{
+    flex-direction: row;
+  }
+}
