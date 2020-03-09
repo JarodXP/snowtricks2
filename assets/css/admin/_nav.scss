@@ -1,9 +1,4 @@
-.jxp-avatar-thumbnail {
-  width: 30px;
-  height: 30px;
-}
-
-  .admin-nav{
+.admin-nav{
   position: fixed;
   bottom:0;
   left: 0;
@@ -12,6 +7,11 @@
   height: $mobile-nav-height;
   background: $contrast-color-gradient;
   box-shadow: 0 -5px 10px $dark-primary-color;
+
+  & .jxp-avatar-thumbnail {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
@@ -21,8 +21,13 @@
     left: 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     height: $desktop-nav-height;
     box-shadow: 0 5px 10px $dark-primary-color;
+
+    .jxp-avatar-thumbnail {
+      margin: 0 20px 0 auto;
+    }
   }
 
   .connection-block{
@@ -30,11 +35,9 @@
     justify-content: space-between;
     cursor: pointer;
     color: white;
+    border-left: 3px solid white;
+    padding-left: 20px;
+    align-items: center;
   }
 
-  .jxp-avatar-thumbnail {
-    width: 50px;
-    height: 50px;
-    margin: 0 20px 0 auto;
-  }
 }
