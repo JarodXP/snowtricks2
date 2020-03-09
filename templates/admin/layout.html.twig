@@ -45,3 +45,12 @@
     </footer>
 
 {% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+    {# Encore JS #}
+    {{ encore_entry_script_tags('admin') }}
+
+{% endblock %}
