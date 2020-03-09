@@ -29,6 +29,10 @@
   & .jxp-table-pagination{
     grid-area: pagination;
   }
+
+  & .remove-icon>a{
+    color: $contrast-color;
+  }
 }
 
 @media (orientation:landscape) and (min-width: 576px){
