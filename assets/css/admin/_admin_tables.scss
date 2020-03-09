@@ -1,0 +1,16 @@
+.table-edit-cell>i{
+  margin: 10px 0;
+  font-size: 1.3rem;
+  color: $contrast-color;
+  cursor: pointer;
+}
+
+.jxp-pagination-pages>i{
+  border-radius: 50%;
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+  .table-edit-cell>i {
+    margin: 0 10px;
+  }
+}

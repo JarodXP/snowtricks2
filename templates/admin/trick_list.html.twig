@@ -1,0 +1,86 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% block title %}Admin Tricks{% endblock %}
+
+{% block mainContent %}
+    <div id="admin-trick-list" class="admin-content">
+        <h1>List of tricks</h1>
+        <form>
+            <table class="jxp-admin-table">
+                <thead>
+                <tr>
+                    <th>Trick Name</th>
+                    <th>Trick Group</th>
+                    <th>Author</th>
+                    <th>Date Added</th>
+                    <th>Date Modified</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Ollie</td>
+                    <td>Straight Airs</td>
+                    <td>Greg</td>
+                    <td>08/03/2020</td>
+                    <td>08/03/2020</td>
+                    <td>Online</td>
+                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                </tr>
+                <tr>
+                    <td>Ollie</td>
+                    <td>Straight Airs</td>
+                    <td>Greg</td>
+                    <td>08/03/2020</td>
+                    <td>08/03/2020</td>
+                    <td>Online</td>
+                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                </tr>
+                <tr>
+                    <td>Ollie</td>
+                    <td>Straight Airs</td>
+                    <td>Greg</td>
+                    <td>08/03/2020</td>
+                    <td>08/03/2020</td>
+                    <td>Online</td>
+                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                </tr>
+                <tr>
+                    <td>Ollie</td>
+                    <td>Straight Airs</td>
+                    <td>Greg</td>
+                    <td>08/03/2020</td>
+                    <td>08/03/2020</td>
+                    <td>Online</td>
+                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                </tr>
+                <tr>
+                    <td>Ollie</td>
+                    <td>Straight Airs</td>
+                    <td>Greg</td>
+                    <td>08/03/2020</td>
+                    <td>08/03/2020</td>
+                    <td>Online</td>
+                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+
+        <div class="jxp-table-pagination">
+            <select id="limit" class="jxp-pagination-limit">
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <div class="jxp-pagination-pages">
+                <i class="fas fa-chevron-circle-left"></i>
+                <p>Page 1 / 1</p>
+                <i class="fas fa-chevron-circle-right"></i>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
