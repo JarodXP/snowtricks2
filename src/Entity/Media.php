@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,22 @@ class Media
      * @ORM\Column(type="string", length=255)
      */
     private $dateAdded;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Trick", mappedBy="medias")
+     */
+    private $tricks;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="mainImage")
+     */
+    private $tricksMainImages;
+
+    public function __construct()
+    {
+        $this->tricks = new ArrayCollection();
+        $this->tricksMainImages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +103,65 @@ class Media
     public function setDateAdded(string $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trick[]
+     */
+    public function getTricks(): Collection
+    {
+        return $this->tricks;
+    }
+
+    public function addTrick(Trick $trick): self
+    {
+        if (!$this->tricks->contains($trick)) {
+            $this->tricks[] = $trick;
+            $trick->addMedia($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrick(Trick $trick): self
+    {
+        if ($this->tricks->contains($trick)) {
+            $this->tricks->removeElement($trick);
+            $trick->removeMedia($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trick[]
+     */
+    public function getTricksMainImages(): Collection
+    {
+        return $this->tricksMainImages;
+    }
+
+    public function addTricksMainImage(Trick $tricksMainImage): self
+    {
+        if (!$this->tricksMainImages->contains($tricksMainImage)) {
+            $this->tricksMainImages[] = $tricksMainImage;
+            $tricksMainImage->setMainImage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTricksMainImage(Trick $tricksMainImage): self
+    {
+        if ($this->tricksMainImages->contains($tricksMainImage)) {
+            $this->tricksMainImages->removeElement($tricksMainImage);
+            // set the owning side to null (unless already changed)
+            if ($tricksMainImage->getMainImage() === $this) {
+                $tricksMainImage->setMainImage(null);
+            }
+        }
 
         return $this;
     }

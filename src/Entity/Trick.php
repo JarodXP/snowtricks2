@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,38 @@ class Trick
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $dateModified;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tricks")
+     */
+    private $author;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Media", inversedBy="tricks")
+     */
+    private $medias;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Media", inversedBy="tricksMainImages")
+     */
+    private $mainImage;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="trick", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="tricks")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $trickGroup;
+
+    public function __construct()
+    {
+        $this->medias = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -85,6 +119,99 @@ class Trick
     public function setDateModified(?string $dateModified): self
     {
         $this->dateModified = $dateModified;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Media[]
+     */
+    public function getMedias(): Collection
+    {
+        return $this->medias;
+    }
+
+    public function addMedia(Media $media): self
+    {
+        if (!$this->medias->contains($media)) {
+            $this->medias[] = $media;
+        }
+
+        return $this;
+    }
+
+    public function removeMedia(Media $media): self
+    {
+        if ($this->medias->contains($media)) {
+            $this->medias->removeElement($media);
+        }
+
+        return $this;
+    }
+
+    public function getMainImage(): ?Media
+    {
+        return $this->mainImage;
+    }
+
+    public function setMainImage(?Media $mainImage): self
+    {
+        $this->mainImage = $mainImage;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getTrick() === $this) {
+                $comment->setTrick(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getTrickGroup(): ?Group
+    {
+        return $this->trickGroup;
+    }
+
+    public function setTrickGroup(?Group $trickGroup): self
+    {
+        $this->trickGroup = $trickGroup;
 
         return $this;
     }
