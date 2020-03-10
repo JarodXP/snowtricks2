@@ -20,84 +20,23 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><div class="jxp-avatar-thumbnail">
-                            <img src="/images/avatar.jpg" alt="avatar">
-                        </div>
-                    </td>
-                    <td>Wawa</td>
-                    <td>Kevin</td>
-                    <td>Laribe</td>
-                    <td>08/03/2020</td>
-                    <td>kevin@gmail.com</td>
-                    <td>Admin</td>
-                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
-                </tr>
-                <tr>
-                    <td><div class="jxp-avatar-thumbnail">
-                            <img src="/images/avatar.jpg" alt="avatar">
-                        </div>
-                    </td>
-                    <td>Wawa</td>
-                    <td>Kevin</td>
-                    <td>Laribe</td>
-                    <td>08/03/2020</td>
-                    <td>kevin@gmail.com</td>
-                    <td>Admin</td>
-                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
-                </tr>
-                <tr>
-                    <td><div class="jxp-avatar-thumbnail">
-                            <img src="/images/avatar.jpg" alt="avatar">
-                        </div>
-                    </td>
-                    <td>Wawa</td>
-                    <td>Kevin</td>
-                    <td>Laribe</td>
-                    <td>08/03/2020</td>
-                    <td>kevin@gmail.com</td>
-                    <td>Admin</td>
-                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
-                </tr>
-                <tr>
-                    <td><div class="jxp-avatar-thumbnail">
-                            <img src="/images/avatar.jpg" alt="avatar">
-                        </div>
-                    </td>
-                    <td>Wawa</td>
-                    <td>Kevin</td>
-                    <td>Laribe</td>
-                    <td>08/03/2020</td>
-                    <td>kevin@gmail.com</td>
-                    <td>Admin</td>
-                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
-                </tr>
-                <tr>
-                    <td><div class="jxp-avatar-thumbnail">
-                            <img src="/images/avatar.jpg" alt="avatar">
-                        </div>
-                    </td>
-                    <td>Wawa</td>
-                    <td>Kevin</td>
-                    <td>Laribe</td>
-                    <td>08/03/2020</td>
-                    <td>kevin@gmail.com</td>
-                    <td>Admin</td>
-                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
-                </tr>
-                <tr>
-                    <td><div class="jxp-avatar-thumbnail">
-                            <img src="/images/avatar.jpg" alt="avatar">
-                        </div>
-                    </td>
-                    <td>Wawa</td>
-                    <td>Kevin</td>
-                    <td>Laribe</td>
-                    <td>08/03/2020</td>
-                    <td>kevin@gmail.com</td>
-                    <td>Admin</td>
-                    <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
-                </tr>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <div class="jxp-avatar-thumbnail">
+                                <img src="/media/{{ user.avatar.filename }}" alt="{{ user.avatar.alt }}">
+                            </div>
+                        </td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.firstName }}</td>
+                        <td>{{ user.lastName }}</td>
+                        <td>{{ user.dateAdded |date('Y-m-d') }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.role.name }}</td>
+                        <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                    </tr>
+                {% endfor %}
+
                 </tbody>
             </table>
         </form>

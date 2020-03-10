@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,12 +30,12 @@ class Trick
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private $dateAdded;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private $dateModified;
 
@@ -59,10 +60,15 @@ class Trick
     private $comments;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="tricks")
+     * @ORM\ManyToOne(targetEntity="TrickGroup", inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
     private $trickGroup;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
 
     public function __construct()
     {
@@ -99,24 +105,24 @@ class Trick
         return $this;
     }
 
-    public function getDateAdded(): ?string
+    public function getDateAdded(): ?DateTimeInterface
     {
         return $this->dateAdded;
     }
 
-    public function setDateAdded(?string $dateAdded): self
+    public function setDateAdded(?DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
 
         return $this;
     }
 
-    public function getDateModified(): ?string
+    public function getDateModified(): ?DateTimeInterface
     {
         return $this->dateModified;
     }
 
-    public function setDateModified(?string $dateModified): self
+    public function setDateModified(?DateTimeInterface $dateModified): self
     {
         $this->dateModified = $dateModified;
 
@@ -204,14 +210,26 @@ class Trick
         return $this;
     }
 
-    public function getTrickGroup(): ?Group
+    public function getTrickGroup(): ?TrickGroup
     {
         return $this->trickGroup;
     }
 
-    public function setTrickGroup(?Group $trickGroup): self
+    public function setTrickGroup(?TrickGroup $trickGroup): self
     {
         $this->trickGroup = $trickGroup;
+
+        return $this;
+    }
+
+    public function getStatus(): ?bool
+    {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

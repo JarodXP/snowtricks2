@@ -13,7 +13,7 @@
   background-color: whitesmoke;
 
   & .divider{
-    margin-bottom: 15%;
+    margin-bottom: 5%;
   }
 
   & section{
@@ -48,10 +48,6 @@
     box-shadow: 10px 10px 15px $dark-primary-color;
     border-radius: 10px;
     padding-bottom: 5%;
-
-    & .divider{
-      margin-bottom: 15%;
-    }
 
     &>img{
       border-top-left-radius: 10px;
