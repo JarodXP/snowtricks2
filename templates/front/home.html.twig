@@ -18,104 +18,20 @@
     <section id="section-trick">
 
         <div id="trick-list">
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
 
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
+            {% for trick in tricks %}
 
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
+                <div class="trick-card">
+                    <img class="trick-image" src="/media/{{ trick.mainImage.fileName }}" alt="snowboard trick ollie">
+                    <div class="trick-text">
+                        <p class="trick-name"><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></p>
+                        <p>
+                            <a class="trick-icons" href="/tricks/?edit={{ trick.name }}"><i class="far fa-edit"></i></a>
+                            <a class="trick-icons" href="/tricks/?remove={{ trick.name }}"><i class="far fa-trash-alt"></i></a>
+                        </p>
+                    </div>
                 </div>
-            </div>
-
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
-
-            <div class="trick-card">
-                <img class="trick-image" src="/images/ollie.jpg" alt="snowboard trick ollie">
-                <div class="trick-text">
-                    <p class="trick-name"><a href="/tricks/ollie">Ollie</a></p>
-                    <p>
-                        <a class="trick-icons" href="/tricks/?edit=ollie"><i class="far fa-edit"></i></a>
-                        <a class="trick-icons" href="/tricks/?remove=ollie"><i class="far fa-trash-alt"></i></a>
-                    </p>
-                </div>
-            </div>
+            {% endfor %}
 
         </div>
 

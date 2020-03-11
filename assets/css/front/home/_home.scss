@@ -4,7 +4,7 @@
   height: calc(100vh - #{$mobile-nav-height});
   display: grid;
   grid-template-rows: 90% 10%;
-  background-image: url("/images/home-header.jpg");
+  background-image: url("/media/home-header.jpg");
   background-size: cover;
   background-position: bottom;
 }

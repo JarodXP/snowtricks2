@@ -10,7 +10,7 @@
                 <thead>
                 <tr>
                     <th>Trick Name</th>
-                    <th>Trick Group</th>
+                    <th>Trick TrickGroup</th>
                     <th>Author</th>
                     <th>Date Added</th>
                     <th>Date Modified</th>
@@ -20,81 +20,26 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td><a href="/tricks/ollie">Ollie</a></td>
-                    <td>Straight Airs</td>
-                    <td>Greg</td>
-                    <td>08/03/2020</td>
-                    <td>08/03/2020</td>
-                    <td>Online</td>
-                    <td>
-                        <label class="jxp-admin-toggle">
-                            <input id="publish-ollie" type="checkbox" data-slug="ollie">
-                            <span class="jxp-toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td class="remove-icon"><a href="/admin/remove-ollie"><i class="far fa-trash-alt"></i></a></td>
-                </tr>
-                <tr>
-                    <td><a href="/tricks/ollie">Ollie</a></td>
-                    <td>Straight Airs</td>
-                    <td>Greg</td>
-                    <td>08/03/2020</td>
-                    <td>08/03/2020</td>
-                    <td>Online</td>
-                    <td>
-                        <label class="jxp-admin-toggle">
-                            <input id="publish-ollie" type="checkbox" data-slug="ollie">
-                            <span class="jxp-toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td class="remove-icon"><a href="/admin/remove-ollie"><i class="far fa-trash-alt"></i></a></td>
-                </tr>
-                <tr>
-                    <td><a href="/tricks/ollie">Ollie</a></td>
-                    <td>Straight Airs</td>
-                    <td>Greg</td>
-                    <td>08/03/2020</td>
-                    <td>08/03/2020</td>
-                    <td>Online</td>
-                    <td>
-                        <label class="jxp-admin-toggle">
-                            <input id="publish-ollie" type="checkbox" data-slug="ollie">
-                            <span class="jxp-toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td class="remove-icon"><a href="/admin/remove-ollie"><i class="far fa-trash-alt"></i></a></td>
-                </tr>
-                <tr>
-                    <td><a href="/tricks/ollie">Ollie</a></td>
-                    <td>Straight Airs</td>
-                    <td>Greg</td>
-                    <td>08/03/2020</td>
-                    <td>08/03/2020</td>
-                    <td>Online</td>
-                    <td>
-                        <label class="jxp-admin-toggle">
-                            <input id="publish-ollie" type="checkbox" data-slug="ollie">
-                            <span class="jxp-toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td class="remove-icon"><a href="/admin/remove-ollie"><i class="far fa-trash-alt"></i></a></td>
-                </tr>
-                <tr>
-                    <td><a href="/tricks/ollie">Ollie</a></td>
-                    <td>Straight Airs</td>
-                    <td>Greg</td>
-                    <td>08/03/2020</td>
-                    <td>08/03/2020</td>
-                    <td>Online</td>
-                    <td>
-                        <label class="jxp-admin-toggle">
-                            <input id="publish-ollie" type="checkbox" data-slug="ollie">
-                            <span class="jxp-toggle-slider"></span>
-                        </label>
-                    </td>
-                    <td class="remove-icon"><a href="/admin/remove-ollie"><i class="far fa-trash-alt"></i></a></td>
-                </tr>
+
+                {% for trick in tricks %}
+
+                    <tr>
+                        <td><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></td>
+                        <td>{{ trick.trickGroup.name }}</td>
+                        <td>{{ trick.author.username }}</td>
+                        <td>{{ trick.dateAdded | date('Y-m-d') }}</td>
+                        <td>{{ trick.dateModified | date('Y-m-d') }}</td>
+                        <td>{{ trick.status }}</td>
+                        <td>
+                            <label class="jxp-admin-toggle">
+                                <input id="publish-{{ trick.name }}" type="checkbox" data-slug="{{ trick.name }}">
+                                <span class="jxp-toggle-slider"></span>
+                            </label>
+                        </td>
+                        <td class="remove-icon"><a href="/admin/remove-{{ trick.name }}"><i class="far fa-trash-alt"></i></a></td>
+                    </tr>
+                {% endfor %}
+
                 </tbody>
             </table>
         </form>
