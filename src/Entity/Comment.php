@@ -39,6 +39,11 @@ class Comment
      */
     private $dateAdded;
 
+    public function __construct()
+    {
+        $this->dateAdded = new \DateTime("now");
+    }
+
     public function getId(): ?int
     {
         return $this->id;
