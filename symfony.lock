@@ -111,6 +111,9 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "laminas/laminas-zendframework-bridge": {
+        "version": "1.0.1"
+    },
     "monolog/monolog": {
         "version": "1.25.3"
     },
@@ -124,7 +127,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.3.5"
+        "version": "7.4.2"
     },
     "php-cs-fixer/diff": {
         "version": "v2.0.1"
@@ -535,6 +538,9 @@
     },
     "twig/twig": {
         "version": "v3.0.3"
+    },
+    "webimpress/safe-writer": {
+        "version": "2.0.0"
     },
     "webmozart/assert": {
         "version": "1.7.0"

@@ -3,7 +3,6 @@
 
 namespace App\Controller\Admin;
 
-
 use App\Entity\Trick;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,7 +25,7 @@ class AdminController extends AbstractController
             ->getRepository(User::class)
             ->findOneBy(['username' => $user]);
 
-        return $this->render('admin\trick_list.html.twig',[
+        return $this->render('admin\trick_list.html.twig', [
             'tricks' => $tricks,
             'user' => $user
         ]);
@@ -46,10 +45,9 @@ class AdminController extends AbstractController
             ->getRepository(User::class)
             ->findOneBy(['username' => $user]);
 
-        return $this->render('admin\users_list.html.twig',[
+        return $this->render('admin\users_list.html.twig', [
             'users' => $users,
             'user' => $user
         ]);
     }
-
 }
