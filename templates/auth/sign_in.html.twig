@@ -6,9 +6,19 @@
 
 {% block formContent %}
 
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
     <div class="jxp-form-field-block">
         <label for="username">Username</label>
-        <input id="username" type="text" name="username" class="jxp-form-input">
+        <input id="username" type="text" name="username" class="jxp-form-input" value="{{ last_username }}">
     </div>
 
     <div class="jxp-form-field-block">
@@ -16,6 +26,8 @@
         <input id="password" type="password" name="password" class="jxp-form-input" autocomplete="new-password"
                required>
     </div>
+
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
     <p><a href="/auth/forgot-password">Forgot password?</a></p>
 
