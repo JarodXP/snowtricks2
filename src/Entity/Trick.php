@@ -112,7 +112,7 @@ class Trick
 
     public function setDateAdded(?DateTimeInterface $dateAdded): self
     {
-        $this->dateAdded = $this->dateAdded;
+        $this->dateAdded = $dateAdded;
 
         return $this;
     }
@@ -122,7 +122,7 @@ class Trick
         return $this->dateModified;
     }
 
-    public function setDateModified(?DateTimeInterface $dateModified): self
+    public function setDateModified(): self
     {
         $this->dateModified = new \DateTime("now");
 
