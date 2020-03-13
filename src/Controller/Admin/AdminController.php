@@ -27,11 +27,8 @@ class AdminController extends AbstractController
             ->getRepository(Trick::class)
             ->findAll();
 
-        $user = $this->getUser();
-
         return $this->render('admin\trick_list.html.twig', [
-            'tricks' => $tricks,
-            'user' => $user
+            'tricks' => $tricks
         ]);
     }
 

@@ -8,14 +8,8 @@
         <ul class="nav-menu">
             <li class="menu-item"><a href="/admin/tricks">Tricks</a></li>
             <li class="menu-item"><a href="/admin/users">Users</a></li>
-            <li class="menu-item">
-                <div class="connection-block">
-                    <div class="jxp-avatar-thumbnail">
-                        <img src="/media/{{ user.avatar.filename }}" alt="avatar">
-                    </div>
-                    <p>{{ user.username }}</p>
-                </div>
-            </li>
+            {% include '_connected_desktop.html.twig' %}
+
         </ul>
     </nav>
     <!--end Desktop nav-->
@@ -25,14 +19,12 @@
         <ul class="nav-menu">
             <li class="menu-item"><a href="/"><i class="fas fa-users"></i></a></li>
             <li class="menu-item"><a href="/#tricks"><i class="fas fa-snowboarding"></i></a></li>
-            <li class="menu-item">
-                <div class="jxp-avatar-thumbnail">
-                    <img src="/media/{{ user.avatar.filename }}" alt="avatar">
-                </div>
-            </li>
+            {% include '_connected_mobile.html.twig' %}
         </ul>
     </nav>
     <!--end Mobile nav-->
+
+    {% include '_connected_submenu.html.twig' %}
 
     <div id="main-wrapper">
 
