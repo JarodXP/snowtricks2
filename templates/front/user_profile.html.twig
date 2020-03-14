@@ -10,17 +10,17 @@
             
             <div class="jxp-form-field-block">
                 <label for="username">Username</label>
-                <input id="username" class="jxp-form-input" name="username" value="{{ user.username }}">
+                <input id="username" class="jxp-form-input" name="username" value="{{ app.user.username }}">
             </div>
 
             <div class="jxp-form-field-block">
                 <label for="email">Email Address</label>
-                <input id="email" class="jxp-form-input" name="email" value="{{ user.email }}">
+                <input id="email" class="jxp-form-input" name="email" value="{{ app.user.email }}">
             </div>
 
             <div id="profile-avatar-section" class="jxp-form-multifields">
                 <div class="avatar-container">
-                    <img src="/media/{{ user.avatar.fileName }}" alt="{{ user.avatar.alt }}">
+                    <img src="/media/{{ app.user.avatar.fileName }}" alt="{{ app.user.avatar.alt }}">
                 </div>
 
                 <div class="jxp-form-field-block">
@@ -32,12 +32,12 @@
             <div id="name-section" class="jxp-form-multifields">
                 <div class="jxp-form-field-block">
                     <label for="last-name">Last Name</label>
-                    <input id="last-name" class="jxp-form-input" name="last-name" value="{{ user.lastName }}">
+                    <input id="last-name" class="jxp-form-input" name="last-name" value="{{ app.user.lastName }}">
                 </div>
 
                 <div class="jxp-form-field-block">
                     <label for="first-name">First Name</label>
-                    <input id="first-name" class="jxp-form-input" name="first-name" value="{{ user.firstName }}">
+                    <input id="first-name" class="jxp-form-input" name="first-name" value="{{ app.user.firstName }}">
                 </div>
             </div>
 

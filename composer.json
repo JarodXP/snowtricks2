@@ -30,6 +30,7 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "3.0.x-dev",
         "symfony/debug-pack": "^1.0",
         "symfony/maker-bundle": "^1.0",
@@ -64,7 +65,6 @@
         "symfony/polyfill-php56": "*"
     },
     "scripts": {
-        "php-cs-fixer": "php-cs-fixer --config=./.php_cs.dist",
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"

@@ -35,7 +35,7 @@ class Media
     private $alt;
 
     /**
-     * @ORM\Column(type="datetime", length=255)
+     * @ORM\Column(type="datetime", length=255, nullable=true)
      */
     private $dateAdded;
 
@@ -53,6 +53,7 @@ class Media
     {
         $this->tricks = new ArrayCollection();
         $this->tricksMainImages = new ArrayCollection();
+        $this->dateAdded = new \DateTime("now");
     }
 
     public function getId(): ?int

@@ -7,11 +7,6 @@
   height: $mobile-nav-height;
   background: $contrast-color-gradient;
   box-shadow: 0 -5px 10px $dark-primary-color;
-
-  & .jxp-avatar-thumbnail {
-    width: 30px;
-    height: 30px;
-  }
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
@@ -24,20 +19,5 @@
     align-items: center;
     height: $desktop-nav-height;
     box-shadow: 0 5px 10px $dark-primary-color;
-
-    .jxp-avatar-thumbnail {
-      margin: 0 20px 0 auto;
-    }
   }
-
-  .connection-block{
-    display: flex;
-    justify-content: space-between;
-    cursor: pointer;
-    color: white;
-    border-left: 3px solid white;
-    padding-left: 20px;
-    align-items: center;
-  }
-
 }

@@ -20,15 +20,6 @@ class AuthenticationController extends AbstractController
     }
 
     /**
-     * @Route("/auth/sign-in",name="sign_in")
-     * @return Response
-     */
-    public function displaySignInAction():Response
-    {
-        return $this->render('auth\sign_in.html.twig');
-    }
-
-    /**
      * @Route("/auth/forgot-password",name="forgot-password")
      * @return Response
      */

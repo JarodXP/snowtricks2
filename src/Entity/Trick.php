@@ -25,7 +25,7 @@ class Trick
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10000)
      */
     private $description;
 
@@ -122,9 +122,9 @@ class Trick
         return $this->dateModified;
     }
 
-    public function setDateModified(?DateTimeInterface $dateModified): self
+    public function setDateModified(): self
     {
-        $this->dateModified = $dateModified;
+        $this->dateModified = new \DateTime("now");
 
         return $this;
     }

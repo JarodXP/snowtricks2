@@ -18,7 +18,7 @@ class Comment
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=10000)
      */
     private $content;
 
@@ -38,6 +38,11 @@ class Comment
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateAdded;
+
+    public function __construct()
+    {
+        $this->dateAdded = new \DateTime("now");
+    }
 
     public function getId(): ?int
     {
