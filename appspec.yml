@@ -1,0 +1,42 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /var/www/snowtricks
+permissions:
+  - object: /var/www/snowtricks
+    pattern: "**"
+    except: [public/**]
+    owner: ubuntu
+    group: www-data
+    mode: 750
+    type:
+      - directory
+  - object: /var/www/snowtricks/public/icons
+    pattern: "**"
+    owner: ubuntu
+    group: www-data
+    mode: 775
+    type:
+      - file
+  - object: /var/www/snowtricks/public/media
+    pattern: "**"
+    owner: ubuntu
+    group: www-data
+    mode: 775
+    type:
+      - file
+  - object: /var/www/snowtricks/public/webfonts
+    pattern: "**"
+    owner: ubuntu
+    group: www-data
+    mode: 775
+    type:
+      - file
+  - object: /var/www/snowtricks/public/
+    pattern: "*.*"
+    owner: ubuntu
+    group: www-data
+    mode: 775
+    type:
+      - file
