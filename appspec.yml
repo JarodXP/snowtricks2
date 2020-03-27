@@ -7,7 +7,7 @@ hooks:
   BeforeInstall:
     - location: scripts/clear-project.sh
       timeout: 300
-      runas: ubuntu
+      runas: root
     - location: scripts/remove-cache
       timeout: 300
       runas: ubuntu
