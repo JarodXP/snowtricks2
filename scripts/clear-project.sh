@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd /var/www/ || exit
-rm -rf snowtricks
-mkdir snowtricks
-cp .env.local snowtricks/.env.local
+cd /var/www/snowtricks || exit
+find . ! -name '.env.local' -type d -exec rm -r {} +
+find . ! -name '.env.local' -type f -exec rm -f {} +

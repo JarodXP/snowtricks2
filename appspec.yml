@@ -5,6 +5,9 @@ files:
     destination: /var/www/snowtricks
 hooks:
   BeforeInstall:
+    - location: scripts/clear-project.sh
+      timeout: 300
+      runas: ubuntu
     - location: scripts/remove-cache
       timeout: 300
       runas: ubuntu
