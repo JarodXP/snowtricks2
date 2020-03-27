@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 
-if(file_exists('/var/www/snowtricks/bin/console')){
-    shell_exec('cd /var/www/snowtricks');
+if(file_exists('/var/www/snowtricks-test/bin/console')){
+    shell_exec('cd /var/www/snowtricks-test');
     shell_exec('php bin/console cache:warmup');
 }

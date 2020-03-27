@@ -2,15 +2,12 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/www/snowtricks
+    destination: /var/www/snowtricks-test
 hooks:
   BeforeInstall:
     - location: scripts/clear-project.sh
       timeout: 300
       runas: root
-    - location: scripts/remove-cache
-      timeout: 300
-      runas: ubuntu
   AfterInstall:
     - location: scripts/permissions.sh
       timeout: 300
