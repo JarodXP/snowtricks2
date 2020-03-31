@@ -25,17 +25,17 @@ class Trick
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10000)
+     * @ORM\Column(type="text")
      */
     private $description;
 
     /**
-     * @ORM\Column(type="datetime", length=255, nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateAdded;
 
     /**
-     * @ORM\Column(type="datetime", length=255, nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateModified;
 

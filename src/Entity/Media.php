@@ -35,7 +35,7 @@ class Media
     private $alt;
 
     /**
-     * @ORM\Column(type="datetime", length=255, nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateAdded;
 
