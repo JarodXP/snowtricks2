@@ -14,6 +14,12 @@ use DateTimeInterface;
 class User implements UserInterface
 {
     /**
+     * @var string token to be used if password forgotten
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $resetToken;
+
+    /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -76,6 +82,16 @@ class User implements UserInterface
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->dateAdded = new \DateTime("now");
+    }
+
+    public function getResetToken(): string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): void
+    {
+        $this->resetToken = $resetToken;
     }
 
     public function getId(): ?int
