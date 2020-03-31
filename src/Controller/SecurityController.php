@@ -61,7 +61,7 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @Route("/auth/forgot-password", name"app_forgotten_password")
+     * @Route("/auth/forgot-password", name="app_forgotten_password")
      * @return Response
      */
     public function forgottenPassword(): Response
