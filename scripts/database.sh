@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Prepare database with Docrtine
-cd /var/www/snowtricks || exit
+# Prepare database with Doctrine
+cd /var/www/snowtricks-test || exit
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate --no-interaction
 
