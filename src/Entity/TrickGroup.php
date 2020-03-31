@@ -24,7 +24,7 @@ class TrickGroup
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=10000, nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
