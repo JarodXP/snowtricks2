@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use phpDocumentor\Reflection\Types\Self_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,9 @@ use Swift_Mailer;
 
 class SecurityController extends AbstractController
 {
+    public const EMAIL_FIELD = 'email',
+        PASSWORD_FIELD = 'password';
+
     /**
      * @Route("/auth/login", name="app_login")
      */
@@ -45,12 +49,12 @@ class SecurityController extends AbstractController
     {
         if($request->isMethod('POST')){
             $user = new User();
-            $user->setEmail($request->request->get('email'));
+            $user->setEmail($request->request->get(self::EMAIL_FIELD));
             $user->setUsername($request->request->get('username'));
 
             //Checks if the 2 passwords field typed by the user are identical
-            if($request->request->get('password') === $request->request->get('password-check')){
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
+            if($request->request->get(self::PASSWORD_FIELD) === $request->request->get('password-check')){
+                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get(self::PASSWORD_FIELD)));
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -72,9 +76,9 @@ class SecurityController extends AbstractController
     {
         //Checks if data is sent by Post to handle password change.
         if($request->isMethod('POST')){
-            $email = $request->request->get('email');
+            $email = $request->request->get(self::EMAIL_FIELD);
             $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository(User::class)->findOneBy(['email'=>$email]);
+            $user = $em->getRepository(User::class)->findOneBy([self::EMAIL_FIELD=>$email]);
 
             //Sends a flash notification if email unknown
             if($user === null){
@@ -137,12 +141,12 @@ class SecurityController extends AbstractController
             }
 
             //Checks if both password fields are identical and sets the new password
-            if($request->request->get('password') === $request->request->get('password-check')){
+            if($request->request->get(self::PASSWORD_FIELD) === $request->request->get('password-check')){
                 //reset the token
                 $user->setResetToken(null);
 
                 //sets the new password
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get('password')));
+                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get(self::PASSWORD_FIELD)));
 
                 //Syncs with database
                 $em->flush();
