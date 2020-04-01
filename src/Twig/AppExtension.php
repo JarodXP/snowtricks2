@@ -4,6 +4,7 @@
 namespace App\Twig;
 
 
+use App\Entity\Media;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -14,6 +15,7 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('editModeBtns',[$this,'editModeBtns']),
             new TwigFunction('editModeModal',[$this,'editModeModal']),
+            new TwigFunction('getAvatarFilename',[$this,'getAvatarFilename']),
             new TwigFunction('tinyMCE',[$this,'tinyMCE']),
             ];
     }
@@ -44,6 +46,20 @@ class AppExtension extends AbstractExtension
         else{
             return null;
         }
+    }
+
+    /**
+     * Gets the user avatar filename or sets the default avatar
+     * @param string $filename
+     * @return string
+     */
+    public function getAvatarFilename(?Media $avatar):string
+    {
+        if(is_null($avatar)){
+            return 'default_avatar.jpg';
+        }
+
+        return $avatar->getFileName();
     }
 
     /**

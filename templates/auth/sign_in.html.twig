@@ -29,7 +29,7 @@
 
     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-    <p><a href="/auth/forgot-password">Forgot password?</a></p>
+    <p><a href="{{ path('app_forgotten_password') }}">Forgot password?</a></p>
 
     <div class="jxp-group-btn">
         <button class="jxp-btn-contrast">Login</button>
