@@ -138,7 +138,7 @@ class AppFixtures extends Fixture
 
         $wawa = new User();
 
-        $wawa->setEmail('wawa@gmail.com')
+        $wawa->setEmail('gregory.barile@gmail.com')
             ->setUsername('Wawa')
             ->setPassword($this->passwordEncoder->encodePassword(
                 $wawa,'azerty'))
