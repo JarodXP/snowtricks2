@@ -1,0 +1,19 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}Member Profile{% endblock %}
+
+{% block mainContent %}
+    <div id="user-profile">
+        <h1>Profile</h1>
+
+        {{ form_start(formProfile) }}
+
+        {{ form_widget(formProfile) }}
+
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+
+        {{ form_end(formProfile) }}
+
+
+    </div>
+{% endblock %}

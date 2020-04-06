@@ -3,6 +3,7 @@
 
 namespace App\Controller\Front;
 
+
 use App\Entity\Trick;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,13 +14,12 @@ class TrickController extends AbstractController
     /**
      * @Route("/",name="home")
      */
-    public function displayFrontTrickListAction()
-    {
+    public function displayFrontTrickListAction(){
         $tricks = $this->getDoctrine()
             ->getRepository(Trick::class)
             ->findAll();
 
-        return $this->render('front/home.html.twig', ['tricks' => $tricks]);
+        return $this->render('front/home.html.twig',['tricks' => $tricks]);
     }
 
     /**
@@ -34,39 +34,9 @@ class TrickController extends AbstractController
             ->getRepository(Trick::class)
             ->findOneBy(['name' => $trickName]);
 
-        return $this->render('front\trick.html.twig', [
+        return $this->render('front\trick.html.twig',[
             'edit' => false,
             'trick' => $trick,
         ]);
-    }
-
-    /**
-     * @Route("/member/profile-{username}", name="user-profile")
-     */
-    public function displayProfileAction(string $username)
-    {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy(['username' => $username]);
-
-        return $this->render('front/user_profile.html.twig', [
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * @Route("/edit-{trickName}", name="edit-trick")
-     * @param string $trickName
-     */
-    public function editTrick(string $trickName)
-    {
-    }
-
-    /**
-     * @Route("/remove-{trickName}", name="remove-trick")
-     * @param string $trickName
-     */
-    public function removeTrick(string $trickName)
-    {
     }
 }
