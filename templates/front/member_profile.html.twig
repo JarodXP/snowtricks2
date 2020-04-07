@@ -7,6 +7,9 @@
         <h1>Profile</h1>
 
         {{ form_start(formProfile) }}
+        <div class="avatar-container">
+            <img src="{{ asset('media/avatars/'~getAvatarFilename(user.avatar)) }}" alt="avatar picture">
+        </div>
 
         {{ form_widget(formProfile) }}
 
