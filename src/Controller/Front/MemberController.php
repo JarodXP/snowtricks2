@@ -3,7 +3,7 @@
 
 namespace App\Controller\Front;
 
-
+use App\CustomServices\AvatarUploader;
 use App\Entity\Media;
 use App\Entity\User;
 use App\Form\UserProfileType;
@@ -18,7 +18,7 @@ class MemberController extends AbstractController
     /**
      * @Route("/member/{username}", name="member-profile")
      */
-    public function profileFormAction(Request $request, string $username)
+    public function profileFormAction(Request $request, string $username, AvatarUploader $uploader)
     {
         //Gets the current user
         $user = $this->getDoctrine()
@@ -26,65 +26,55 @@ class MemberController extends AbstractController
             ->findOneBy(['username' => $username]);
 
         //Creates the form & handles request
-        $formProfile = $this->createForm(UserProfileType::class,$user);
+        $formProfile = $this->createForm(UserProfileType::class, $user);
 
         $formProfile->handleRequest($request);
 
         //Checks if data has been submitted & registers updates
-        if($formProfile->isSubmitted() && $formProfile->isValid()){
+        if ($formProfile->isSubmitted() && $formProfile->isValid()) {
 
             //Gets the avatar file
             $avatarFile = $formProfile->get('avatar')->get('avatar')->getData();
 
-            //Sets the avatar filename
-            if($avatarFile) {
+            if ($avatarFile) {
+
+                //Gets the current avatar to remove it after new one is set
                 $formerAvatar = $this->getDoctrine()
                     ->getRepository(Media::class)
                     ->findOneBy(['id' => $user->getAvatar()]);
 
-                $newAvatar = new Media();
-
-                $originalFilename = pathinfo($avatarFile->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()',
-                                                             $originalFilename);
-                $newFilename = $safeFilename.'-'.uniqid().'.'.$avatarFile->guessExtension();
-
-                // Move the file to the directory where avatars are stored
+                // Creates a new Media Entity for the avatar from the uploaded file
                 try {
-                    $avatarFile->move(
-                        $this->getParameter('avatars_directory'),
-                        $newFilename
-                    );
+                    $newAvatar = $uploader->createAvatarMedia($avatarFile);
+
+                    //updates the avatar media in the user entity
+                    $user->setAvatar($newAvatar);
+
                 } catch (FileException $e) {
-                    $this->addFlash('danger',$e->getMessage());
+                    $this->addFlash('danger', $e->getMessage());
                 }
-
-                // updates the avatar properties
-                $newAvatar->setFileName($newFilename);
-                $newAvatar->setAlt('avatar');
-                $newAvatar->setMimeType($avatarFile->getClientMimeType());
-
-                //updates the avatar media in the user entity
-                $user->setAvatar($newAvatar);
-
-                //removes the former avatar file if not default avatar
-                unlink($_SERVER['DOCUMENT_ROOT'].'media/avatars/'.$formerAvatar->getFileName());
             }
 
             //Syncs the database
             $manager = $this->getDoctrine()->getManager();
 
+            $manager->persist($newAvatar);
             $manager->persist($user);
-            $manager->remove($formerAvatar);
+
+            //removes the former avatar file if not default avatar
+            if (!is_null($formerAvatar)) {
+                unlink($this->getParameter('avatars_directory').'/'.$formerAvatar->getFileName());
+                $manager->remove($formerAvatar);
+            }
+
             $manager->flush();
 
             //Renders the filled-in form
-            return $this->redirectToRoute('member-profile',['username'=>$user->getUsername()]);
+            return $this->redirectToRoute('member-profile', ['username'=>$user->getUsername()]);
         }
 
         //If no data has been submitted, renders the blank form
-        return $this->render('front/member_profile.html.twig',[
+        return $this->render('front/member_profile.html.twig', [
             'formProfile' => $formProfile->createView(),
             'user' => $user,
         ]);
@@ -99,7 +89,7 @@ class MemberController extends AbstractController
             ->getRepository(User::class)
             ->findBy(['username' => $username]);
 
-        return $this->render('front/user_profile.html.twig',[
+        return $this->render('front/user_profile.html.twig', [
             'user' => $user
         ]);
     }
