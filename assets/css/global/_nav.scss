@@ -1,14 +1,23 @@
-:root{
-  width: 100%;
-  font-family: $font-stack-text;
-  font-size: 0.8em;
-  color: #042d38;
+#mobile-front-nav, #mobile-admin-nav{
+  background: $contrast-color-gradient;
+  box-shadow: 0 -5px 10px $dark-primary-color;
+  justify-content: center;
+
+  & .nav-menu{
+    width: 100%;
+  }
+
+  & .dropdown-menu{
+    left: -120%;
+  }
+
+  & .dropdown-toggle::after{
+    display: none;
+  }
 }
 
-body{
-  width: 100%;
-  margin: 0;
-  background-color: $background-color;
+.nav-link{
+  color: white;
 }
 
 .nav-menu{
@@ -35,19 +44,6 @@ body{
   color: white;
 }
 
-#main-wrapper{
-  margin-bottom: $mobile-nav-height + 50px;
-}
-
-h1 {
-  font-size: 4.5rem;
-  font-family: "Rock Salt", Arial, sans-serif;
-}
-
-.hidden{
-  display: none!important;
-}
-
 #connection-menu{
   background-color: $primary-color;
 
@@ -58,18 +54,28 @@ h1 {
   & .dropdown-item:hover{
     color: $primary-color;
   }
+
+  &>a{
+    color: white;
+    text-decoration: none;
+    text-shadow: none;
+  }
 }
 
-
-@media (orientation:landscape) and (min-width: 576px){
-  :root{
-    font-size: 1em;
+@media (orientation:landscape) and (min-width: 576px) {
+  #desktop-front-nav {
+    background: $primary-gradient;
+    box-shadow: 0 5px 10px $dark-primary-color;
   }
 
-  #main-wrapper{
-    margin-top: $desktop-nav-height;
-    margin-bottom: 0;
-    min-height: 90vh;
+  #desktop-admin-nav {
+    background: $contrast-color-gradient;
+    box-shadow: 0 5px 10px $dark-primary-color;
+  }
+
+  #desktop-front-menu{
+    justify-content: flex-end;
+    margin-right: 5%;
   }
 
   #nav-logo {
@@ -106,28 +112,6 @@ h1 {
 
     &>p{
       margin: 0 10px;
-    }
-  }
-
-  #connection-menu{
-    background-color: $primary-color;
-
-    & li{
-      padding: 5px 0;
-    }
-
-    & li:active{
-      background-color: white;
-
-      &>a{
-        color: $dark-primary-color;
-      }
-    }
-
-    &>a{
-      color: white;
-      text-decoration: none;
-      text-shadow: none;
     }
   }
 }

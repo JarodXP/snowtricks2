@@ -23,8 +23,8 @@ const navElement = {
 
     //Toggles type of menu depending on window size
     toggleNav() {
-        const desktopNav = document.getElementById('desktop-nav');
-        const mobileNav = document.getElementById('mobile-nav');
+        const desktopNav = document.getElementsByClassName('desktop-nav')[0];
+        const mobileNav = document.getElementsByClassName('mobile-nav')[0];
 
         //Toggles the ".collapse" class
         if(document.body.clientWidth < 576){

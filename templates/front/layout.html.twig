@@ -1,16 +1,18 @@
 {% extends 'base.html.twig' %}
+{% import 'macro_connected_block.html.twig' as blockConnected %}
+
 
 {% block body %}
 
     <!--Desktop nav-->
-    <nav id="desktop-nav" class="navbar navbar-expand-md fixed-top">
+    <nav id="desktop-front-nav" class="desktop-nav navbar navbar-expand-md fixed-top">
         <a id="nav-logo" class="navbar-brand" href="{{ path('home') }}">SNOWTRICKS</a>
         <div id="desktop-front-menu" class="collapse navbar-collapse nav-menu">
             <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/#trick-list">Tricks</a></li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {% include '_connected_desktop.html.twig' %}
+                    {{ blockConnected.connection('front','desktop') }}
                 {% else %}
                     <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Sign In</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ path('app_signup') }}">Sign Up</a></li>
@@ -21,12 +23,12 @@
     <!--end Desktop nav-->
 
     <!--Mobile nav-->
-    <nav id="mobile-nav" class="navbar navbar-expand-sm fixed-bottom" >
+    <nav id="mobile-front-nav" class="mobile-nav navbar navbar-expand-sm fixed-bottom" >
         <ul class="nav-menu">
             <li class="nav-item"><a href="/"><i class="fas fa-igloo"></i></a></li>
             <li class="nav-item"><a href="/#trick-list"><i class="fas fa-snowboarding"></i></a></li>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {% include '_connected_mobile.html.twig' %}
+                {{ blockConnected.connection('front','mobile') }}
             {% else %}
                 <li class="nav-item"><a href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i></a></li>
             {% endif %}
@@ -35,7 +37,7 @@
     <!--end Mobile nav-->
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        {% include '_connected_submenu.html.twig' %}
+        {% include '_connected_front_submenu.html.twig' %}
     {% endif %}
 
     <div id="main-wrapper">
