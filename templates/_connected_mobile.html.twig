@@ -1,5 +1,9 @@
-<li class="menu-item">
-    <div class="jxp-avatar-thumbnail connection-block">
-        <img src="/media/{{ getAvatarFilename(app.user.avatar) }}" alt="avatar">
+<li class="nav-item dropup">
+    <div class="connection-block dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="jxp-avatar-thumbnail">
+            <img src="/media/{{ getAvatarFilename(app.user.avatar) }}" alt="avatar">
+        </div>
     </div>
+
+    {% include '_connected_submenu.html.twig' %}
 </li>

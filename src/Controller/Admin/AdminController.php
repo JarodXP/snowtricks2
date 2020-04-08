@@ -18,6 +18,7 @@ class AdminController extends AbstractController
 {
     /**
      * @Route("/admin/tricks",name="admin-tricks")
+     * @Route("/admin/",name="admin")
      * @return Response
      */
     public function displayTrickListAction():Response

@@ -23,15 +23,14 @@ body{
   }
 }
 
-.menu-item{
+.nav-item{
   font-size: 1.5rem;
-  text-shadow: 1px 1px $dark-primary-color;
   margin: 1px 5px;
   list-style-type: none;
   padding: 0 5px;
 }
 
-.menu-item>a{
+.nav-item>a{
   text-decoration: none;
   color: white;
 }
@@ -50,38 +49,14 @@ h1 {
 }
 
 #connection-menu{
-  background-color: $dark-primary-color;
-  position: fixed;
-  top: revert;
-  bottom: -$mobile-nav-height;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  padding: 5px;
-  box-shadow: 0px -5px 10px $dark-primary-color;
-  transition: bottom 0.5s ease-out;
-  width: 100%;
+  background-color: $primary-color;
 
-  &>ul{
-    padding: 5px;
+  & .dropdown-item{
+    color: white;
   }
 
-  & li{
-    list-style: none;
-    border-top: 1px solid white;
-    padding: 20px 0;
-
-    &:hover{
-      background-color: white;
-      &>a{
-        color: $dark-primary-color;
-      }
-    }
-
-    &>a{
-      color: white;
-      text-decoration: none;
-      text-shadow: none;
-    }
+  & .dropdown-item:hover{
+    color: $primary-color;
   }
 }
 
@@ -111,12 +86,12 @@ h1 {
     padding: 0;
 
     & .jxp-avatar-thumbnail {
-      width: 40px;
-      height: 40px;
+      width: 35px;
+      height: 35px;
     }
   }
 
-  .menu-item {
+  .nav-item {
     font-size: 1rem;
   }
 
@@ -128,15 +103,14 @@ h1 {
     border-left: 3px solid white;
     padding-left: 20px;
     align-items: center;
-    width: 120px;
+
+    &>p{
+      margin: 0 10px;
+    }
   }
 
   #connection-menu{
-    background-color: $dark-primary-color;
-    top: -$desktop-nav-height;
-    bottom: revert;
-    box-shadow: 0 5px 10px $dark-primary-color;
-    transition: top 0.5s ease-out;
+    background-color: $primary-color;
 
     & li{
       padding: 5px 0;

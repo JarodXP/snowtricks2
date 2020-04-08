@@ -1,22 +1,35 @@
-.front-nav{
-  position: fixed;
-  bottom:0;
-  left: 0;
-  z-index: 99;
-  width: 100vw;
-  height: $mobile-nav-height;
-  background: $primary-gradient;
+#mobile-nav{
+  background: $contrast-color-gradient;
   box-shadow: 0 -5px 10px $dark-primary-color;
+  justify-content: center;
+
+  & .nav-menu{
+    width: 100%;
+  }
+
+  & .dropdown-menu{
+    left: -120%;
+  }
+
+  & .dropdown-toggle::after{
+    display: none;
+  }
+}
+
+#desktop-nav {
+  background: $primary-gradient;
+  box-shadow: 0 5px 10px $dark-primary-color;
+}
+
+#desktop-front-menu{
+  justify-content: flex-end;
+  margin-right: 5%;
+}
+
+.nav-link{
+  color: white;
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
 
-  .front-nav {
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    height: $desktop-nav-height;
-    box-shadow: 0 5px 10px $dark-primary-color;
-  }
 }

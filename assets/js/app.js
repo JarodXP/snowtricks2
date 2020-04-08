@@ -26,31 +26,31 @@ const navElement = {
         const desktopNav = document.getElementById('desktop-nav');
         const mobileNav = document.getElementById('mobile-nav');
 
-        //Toggles the ".hidden" class
+        //Toggles the ".collapse" class
         if(document.body.clientWidth < 576){
-            if(!desktopNav.classList.contains('hidden')){
-                desktopNav.classList.add('hidden');
+            if(!desktopNav.classList.contains('collapse')){
+                desktopNav.classList.add('collapse');
             }
-            if(mobileNav.classList.contains('hidden')){
-                mobileNav.classList.remove('hidden')
+            if(mobileNav.classList.contains('collapse')){
+                mobileNav.classList.remove('collapse')
             }
         }
         else{
-            if(!mobileNav.classList.contains('hidden')){
-                mobileNav.classList.add('hidden');
+            if(!mobileNav.classList.contains('collapse')){
+                mobileNav.classList.add('collapse');
             }
-            if(desktopNav.classList.contains('hidden')){
-                desktopNav.classList.remove('hidden')
+            if(desktopNav.classList.contains('collapse')){
+                desktopNav.classList.remove('collapse')
             }
         }
     },
 
     //Toggles connection sub-menu on click
-    toggleConnectionSubMenu() {
+    /*toggleConnectionSubMenu() {
 
         const connectionMenuElement = document.getElementById('connection-menu');
 
-        connectionMenuElement.classList.toggle('hidden');
+        connectionMenuElement.classList.toggle('collapse');
 
         if(document.body.clientWidth < 576){
             connectionMenuElement.style.bottom = - parseInt(getComputedStyle(connectionMenuElement).bottom) + "px";
@@ -63,7 +63,7 @@ const navElement = {
 
             connectionMenuElement.style.top = - parseInt(getComputedStyle(connectionMenuElement).top) + "px";
         }
-    },
+    },*/
 };
 
 //Event listener for toggling nav bar

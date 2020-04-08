@@ -1,8 +1,10 @@
 <!--Sub menu connection-->
-<div id="connection-menu" class="hidden">
-    <ul>
-        <li><a href="/member/profile-{{ app.user.username }}">Profile</a></li>
-        <li><a href="/auth/logout">Disconnect</a></li>
-    </ul>
+<div id="connection-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <a class="dropdown-item" href="{{ path('user-profile',{ username: app.user.username }) }}">Profile</a>
+    <a class="dropdown-item" href="{{ path('app_logout') }}">Disconnect</a>
+
+    {% if 'ROLE_ADMIN' in app.user.roles %}
+        <a class="dropdown-item" href="{{ path('admin') }}">Admin Zone</a>
+    {% endif %}
 </div>
 <!--end Sub menu connection-->
