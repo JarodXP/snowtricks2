@@ -5,6 +5,10 @@
   cursor: pointer;
 }
 
+.table td, .table th{
+  vertical-align: middle!important;
+}
+
 .jxp-pagination-pages>i{
   border-radius: 50%;
 }

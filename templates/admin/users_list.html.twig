@@ -32,7 +32,7 @@
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.dateAdded |date('Y-m-d') }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.role.name }}</td>
+                        <td>{% for role in user.roles %} {{ role | userRole }} {% endfor %}</td>
                         <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
                     </tr>
                 {% endfor %}
