@@ -36,10 +36,6 @@
     </nav>
     <!--end Mobile nav-->
 
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        {% include '_connected_front_submenu.html.twig' %}
-    {% endif %}
-
     <div id="main-wrapper">
 
         {% block mainContent %}{% endblock %}
