@@ -43,27 +43,7 @@ const navElement = {
                 desktopNav.classList.remove('collapse')
             }
         }
-    },
-
-    //Toggles connection sub-menu on click
-    /*toggleConnectionSubMenu() {
-
-        const connectionMenuElement = document.getElementById('connection-menu');
-
-        connectionMenuElement.classList.toggle('collapse');
-
-        if(document.body.clientWidth < 576){
-            connectionMenuElement.style.bottom = - parseInt(getComputedStyle(connectionMenuElement).bottom) + "px";
-        }
-        else {
-            connectionMenuElement.style.width =
-                document.querySelector('#desktop-nav .connection-block').offsetWidth + "px";
-            connectionMenuElement.style.left =
-                document.querySelector('#desktop-nav .connection-block').offsetLeft + "px";
-
-            connectionMenuElement.style.top = - parseInt(getComputedStyle(connectionMenuElement).top) + "px";
-        }
-    },*/
+    }
 };
 
 //Event listener for toggling nav bar
@@ -75,4 +55,16 @@ const connectionBlocks = document.getElementsByClassName('connection-block');
 
 for(let connection of connectionBlocks){
     connection.addEventListener("click",navElement.toggleConnectionSubMenu);
+}
+
+//Event listener for load buttons
+const loadBtns = document.getElementsByClassName('load-btn');
+
+for(let button of loadBtns){
+    button.addEventListener('click',function () {
+        let spinner = button.children[0];
+
+        button.setAttribute('disabled',"");
+        spinner.classList.toggle('collapse');
+    })
 }

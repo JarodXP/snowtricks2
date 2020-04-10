@@ -1,5 +1,5 @@
 #mobile-front-nav, #mobile-admin-nav{
-  background: $contrast-color-gradient;
+  background: $secondary-gradient;
   box-shadow: 0 -5px 10px $dark-primary-color;
   justify-content: center;
 
@@ -45,14 +45,14 @@
 }
 
 #connection-menu{
-  background-color: $primary-color;
+  background-color: $primary;
 
   & .dropdown-item{
     color: white;
   }
 
   & .dropdown-item:hover{
-    color: $primary-color;
+    color: $primary;
   }
 
   &>a{
@@ -69,7 +69,7 @@
   }
 
   #desktop-admin-nav {
-    background: $contrast-color-gradient;
+    background: $secondary-gradient;
     box-shadow: 0 5px 10px $dark-primary-color;
   }
 

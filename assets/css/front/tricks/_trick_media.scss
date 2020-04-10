@@ -7,7 +7,7 @@
 #media-slider-element{
   display: grid;
   grid-template-columns: 5% 90% 5%;
-  color: $contrast-color;
+  color: $secondary;
   margin-bottom: 15%;
 }
 
@@ -35,7 +35,7 @@
   width: 120px;
   margin: 1% 2%;
   border-radius: 5px;
-  border: 1px solid $secondary-color;
+  border: 1px solid $ice-blue;
   box-shadow: 2px 2px 5px $dark-primary-color;
   transition: margin-left 0.5s ease-out;
 
@@ -53,11 +53,11 @@
 }
 
 .carousel-control-prev-icon{
-  background-image: url("/images/chevron-left-solid.svg");
+  background-image: url("/icons/chevron-left-solid.svg");
 }
 
 .carousel-control-next-icon{
-  background-image: url("/images/chevron-right-solid.svg");
+  background-image: url("/icons/chevron-right-solid.svg");
 }
 
 @media (orientation:landscape) and (min-width: 576px) {

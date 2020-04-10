@@ -11,7 +11,7 @@
   background-position: bottom;
 
   &>h1{
-    color: $contrast-color;
+    color: $secondary;
     @include transform(rotate(-8deg));
     font-size: 3rem;
     margin: 20% 0 0 5%;
@@ -35,7 +35,7 @@
 }
 
 .scroll-arrow>a{
-  color: $contrast-color;
+  color: $secondary;
   font-size: 2rem;
   padding: 10px;
   margin: 0 10px 0 10px;
