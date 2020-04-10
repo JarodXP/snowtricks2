@@ -1,13 +1,19 @@
-/*Vars :Colors*/
-$font-stack-title: "Rock Salt", Arial, sans-serif;
-$font-stack-text: Raleway, Arial, sans-serif ;
-$primary-color: #096279;
-$secondary-color: #00d4ff;
-$background-color: #e2faff;
+/*Vars : colors*/
 $primary-gradient: linear-gradient(112deg, rgba(9,98,121,1) 0%, rgba(9,98,121,1) 48%, rgba(0,212,255,1) 100%);
-$contrast-color: #C36609;
-$contrast-color-gradient: linear-gradient(90deg, rgba(195,102,9,1) 0%, rgba(195,102,9,1) 60%, rgba(244,204,84,1) 100%);
+$secondary-gradient: linear-gradient(90deg, rgba(195,102,9,1) 0%, rgba(195,102,9,1) 60%, rgba(244,204,84,1) 100%);
+$background-gradient: linear-gradient(135deg, rgba(226,250,240,1) 0%, rgba(226,250,240,1) 50%, rgba(255,255,255,1) 100%);
 $dark-primary-color: #013C49;
+$ice-blue: #00d4ff;
+$background-color: #e2faff;
+
+/*Bootstrap override*/
+$font-family-sans-serif: Raleway, Arial, sans-serif;
+$primary: #096279;
+$secondary: #C36609;
+$table-dark-bg: $dark-primary-color;
+
+/*Vars : fonts*/
+$font-stack-title: "Rock Salt", Arial, sans-serif;
 
 /*Vars : sizes*/
 $mobile-nav-height:50px;

@@ -8,6 +8,7 @@
           "form form form"
           "pagination pagination pagination";
   place-items: center;
+  padding-top: 30px;
 
   & h1{
     grid-area: title;
@@ -26,12 +27,30 @@
     overflow: auto;
   }
 
-  & .jxp-table-pagination{
+  & .table{
+    text-align: center;
+
+    & i{
+      font-size: 1.2rem;
+    }
+  }
+
+  & #pagination-nav{
     grid-area: pagination;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    & select{
+      width: 80px;
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
   }
 
   & .remove-icon>a{
-    color: $contrast-color;
+    color: $secondary;
   }
 }
 
@@ -43,6 +62,15 @@
             ". pagination .";
 
     min-height: calc(100vh - #{$desktop-nav-height});
-  }
 
+    & #pagination-nav{
+      flex-direction: row;
+      justify-content: space-around;
+
+      & select{
+        margin-right: 20px;
+        margin-top: 0;
+      }
+    }
+  }
 }

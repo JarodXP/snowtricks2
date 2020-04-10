@@ -1,8 +1,12 @@
 .table-edit-cell>i{
   margin: 10px 0;
   font-size: 1.3rem;
-  color: $contrast-color;
+  color: $secondary;
   cursor: pointer;
+}
+
+.table td, .table th{
+  vertical-align: middle!important;
 }
 
 .jxp-pagination-pages>i{

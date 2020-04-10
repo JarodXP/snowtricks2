@@ -110,7 +110,7 @@
                 <form id="comment-form">
                     <label for="comment" class="hidden"></label>
                     <textarea id="comment" class="jxp-form-input" name="comment"></textarea>
-                    <button class="jxp-btn-primary">Envoyer</button>
+                    <button class="btn btn-primary">Envoyer</button>
                 </form>
 
                 {% if trick.comments is empty %}
@@ -132,7 +132,10 @@
 
                 {% endif %}
 
-                <a href="" class="jxp-btn-load">Charger plus</a>
+                <button class="btn btn-secondary load-btn" type="button">
+                    <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
+                    Plus...
+                </button>
             </section>
 
         {% endif %}

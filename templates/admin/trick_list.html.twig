@@ -6,11 +6,11 @@
     <div id="admin-trick-list" class="admin-content">
         <h1>List of tricks</h1>
         <form>
-            <table class="jxp-admin-table">
-                <thead>
+            <table class="table table-hover">
+                <thead class="thead-dark">
                 <tr>
                     <th>Trick Name</th>
-                    <th>Trick TrickGroup</th>
+                    <th>Trick Group</th>
                     <th>Author</th>
                     <th>Date Added</th>
                     <th>Date Modified</th>
@@ -44,19 +44,7 @@
             </table>
         </form>
 
-        <div class="jxp-table-pagination">
-            <select id="limit" class="jxp-pagination-limit">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <div class="jxp-pagination-pages">
-                <i class="fas fa-chevron-circle-left"></i>
-                <p>Page 1 / 1</p>
-                <i class="fas fa-chevron-circle-right"></i>
-            </div>
-        </div>
+        {% include 'admin/_pagination.html.twig' %}
 
     </div>
 {% endblock %}

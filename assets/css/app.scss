@@ -1,12 +1,12 @@
-@import url('https://fonts.googleapis.com/css?family=Raleway|Rock+Salt&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Raleway:ital,wght@0,300;0,500;0,700;1,300;1,500;1,700|Rock+Salt&display=swap');
 
+@import "variables";
 @import "~bootstrap/scss/bootstrap";
 @import "font-awesome/fontawesome";
 @import "font-awesome/solid";
 @import "font-awesome/regular";
-@import "variables";
+@import "global/global";
 @import "jxp-components.styles/jxp-components";
-@import "general";
 @import "front/front";
 @import "auth/auth";
 @import "admin/admin";

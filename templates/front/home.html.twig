@@ -17,17 +17,18 @@
 
     <section id="section-trick">
 
+        <h3>Tricks</h3>
+
         <div id="trick-list">
 
             {% for trick in tricks %}
-
-                <div class="trick-card">
-                    <img class="trick-image" src="/media/{{ trick.mainImage.fileName }}" alt="snowboard trick ollie">
-                    <div class="trick-text">
-                        <p class="trick-name"><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></p>
+                <div class=card>
+                    <img class="card-img-top" src="{{ asset('/media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
+                    <div class="card-body">
+                        <h5 class="trick-name"><a href="{{ path('trick',{trickName:trick.name}) }}">{{ trick.name }}</a></h5>
                         <p>
-                            <a class="trick-icons" href="/tricks/?edit={{ trick.name }}"><i class="far fa-edit"></i></a>
-                            <a class="trick-icons" href="/tricks/?remove={{ trick.name }}"><i class="far fa-trash-alt"></i></a>
+                            <a class="trick-icons" href="{{ path('edit-trick',{trickName:trick.name}) }}"><i class="far fa-edit"></i></a>
+                            <a class="trick-icons" href="{{ path('remove-trick',{trickName:trick.name}) }}"><i class="far fa-trash-alt"></i></a>
                         </p>
                     </div>
                 </div>
@@ -35,8 +36,19 @@
 
         </div>
 
-        <a class="jxp-btn-load">Plus   </a>
+        <button class="btn btn-secondary load-btn" type="button">
+            <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
+            Plus...
+        </button>
 
     </section>
+
+{% endblock %}
+
+{% block footerScripts %}
+
+    {# Encore scripts #}
+    {{ parent() }}
+    {{ encore_entry_script_tags('home_page') }}
 
 {% endblock %}
