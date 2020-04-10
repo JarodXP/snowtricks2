@@ -79,18 +79,4 @@ class MemberController extends AbstractController
             'user' => $user,
         ]);
     }
-
-    /**
-     * @Route("/member/profile-{username}", name="user-profile")
-     */
-    public function displayProfileAction(string $username)
-    {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy(['username' => $username]);
-
-        return $this->render('front/user_profile.html.twig', [
-            'user' => $user
-        ]);
-    }
 }

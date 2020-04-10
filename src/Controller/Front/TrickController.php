@@ -3,7 +3,6 @@
 
 namespace App\Controller\Front;
 
-
 use App\Entity\Trick;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,12 +13,13 @@ class TrickController extends AbstractController
     /**
      * @Route("/",name="home")
      */
-    public function displayFrontTrickListAction(){
+    public function displayFrontTrickListAction()
+    {
         $tricks = $this->getDoctrine()
             ->getRepository(Trick::class)
             ->findAll();
 
-        return $this->render('front/home.html.twig',['tricks' => $tricks]);
+        return $this->render('front/home.html.twig', ['tricks' => $tricks]);
     }
 
     /**
@@ -34,9 +34,29 @@ class TrickController extends AbstractController
             ->getRepository(Trick::class)
             ->findOneBy(['name' => $trickName]);
 
-        return $this->render('front\trick.html.twig',[
+        return $this->render('front\trick.html.twig', [
             'edit' => false,
             'trick' => $trick,
         ]);
+    }
+
+    /**
+     * @Route("/tricks/edit-{trickName}",name="edit-trick")
+     * @param string $trickName
+     * @param string $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editTrickAction(string $trickName)
+    {
+    }
+
+    /**
+     * @Route("/tricks/remove-{trickName}",name="remove-trick")
+     * @param string $trickName
+     * @param string $user
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function removeTrickAction(string $trickName)
+    {
     }
 }

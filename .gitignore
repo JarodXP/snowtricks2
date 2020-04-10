@@ -27,3 +27,6 @@ yarn-error.log
 
 #PHP version
 /.php-version
+
+#php_cs_fixer
+/.php_cs.cache
