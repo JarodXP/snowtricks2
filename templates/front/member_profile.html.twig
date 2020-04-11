@@ -3,17 +3,33 @@
 {% block title %}Member Profile{% endblock %}
 
 {% block mainContent %}
-    <div id="user-profile">
+    <div id="member-profile">
         <h1>Profile</h1>
 
         {{ form_start(formProfile) }}
-        <div class="avatar-container">
-            <img src="{{ asset('media/avatars/'~getAvatarFilename(user.avatar)) }}" alt="avatar picture">
+
+        <div id="form-group-avatar">
+            <div class="avatar-container">
+                <img src="{{ asset('media/avatars/'~getAvatarFilename(user.avatar)) }}" alt="avatar picture">
+            </div>
+
+            {{ form_widget(formProfile.avatar) }}
         </div>
 
-        {{ form_widget(formProfile) }}
+        {{ form_row(formProfile.username) }}
 
-        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        {{ form_row(formProfile.email) }}
+
+        <a id="btn-change-pwd" class="btn btn-secondary" href="{{ path('app_reset_password',{'token':user.resetToken}) }}">Change Password</a>
+
+        {{ form_row(formProfile.firstName) }}
+
+        {{ form_row(formProfile.lastName) }}
+
+        <div class="jxp-group-btn">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a class="btn btn-dark" href="{{ path('home') }}">Back Home</a>
+        </div>
 
         {{ form_end(formProfile) }}
 

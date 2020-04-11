@@ -12,18 +12,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class MemberController extends AbstractController
 {
     /**
      * @Route("/member/{username}", name="member-profile")
      */
-    public function profileFormAction(Request $request, string $username, AvatarUploader $uploader)
+    public function profileFormAction(Request $request, string $username, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
     {
         //Gets the current user
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findOneBy(['username' => $username]);
+        $user = $this->getUser();
+
+        //Creates a new token and registers it into the database
+        $token = $tokenGenerator->generateToken();
+
+        $manager = $this->getDoctrine()->getManager();
+
+        try {
+            $user->setResetToken($token);
+            $manager->flush();
+        } catch (\Exception $e) {
+            $this->addFlash('warning', $e->getMessage());
+
+            return $this->redirectToRoute('home');
+        }
 
         //Creates the form & handles request
         $formProfile = $this->createForm(UserProfileType::class, $user);
@@ -49,15 +62,12 @@ class MemberController extends AbstractController
 
                     //updates the avatar media in the user entity
                     $user->setAvatar($newAvatar);
-
                 } catch (FileException $e) {
                     $this->addFlash('danger', $e->getMessage());
                 }
             }
 
             //Syncs the database
-            $manager = $this->getDoctrine()->getManager();
-
             $manager->persist($newAvatar);
             $manager->persist($user);
 

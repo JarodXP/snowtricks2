@@ -14,7 +14,6 @@ class UserProfileType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('password',PasswordType::class, ['required' => false])
             ->add('avatar', AvatarType::class)
             ->add('firstName')
             ->add('lastName')
