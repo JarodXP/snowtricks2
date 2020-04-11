@@ -21,13 +21,13 @@
     <li class="nav-item {{ dropType }}">
         <div class="connection-block dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="jxp-avatar-thumbnail">
-                <img src="/media/{{ getAvatarFilename(app.user.avatar) }}" alt="avatar">
+                <img src="/media/avatars/{{ getAvatarFilename(app.user.avatar) }}" alt="avatar">
             </div>
             {{ usernameLabel | raw }}
         </div>
 
         <div id="connection-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item" href="{{ path('user-profile',{ username: app.user.username }) }}">Profile</a>
+            <a class="dropdown-item" href="{{ path('member-profile',{ username: app.user.username }) }}">Profile</a>
             <a class="dropdown-item" href="{{ path('app_logout') }}">Disconnect</a>
             {{ specificLinks | raw }}
         </div>

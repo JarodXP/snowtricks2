@@ -41,32 +41,22 @@ class TrickController extends AbstractController
     }
 
     /**
-     * @Route("/member/profile-{username}", name="user-profile")
-     */
-    public function displayProfileAction(string $username)
-    {
-        $user = $this->getDoctrine()
-            ->getRepository(User::class)
-            ->findBy(['username' => $username]);
-
-        return $this->render('front/user_profile.html.twig', [
-            'user' => $user
-        ]);
-    }
-
-    /**
-     * @Route("/edit-{trickName}", name="edit-trick")
+     * @Route("/tricks/edit-{trickName}",name="edit-trick")
      * @param string $trickName
+     * @param string $user
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function editTrick(string $trickName)
+    public function editTrickAction(string $trickName)
     {
     }
 
     /**
-     * @Route("/remove-{trickName}", name="remove-trick")
+     * @Route("/tricks/remove-{trickName}",name="remove-trick")
      * @param string $trickName
+     * @param string $user
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function removeTrick(string $trickName)
+    public function removeTrickAction(string $trickName)
     {
     }
 }

@@ -143,9 +143,11 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password = null): self
     {
-        $this->password = $password;
+        if($password !== null){
+            $this->password = $password;
+        }
 
         return $this;
     }
