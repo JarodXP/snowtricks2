@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#Sets ownership
+sudo find /var/www/snowtricks-test/public -type d -exec chown www-data {} +
+sudo find /var/www/snowtricks-test/public -type f -exec chown www-data {} +
+
 #Sets permissions
 sudo find /var/www/snowtricks-test/ -type d -exec chmod 755 {} +
 sudo find /var/www/snowtricks-test/ -type f -exec chmod 644 {} +
