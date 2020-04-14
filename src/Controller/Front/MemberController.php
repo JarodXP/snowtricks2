@@ -7,9 +7,9 @@ use App\CustomServices\AvatarUploader;
 use App\Entity\Media;
 use App\Entity\User;
 use App\Form\UserProfileType;
-use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
@@ -21,8 +21,12 @@ class MemberController extends AbstractController
      */
     public function profileFormAction(Request $request, string $username, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
     {
-        //Gets the current user
-        $user = $this->getUser();
+        //Gets the current user.
+        //Doctrine is used to create a User object different from the session User before form validation
+        $user = $this->getDoctrine()
+            ->getManager()
+            ->getRepository(User::class)
+            ->findOneBy(['username' => $this->getUser()->getUsername()]);
 
         //Creates a new token and registers it into the database
         $token = $tokenGenerator->generateToken();
@@ -32,7 +36,7 @@ class MemberController extends AbstractController
         try {
             $user->setResetToken($token);
             $manager->flush();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->addFlash('warning', $e->getMessage());
 
             return $this->redirectToRoute('home');
@@ -47,9 +51,9 @@ class MemberController extends AbstractController
         if ($formProfile->isSubmitted() && $formProfile->isValid()) {
 
             //Gets the avatar file
-            $avatarFile = $formProfile->get('avatar')->get('avatar')->getData();
+            $avatarFile = $formProfile->get('avatar')->getData();
 
-            if ($avatarFile) {
+            if (!is_null($avatarFile)) {
 
                 //Gets the current avatar to remove it after new one is set
                 $formerAvatar = $this->getDoctrine()
@@ -62,21 +66,25 @@ class MemberController extends AbstractController
 
                     //updates the avatar media in the user entity
                     $user->setAvatar($newAvatar);
+
+                    //Registers the new avatar
+                    $manager->persist($newAvatar);
+
                 } catch (FileException $e) {
                     $this->addFlash('danger', $e->getMessage());
                 }
+
+                //removes the former avatar file if not default avatar
+                if (!is_null($formerAvatar)) {
+                    unlink($this->getParameter('avatars_directory').'/'.$formerAvatar->getFileName());
+                    $manager->remove($formerAvatar);
+                }
             }
 
-            //Syncs the database
-            $manager->persist($newAvatar);
+            //Registers the user
             $manager->persist($user);
 
-            //removes the former avatar file if not default avatar
-            if (!is_null($formerAvatar)) {
-                unlink($this->getParameter('avatars_directory').'/'.$formerAvatar->getFileName());
-                $manager->remove($formerAvatar);
-            }
-
+            //Syncs the database
             $manager->flush();
 
             //Renders the filled-in form
