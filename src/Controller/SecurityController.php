@@ -2,7 +2,12 @@
 
 namespace App\Controller;
 
+use App\Form\RegistrationFormType;
+use App\Security\LoginFormAuthenticator;
+use Exception;
+use LogicException;
 use phpDocumentor\Reflection\Types\Self_;
+use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,14 +15,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
 use Swift_Mailer;
 
 class SecurityController extends AbstractController
 {
-    public const EMAIL_FIELD = 'email',
-        PASSWORD_FIELD = 'password';
+    public const USERNAME_FIELD = 'username',
+        EMAIL_FIELD = 'email',
+        PASSWORD_FIELD = 'password',
+        PASSWORD_CHECK_FIELD = 'password-check';
 
     /**
      * @Route("/auth/login", name="app_login")
@@ -38,33 +46,48 @@ class SecurityController extends AbstractController
      */
     public function logout()
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        throw new LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
     /**
      * @Route("/auth/signup", name="app_signup")
-     * @return Response
      */
-    public function signup(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
-        if ($request->isMethod('POST')) {
-            $user = new User();
-            $user->setEmail($request->request->get(self::EMAIL_FIELD));
-            $user->setUsername($request->request->get('username'));
+        $user = new User();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
 
-            //Checks if the 2 passwords field typed by the user are identical
-            if ($request->request->get(self::PASSWORD_FIELD) === $request->request->get('password-check')) {
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get(self::PASSWORD_FIELD)));
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            //Sets the user's email and username
+            $user->setEmail($form->get(self::EMAIL_FIELD)->getData());
+            $user->setUsername($form->get(self::USERNAME_FIELD)->getData());
 
-            return $this->redirectToRoute('home');
+            // Encodes the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('password-group')->get(self::PASSWORD_FIELD)->getData()
+                ));
+
+            //Registers the new user in database
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            //Authenticates the new created user
+            return $guardHandler->authenticateUserAndHandleSuccess(
+                $user,
+                $request,
+                $authenticator,
+                'main' // firewall name in security.yaml
+            );
         }
 
-        return $this->render('auth/sign_up.html.twig');
+        return $this->render('auth/sign_up.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
     }
 
     /**
@@ -96,7 +119,7 @@ class SecurityController extends AbstractController
             try {
                 $user->setResetToken($token);
                 $em->flush();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->addFlash('warning', $e->getMessage());
 
                 return $this->redirectToRoute('home');
@@ -109,7 +132,7 @@ class SecurityController extends AbstractController
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
 
-            $message = (new \Swift_Message('Forgot Password'))
+            $message = (new Swift_Message('Forgot Password'))
             ->setFrom('gregory.barile@gmail.com')
             ->setTo($user->getEmail())
             ->setBody('<p>Hello '.$user->getUsername().'</p><p>You requested a password change, please click on the
