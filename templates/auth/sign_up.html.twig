@@ -7,7 +7,12 @@
 {% block formContent %}
 
     {{ form_start(registrationForm) }}
-    {{ form_widget(registrationForm) }}
+    {{ form_row(registrationForm.username) }}
+    {{ form_row(registrationForm.email) }}
+    {{ form_row(registrationForm.passwordGroup) }}
+
+    <p><a href="{{ path('privacy') }}">Terms of use</a> </p>
+    {{ form_row(registrationForm.agreeTerms) }}
 
     <div class="jxp-group-btn">
         <button class="btn btn-primary">Register</button>
