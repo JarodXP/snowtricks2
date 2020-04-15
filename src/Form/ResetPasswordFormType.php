@@ -20,6 +20,5 @@ class ResetPasswordFormType extends AbstractType
         $builder
             ->add(SecurityController::USERNAME_FIELD,UsernameType::class)
             ->add('passwordGroup', PasswordRepeatedType::class);
-            //->add('resetToken', HiddenType::class);
     }
 }

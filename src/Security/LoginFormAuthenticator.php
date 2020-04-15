@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+use App\Controller\SecurityController;
 use App\Entity\User;
 use App\Form\LoginFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,13 +52,13 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         //Sets credentials if form is valid
         if ($loginForm->isSubmitted() && $loginForm->isValid()){
             $credentials = [
-                'username' => $loginForm->get('username')->getData(),
-                'password' => $loginForm->get('password')->getData(),
+                SecurityController::USERNAME_FIELD => $loginForm->get(SecurityController::USERNAME_FIELD)->getData(),
+                SecurityController::PASSWORD_FIELD => $loginForm->get(SecurityController::PASSWORD_FIELD)->getData(),
             ];
 
             $request->getSession()->set(
                 Security::LAST_USERNAME,
-                $credentials['username']
+                $credentials[SecurityController::USERNAME_FIELD]
             );
 
             return $credentials;
@@ -69,7 +70,8 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+        $user = $this->entityManager->getRepository(User::class)
+            ->findOneBy([SecurityController::USERNAME_FIELD => $credentials[SecurityController::USERNAME_FIELD]]);
 
         if (!$user) {
             // fail authentication with a custom error
@@ -81,7 +83,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $this->passwordEncoder->isPasswordValid($user, $credentials[SecurityController::PASSWORD_FIELD]);
     }
 
     /**
@@ -89,7 +91,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
      */
     public function getPassword($credentials): ?string
     {
-        return $credentials['password'];
+        return $credentials[SecurityController::PASSWORD_FIELD];
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
