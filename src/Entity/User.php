@@ -12,6 +12,7 @@ use DateTimeInterface;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"email"}, message="This email address is already used.")
  */
 class User implements UserInterface
 {
