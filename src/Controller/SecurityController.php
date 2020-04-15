@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
+use App\Form\ResetPasswordFormType;
 use App\Security\LoginFormAuthenticator;
 use Exception;
+use http\Exception\RuntimeException;
 use LogicException;
 use phpDocumentor\Reflection\Types\Self_;
 use Swift_Message;
@@ -75,7 +77,7 @@ class SecurityController extends AbstractController
             $user->setPassword(
                 $passwordEncoder->encodePassword(
                     $user,
-                    $form->get('password-group')->get(self::PASSWORD_FIELD)->getData()
+                    $form->get('passwordGroup')->get(self::PASSWORD_FIELD)->getData()
                 ));
 
             //Registers the new user in database
@@ -162,8 +164,10 @@ class SecurityController extends AbstractController
      */
     public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder): Response
     {
-        //Cheks if data has been sent by Post method and handles password change
-        if ($request->isMethod('POST')) {
+        $resetForm = $this->createForm(ResetPasswordFormType::class);
+        $resetForm->handleRequest($request);
+
+        if($resetForm->isSubmitted() && $resetForm->isValid()){
             $em = $this->getDoctrine()->getManager();
 
             //Checks if the token is valid
@@ -175,28 +179,26 @@ class SecurityController extends AbstractController
                 return $this->redirectToRoute('home');
             }
 
-            //Checks if both password fields are identical and sets the new password
-            if ($request->request->get(self::PASSWORD_FIELD) === $request->request->get('password-check')) {
-                //reset the token
-                $user->setResetToken(null);
+            //reset the token
+            $user->setResetToken(null);
 
-                //sets the new password
-                $user->setPassword($passwordEncoder->encodePassword($user, $request->request->get(self::PASSWORD_FIELD)));
+            //sets the new password
+            $user->setPassword($passwordEncoder->encodePassword($user, $resetForm->get('passwordGroup')
+                ->get(self::PASSWORD_FIELD)->getData()));
 
-                //Syncs with database
-                $em->flush();
+            //Syncs with database
+            $em->flush();
 
-                $this->addFlash('notice', 'Your password has been updated');
+            $this->addFlash('notice', 'Your password has been updated');
 
-                return $this->redirectToRoute('home');
-            } else {
-                $this->addFlash('Error', 'The two password fields are not identical');
+            return $this->redirectToRoute('home');
 
-                return $this->redirect('/auth/reset-password/'.$token);
-            }
-        } else {
-            //Displays the view
-            return $this->render('auth/reset_password.html.twig', ['token'=>$token]);
         }
+
+        //Displays the view
+        return $this->render('auth/reset_password.html.twig',[
+            'resetForm' => $resetForm->createView(),
+            'token' => $token
+        ]);
     }
 }

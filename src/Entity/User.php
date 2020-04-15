@@ -86,7 +86,7 @@ class User implements UserInterface
         $this->dateAdded = new \DateTime("now");
     }
 
-    public function getResetToken(): string
+    public function getResetToken(): ?string
     {
         return $this->resetToken;
     }
