@@ -16,18 +16,9 @@
         </div>
     {% endif %}
 
-    <div class="form-group">
-        <label for="username">Username</label>
-        <input id="username" type="text" name="username" class="form-control" value="{{ last_username }}">
-    </div>
-
-    <div class="form-group">
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password" class="form-control" autocomplete="new-password"
-               required>
-    </div>
-
-    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    {{ form_start(loginForm) }}
+    {{ form_row(loginForm.username) }}
+    {{ form_row(loginForm.password) }}
 
     <p><a href="{{ path('app_forgotten_password') }}">Forgot password?</a></p>
 
@@ -35,5 +26,7 @@
         <button class="btn btn-primary">Login</button>
         <button class="btn btn-dark">Cancel</button>
     </div>
+
+    {{ form_end(loginForm) }}
 
 {% endblock %}

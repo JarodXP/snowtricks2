@@ -8,7 +8,7 @@ use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class TrickController extends AbstractController
+class FrontController extends AbstractController
 {
     /**
      * @Route("/",name="home")
@@ -58,5 +58,13 @@ class TrickController extends AbstractController
      */
     public function removeTrickAction(string $trickName)
     {
+    }
+
+    /**
+     * @Route("/privacy",name="privacy")
+     */
+    public function privacyAction()
+    {
+        return $this->render('front\privacy.html.twig');
     }
 }

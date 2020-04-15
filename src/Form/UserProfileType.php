@@ -3,8 +3,11 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Form\CustomType\AvatarType;
+use App\Form\CustomType\CustomEmailType;
+use App\Form\CustomType\NameType;
+use App\Form\CustomType\UsernameType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,11 +16,11 @@ class UserProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username')
+            ->add('username', UsernameType::class)
             ->add('avatar', AvatarType::class)
-            ->add('firstName')
-            ->add('lastName')
-            ->add('email')
+            ->add('firstName', NameType::class, ['required'=>false])
+            ->add('lastName', NameType::class, ['required'=>false])
+            ->add('email', CustomEmailType::class)
         ;
     }
 
