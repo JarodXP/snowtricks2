@@ -2,16 +2,17 @@
 
 namespace App\Controller;
 
+use App\Form\ForgotPasswordType;
 use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
 use App\Form\ResetPasswordFormType;
 use App\Security\LoginFormAuthenticator;
 use Exception;
-use http\Exception\RuntimeException;
 use LogicException;
 use phpDocumentor\Reflection\Types\Self_;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -109,15 +110,27 @@ class SecurityController extends AbstractController
         Swift_Mailer $mailer,
         TokenGeneratorInterface $tokenGenerator
     ): Response {
-        //Checks if data is sent by Post to handle password change.
-        if ($request->isMethod('POST')) {
-            $email = $request->request->get(self::EMAIL_FIELD);
-            $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository(User::class)->findOneBy([self::EMAIL_FIELD=>$email]);
+        //Creates the form to handle request.
+        $form = $this->createForm(ForgotPasswordType::class);
+        $form->handleRequest($request);
 
-            //Sends a flash notification if email unknown
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Gets the email address
+            $username = $form->get(self::USERNAME_FIELD)->getData();
+
+            //Gets the user by his username
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository(User::class)->findOneBy([self::USERNAME_FIELD=>$username]);
+
+            //Checks if user is unknown
             if ($user === null) {
-                $this->addFlash('danger', 'Unknown email');
+                $this->addFlash('error', 'Unknown user');
+
+                return $this->redirectToRoute('app_forgotten_password');
+            }
+            //Checks if form email address matches the user's one.
+            else if(!($user->getEmail() == $form->get(self::EMAIL_FIELD)->getData())){
+                $this->addFlash('error','This email doesn\'t match the one registered for '.$username);
 
                 return $this->redirectToRoute('app_forgotten_password');
             }
@@ -155,7 +168,9 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('auth/forgot_password.html.twig');
+        return $this->render('auth/forgot_password.html.twig',[
+            'forgotForm' => $form->createView()
+        ]);
     }
 
     /**
