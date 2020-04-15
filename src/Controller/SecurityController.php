@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Exception;
@@ -32,13 +33,19 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        $user = new User();
+        $form = $this->createForm(LoginFormType::class, $user);
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('auth/sign_in.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('auth/sign_in.html.twig', [
+            'loginForm' => $form->createView(),
+            'last_username' => $lastUsername,
+            'error' => $error]);
     }
 
     /**
