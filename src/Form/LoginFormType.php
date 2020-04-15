@@ -8,12 +8,8 @@ use App\Controller\SecurityController;
 use App\Form\CustomType\CustomPasswordType;
 use App\Form\CustomType\UsernameType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotNull;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class LoginFormType extends AbstractType
 {
