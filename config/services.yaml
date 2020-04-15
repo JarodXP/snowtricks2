@@ -28,6 +28,7 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    #Directories parameters for file uploaders
     App\CustomServices\AvatarUploader:
         arguments:
             $mediaDir: '%avatars_directory%'
@@ -35,3 +36,8 @@ services:
     #App\CustomServices\TricksMediaUploader:
      #   arguments:
       #      $mediaDir: '%tricks_media_directory%'
+
+    #Listener for redirection exceptions
+    App\EventListener\RedirectExceptionListener:
+        tags:
+            - { event: kernel.exception, name: kernel.event_listener }

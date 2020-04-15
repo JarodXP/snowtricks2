@@ -18,8 +18,8 @@ class UserProfileType extends AbstractType
         $builder
             ->add('username', UsernameType::class)
             ->add('avatar', AvatarType::class)
-            ->add('firstName', NameType::class)
-            ->add('lastName', NameType::class)
+            ->add('firstName', NameType::class, ['required'=>false])
+            ->add('lastName', NameType::class, ['required'=>false])
             ->add('email', CustomEmailType::class)
         ;
     }

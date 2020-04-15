@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\CustomServices\Authorization\UserInfoChecker;
 use App\Form\ForgotPasswordType;
 use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
@@ -102,13 +103,19 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/auth/forgot-password", name="app_forgotten_password")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param Swift_Mailer $mailer
+     * @param TokenGeneratorInterface $tokenGenerator
+     * @param UserInfoChecker $infoChecker
      * @return Response
      */
     public function forgottenPassword(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         Swift_Mailer $mailer,
-        TokenGeneratorInterface $tokenGenerator
+        TokenGeneratorInterface $tokenGenerator,
+        UserInfoChecker $infoChecker
     ): Response {
         //Creates the form to handle request.
         $form = $this->createForm(ForgotPasswordType::class);
@@ -122,18 +129,8 @@ class SecurityController extends AbstractController
             $em = $this->getDoctrine()->getManager();
             $user = $em->getRepository(User::class)->findOneBy([self::USERNAME_FIELD=>$username]);
 
-            //Checks if user is unknown
-            if ($user === null) {
-                $this->addFlash('error', 'Unknown user');
-
-                return $this->redirectToRoute('app_forgotten_password');
-            }
-            //Checks if form email address matches the user's one.
-            else if(!($user->getEmail() == $form->get(self::EMAIL_FIELD)->getData())){
-                $this->addFlash('error','This email doesn\'t match the one registered for '.$username);
-
-                return $this->redirectToRoute('app_forgotten_password');
-            }
+            //Checks user and email validity
+            $infoChecker->checkForgotPasswordInfos($form);
 
             //Creates a new token and registers it into the database
             $token = $tokenGenerator->generateToken();
