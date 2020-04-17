@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,71 +21,71 @@ class User implements UserInterface
      * @var string token to be used if password forgotten
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $resetToken;
+    private ?string $resetToken;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="author")
      */
-    private $tricks;
+    private ?Collection $tricks;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      */
-    private $avatar;
+    private ?Media $avatar;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", orphanRemoval=true)
      */
-    private $comments;
+    private ?Collection $comments;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $firstName;
+    private ?string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lastName;
+    private ?string $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateAdded;
+    private DateTimeInterface $dateAdded;
 
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->dateAdded = new \DateTime("now");
+        $this->dateAdded = new DateTime("now");
     }
 
     public function getResetToken(): ?string
@@ -97,7 +98,7 @@ class User implements UserInterface
         $this->resetToken = $resetToken;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -148,7 +149,7 @@ class User implements UserInterface
 
     public function setPassword(string $password = null): self
     {
-        if($password !== null){
+        if ($password !== null) {
             $this->password = $password;
         }
 
@@ -171,7 +172,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Trick[]
+     * @return ArrayCollection
      */
     public function getTricks(): Collection
     {
@@ -216,7 +217,7 @@ class User implements UserInterface
     /**
      * @return Collection|Comment[]
      */
-    public function getComments(): Collection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
@@ -268,7 +269,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -280,7 +281,7 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getDateAdded(): ?DateTimeInterface
+    public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
     }

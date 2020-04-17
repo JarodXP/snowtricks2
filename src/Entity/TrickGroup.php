@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="TrickGroupRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TrickGroupRepository")
  */
 class TrickGroup
 {
@@ -16,34 +16,34 @@ class TrickGroup
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="trickGroup")
      */
-    private $tricks;
+    private ?ArrayCollection $tricks;
 
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -70,7 +70,7 @@ class TrickGroup
     /**
      * @return Collection|Trick[]
      */
-    public function getTricks(): Collection
+    public function getTricks(): ?Collection
     {
         return $this->tricks;
     }

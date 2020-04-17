@@ -3,7 +3,6 @@
 
 namespace App\Form\CustomType;
 
-
 use App\Entity\Media;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

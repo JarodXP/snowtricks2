@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,51 +18,51 @@ class Media
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $fileName;
+    private string $fileName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $mimeType;
+    private string $mimeType;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $alt;
+    private ?string $alt;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime", nullable=false)
      */
-    private $dateAdded;
+    private DateTimeInterface $dateAdded;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Trick", mappedBy="medias")
      */
-    private $tricks;
+    private ?Collection $tricks;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="mainImage")
      */
-    private $tricksMainImages;
+    private ?Collection $tricksMainImages;
 
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
         $this->tricksMainImages = new ArrayCollection();
-        $this->dateAdded = new \DateTime("now");
+        $this->dateAdded = new DateTime("now");
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getFileName(): ?string
+    public function getFileName(): string
     {
         return $this->fileName;
     }
@@ -73,7 +74,7 @@ class Media
         return $this;
     }
 
-    public function getMimeType(): ?string
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
@@ -97,22 +98,15 @@ class Media
         return $this;
     }
 
-    public function getDateAdded(): ?DateTimeInterface
+    public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
-    }
-
-    public function setDateAdded(DateTimeInterface $dateAdded): self
-    {
-        $this->dateAdded = $dateAdded;
-
-        return $this;
     }
 
     /**
      * @return Collection|Trick[]
      */
-    public function getTricks(): Collection
+    public function getTricks(): ?Collection
     {
         return $this->tricks;
     }
@@ -140,7 +134,7 @@ class Media
     /**
      * @return Collection|Trick[]
      */
-    public function getTricksMainImages(): Collection
+    public function getTricksMainImages(): ?Collection
     {
         return $this->tricksMainImages;
     }
