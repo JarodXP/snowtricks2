@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -20,71 +21,100 @@ class User implements UserInterface
      * @var string token to be used if password forgotten
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $resetToken;
+    private ?string $resetToken;
 
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private ?string $username = null;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private ?string $password = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="author")
      */
-    private $tricks;
+    private ?Collection $tricks = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      */
-    private $avatar;
+    private ?Media $avatar = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", orphanRemoval=true)
      */
-    private $comments;
+    private ?Collection $comments = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $firstName;
+    private ?string $firstName = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lastName;
+    private ?string $lastName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateAdded;
+    private DateTimeInterface $dateAdded;
 
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->dateAdded = new \DateTime("now");
+        $this->dateAdded = new DateTime("now");
+    }
+
+    /**
+     * Replaces default serialization by avoiding unnecessary attributes.
+     * Used to avoid strict type issue while hydrating.
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'password' => $this->getPassword(),
+            'roles' => $this->getRoles(),
+            'username' => $this->getUsername()
+        ];
+    }
+
+    /**
+     * Replaces default unserialization by avoiding unnecessary attributes.
+     * Used to avoid strict type issue while hydrating.
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->password = $data['password'];
+        $this->roles = $data['roles'];
+        $this->username = $data['username'];
     }
 
     public function getResetToken(): ?string
@@ -97,7 +127,7 @@ class User implements UserInterface
         $this->resetToken = $resetToken;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
@@ -107,12 +137,12 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername():?string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -141,14 +171,14 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return (string) $this->password;
     }
 
-    public function setPassword(string $password = null): self
+    public function setPassword(?string $password): self
     {
-        if($password !== null){
+        if ($password !== null) {
             $this->password = $password;
         }
 
@@ -171,9 +201,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Trick[]
+     * @return Collection
      */
-    public function getTricks(): Collection
+    public function getTricks(): ?Collection
     {
         return $this->tricks;
     }
@@ -214,9 +244,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
-    public function getComments(): Collection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
@@ -273,14 +303,14 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getDateAdded(): ?DateTimeInterface
+    public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
     }

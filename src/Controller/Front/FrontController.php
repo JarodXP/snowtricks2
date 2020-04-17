@@ -4,8 +4,8 @@
 namespace App\Controller\Front;
 
 use App\Entity\Trick;
-use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FrontController extends AbstractController
@@ -25,8 +25,7 @@ class FrontController extends AbstractController
     /**
      * @Route("/tricks/{trickName}",name="trick")
      * @param string $trickName
-     * @param string $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function displayTrickAction(string $trickName)
     {
@@ -43,8 +42,6 @@ class FrontController extends AbstractController
     /**
      * @Route("/tricks/edit-{trickName}",name="edit-trick")
      * @param string $trickName
-     * @param string $user
-     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editTrickAction(string $trickName)
     {
@@ -53,8 +50,7 @@ class FrontController extends AbstractController
     /**
      * @Route("/tricks/remove-{trickName}",name="remove-trick")
      * @param string $trickName
-     * @param string $user
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return void
      */
     public function removeTrickAction(string $trickName)
     {

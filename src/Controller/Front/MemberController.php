@@ -11,6 +11,7 @@ use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
@@ -18,8 +19,12 @@ class MemberController extends AbstractController
 {
     /**
      * @Route("/member/{username}", name="member-profile")
+     * @param Request $request
+     * @param AvatarUploader $uploader
+     * @param TokenGeneratorInterface $tokenGenerator
+     * @return Response
      */
-    public function profileFormAction(Request $request, string $username, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
+    public function profileFormAction(Request $request, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
     {
         //Gets the current user.
         //Doctrine is used to create a User object different from the session User before form validation

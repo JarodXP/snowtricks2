@@ -3,7 +3,6 @@
 
 namespace App\Form;
 
-
 use App\Controller\SecurityController;
 use App\Form\CustomType\CustomPasswordType;
 use App\Form\CustomType\UsernameType;
@@ -16,9 +15,8 @@ class LoginFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add(SecurityController::USERNAME_FIELD,UsernameType::class)
+            ->add(SecurityController::USERNAME_FIELD, UsernameType::class)
             ->add(SecurityController::PASSWORD_FIELD, CustomPasswordType::class);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -28,5 +26,4 @@ class LoginFormType extends AbstractType
             'csrf_token_id'   => 'authenticate',
         ]);
     }
-
 }

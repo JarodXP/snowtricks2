@@ -4,14 +4,13 @@
 namespace App\CustomServices;
 
 use App\Entity\Media;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class MediaUploader
 {
-    protected $mediaDir;
+    protected string $mediaDir;
 
-    public function __construct($mediaDir)
+    public function __construct(string $mediaDir)
     {
         $this->mediaDir = $mediaDir;
     }
@@ -19,10 +18,8 @@ class MediaUploader
     /**
      * Stores the file into the requested directory and renames it with a random name
      * @param UploadedFile $uploadedFile
-     * @param string $fileClass
      * @param string $storageDirectory
      * @return string
-     * @throws FileException
      */
     public function storeUploadedFile(UploadedFile $uploadedFile, string $storageDirectory): string
     {

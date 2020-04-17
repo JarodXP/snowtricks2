@@ -7,13 +7,13 @@ use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
 use App\Entity\User;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class AppFixtures extends Fixture
 {
-    private $passwordEncoder;
+    private UserPasswordEncoderInterface $passwordEncoder;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -128,7 +128,9 @@ class AppFixtures extends Fixture
         $reveolte->setEmail('reveolte@gmail.com')
             ->setUsername('Reveolte')
             ->setPassword($this->passwordEncoder->encodePassword(
-                $reveolte,'azerty'))
+                $reveolte,
+                'azerty'
+            ))
             ->setFirstName('André')
             ->setLastName('Nonyme')
             ->setAvatar($avatarReveolte)
@@ -141,7 +143,9 @@ class AppFixtures extends Fixture
         $wawa->setEmail('gregory.barile@gmail.com')
             ->setUsername('Wawa')
             ->setPassword($this->passwordEncoder->encodePassword(
-                $wawa,'azerty'))
+                $wawa,
+                'azerty'
+            ))
             ->setFirstName('Jérôme')
             ->setLastName('Ambon')
             ->setAvatar($avatarWawa);

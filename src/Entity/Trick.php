@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -17,63 +18,64 @@ class Trick
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text")
      */
-    private $description;
+    private ?string $description;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateAdded;
+    private DateTimeInterface $dateAdded;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateModified;
+    private ?DateTimeInterface $dateModified;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tricks")
      */
-    private $author;
+    private User $author;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Media", inversedBy="tricks")
      */
-    private $medias;
+    private ?Collection $medias;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Media", inversedBy="tricksMainImages")
      */
-    private $mainImage;
+    private ?Media $mainImage;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="trick", orphanRemoval=true)
      */
-    private $comments;
+    private ?Collection $comments;
 
     /**
      * @ORM\ManyToOne(targetEntity="TrickGroup", inversedBy="tricks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $trickGroup;
+    private ?TrickGroup $trickGroup;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $status;
+    private bool $status;
 
     public function __construct()
     {
         $this->medias = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->dateAdded = new DateTime("now");
     }
 
     public function getId(): ?int
@@ -124,7 +126,7 @@ class Trick
 
     public function setDateModified(): self
     {
-        $this->dateModified = new \DateTime("now");
+        $this->dateModified = new DateTime("now");
 
         return $this;
     }

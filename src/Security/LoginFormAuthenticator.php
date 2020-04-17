@@ -24,13 +24,17 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 {
     use TargetPathTrait;
 
-    private $entityManager;
-    private $urlGenerator;
-    private $passwordEncoder;
-    private $formFactory;
+    private EntityManagerInterface $entityManager;
+    private UrlGeneratorInterface $urlGenerator;
+    private UserPasswordEncoderInterface $passwordEncoder;
+    private FormFactoryInterface $formFactory;
 
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, UserPasswordEncoderInterface $passwordEncoder,FormFactoryInterface $formFactory)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UrlGeneratorInterface $urlGenerator,
+        UserPasswordEncoderInterface $passwordEncoder,
+        FormFactoryInterface $formFactory
+    ) {
         $this->entityManager = $entityManager;
         $this->urlGenerator = $urlGenerator;
         $this->passwordEncoder = $passwordEncoder;
@@ -50,7 +54,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $loginForm->handleRequest($request);
 
         //Sets credentials if form is valid
-        if ($loginForm->isSubmitted() && $loginForm->isValid()){
+        if ($loginForm->isSubmitted() && $loginForm->isValid()) {
             $credentials = [
                 SecurityController::USERNAME_FIELD => $loginForm->get(SecurityController::USERNAME_FIELD)->getData(),
                 SecurityController::PASSWORD_FIELD => $loginForm->get(SecurityController::PASSWORD_FIELD)->getData(),
@@ -65,7 +69,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }
 
         // Throws exception in case loginForm is invalid
-        throw new CustomUserMessageAuthenticationException($loginForm->getErrors(true,true));
+        throw new CustomUserMessageAuthenticationException($loginForm->getErrors(true, true));
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)

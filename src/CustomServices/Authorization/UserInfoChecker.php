@@ -3,15 +3,12 @@
 
 namespace App\CustomServices\Authorization;
 
-
 use App\Controller\SecurityController;
 use App\Entity\User;
 use App\Exception\RedirectException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 
 class UserInfoChecker
@@ -47,9 +44,9 @@ class UserInfoChecker
             throw new RedirectException($this->router->generate('app_forgotten_password'));
         }
         //Checks if form email address matches the user's one.
-        else if(!($user->getEmail() == $form->get(SecurityController::EMAIL_FIELD)->getData())){
+        elseif (!($user->getEmail() == $form->get(SecurityController::EMAIL_FIELD)->getData())) {
             $this->session->getFlashBag()
-                ->add('error','This email doesn\'t match the one registered for '.$user->getUsername());
+                ->add('error', 'This email doesn\'t match the one registered for '.$user->getUsername());
 
             throw new RedirectException($this->router->generate('app_forgotten_password'));
         }

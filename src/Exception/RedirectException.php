@@ -3,12 +3,12 @@
 
 namespace App\Exception;
 
-
+use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-class RedirectException extends \Exception
+class RedirectException extends Exception
 {
     /**
      * @var string target url where to redirect the user
@@ -28,8 +28,12 @@ class RedirectException extends \Exception
      * @param Throwable|null $previous
      */
     public function __construct(
-        string $url, int $codeHttp = Response::HTTP_MOVED_PERMANENTLY,
-        string $message = "", int $code = 0, Throwable $previous = NULL)
+        string $url,
+        int $codeHttp = Response::HTTP_MOVED_PERMANENTLY,
+        string $message = "",
+        int $code = 0,
+        Throwable $previous = null
+    )
     {
         parent::__construct($message, $code, $previous);
         $this->url = $url;

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\CustomServices\Authorization\UserInfoChecker;
+use App\Exception\RedirectException;
 use App\Form\ForgotPasswordType;
 use App\Form\LoginFormType;
 use App\Form\RegistrationFormType;
@@ -10,7 +11,6 @@ use App\Form\ResetPasswordFormType;
 use App\Security\LoginFormAuthenticator;
 use Exception;
 use LogicException;
-use phpDocumentor\Reflection\Types\Self_;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,6 +33,8 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/auth/login", name="app_login")
+     * @param AuthenticationUtils $authenticationUtils
+     * @return Response
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -61,6 +63,11 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/auth/signup", name="app_signup")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @return Response
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
@@ -79,7 +86,8 @@ class SecurityController extends AbstractController
                 $passwordEncoder->encodePassword(
                     $user,
                     $form->get('passwordGroup')->get(self::PASSWORD_FIELD)->getData()
-                ));
+                )
+            );
 
             //Registers the new user in database
             $entityManager = $this->getDoctrine()->getManager();
@@ -103,15 +111,14 @@ class SecurityController extends AbstractController
     /**
      * @Route("/auth/forgot-password", name="app_forgotten_password")
      * @param Request $request
-     * @param UserPasswordEncoderInterface $passwordEncoder
      * @param Swift_Mailer $mailer
      * @param TokenGeneratorInterface $tokenGenerator
      * @param UserInfoChecker $infoChecker
      * @return Response
+     * @throws RedirectException
      */
     public function forgottenPassword(
         Request $request,
-        UserPasswordEncoderInterface $passwordEncoder,
         Swift_Mailer $mailer,
         TokenGeneratorInterface $tokenGenerator,
         UserInfoChecker $infoChecker
@@ -164,7 +171,7 @@ class SecurityController extends AbstractController
             return $this->redirectToRoute('home');
         }
 
-        return $this->render('auth/forgot_password.html.twig',[
+        return $this->render('auth/forgot_password.html.twig', [
             'forgotForm' => $form->createView()
         ]);
     }
@@ -178,7 +185,7 @@ class SecurityController extends AbstractController
         $resetForm = $this->createForm(ResetPasswordFormType::class);
         $resetForm->handleRequest($request);
 
-        if($resetForm->isSubmitted() && $resetForm->isValid()){
+        if ($resetForm->isSubmitted() && $resetForm->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             //Checks if the token is valid
@@ -203,11 +210,10 @@ class SecurityController extends AbstractController
             $this->addFlash('notice', 'Your password has been updated');
 
             return $this->redirectToRoute('home');
-
         }
 
         //Displays the view
-        return $this->render('auth/reset_password.html.twig',[
+        return $this->render('auth/reset_password.html.twig', [
             'resetForm' => $resetForm->createView(),
             'token' => $token
         ]);
