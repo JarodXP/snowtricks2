@@ -128,7 +128,9 @@ class AppFixtures extends Fixture
         $reveolte->setEmail('reveolte@gmail.com')
             ->setUsername('Reveolte')
             ->setPassword($this->passwordEncoder->encodePassword(
-                $reveolte,'azerty'))
+                $reveolte,
+                'azerty'
+            ))
             ->setFirstName('André')
             ->setLastName('Nonyme')
             ->setAvatar($avatarReveolte)
@@ -141,7 +143,9 @@ class AppFixtures extends Fixture
         $wawa->setEmail('gregory.barile@gmail.com')
             ->setUsername('Wawa')
             ->setPassword($this->passwordEncoder->encodePassword(
-                $wawa,'azerty'))
+                $wawa,
+                'azerty'
+            ))
             ->setFirstName('Jérôme')
             ->setLastName('Ambon')
             ->setAvatar($avatarWawa);

@@ -23,7 +23,7 @@ class Media
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $fileName;
+    private ?string $fileName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -33,7 +33,7 @@ class Media
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $alt;
+    private ?string $alt = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=false)
@@ -43,12 +43,12 @@ class Media
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Trick", mappedBy="medias")
      */
-    private ?Collection $tricks;
+    private ?Collection $tricks = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="mainImage")
      */
-    private ?Collection $tricksMainImages;
+    private ?Collection $tricksMainImages = null;
 
     public function __construct()
     {
@@ -62,12 +62,12 @@ class Media
         return $this->id;
     }
 
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->fileName;
     }
 
-    public function setFileName(string $fileName): self
+    public function setFileName(?string $fileName): self
     {
         $this->fileName = $fileName;
 

@@ -33,7 +33,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private string $username;
+    private ?string $username = null;
 
     /**
      * @ORM\Column(type="json")
@@ -44,37 +44,37 @@ class User implements UserInterface
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private string $password;
+    private ?string $password = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="author")
      */
-    private ?Collection $tricks;
+    private ?Collection $tricks = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      */
-    private ?Media $avatar;
+    private ?Media $avatar = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", orphanRemoval=true)
      */
-    private ?Collection $comments;
+    private ?Collection $comments = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $firstName;
+    private ?string $firstName = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private ?string $lastName;
+    private ?string $lastName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private string $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -86,6 +86,35 @@ class User implements UserInterface
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->dateAdded = new DateTime("now");
+    }
+
+    /**
+     * Replaces default serialization by avoiding unnecessary attributes.
+     * Used to avoid strict type issue while hydrating.
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'password' => $this->getPassword(),
+            'roles' => $this->getRoles(),
+            'username' => $this->getUsername()
+        ];
+    }
+
+    /**
+     * Replaces default unserialization by avoiding unnecessary attributes.
+     * Used to avoid strict type issue while hydrating.
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->password = $data['password'];
+        $this->roles = $data['roles'];
+        $this->username = $data['username'];
     }
 
     public function getResetToken(): ?string
@@ -108,12 +137,12 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername():?string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
-    public function setUsername(string $username): self
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -142,12 +171,12 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return (string) $this->password;
     }
 
-    public function setPassword(string $password = null): self
+    public function setPassword(?string $password): self
     {
         if ($password !== null) {
             $this->password = $password;
@@ -172,9 +201,9 @@ class User implements UserInterface
     }
 
     /**
-     * @return ArrayCollection
+     * @return Collection
      */
-    public function getTricks(): Collection
+    public function getTricks(): ?Collection
     {
         return $this->tricks;
     }
@@ -215,7 +244,7 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
     public function getComments(): ?Collection
     {
@@ -269,12 +298,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getEmail(): string
+    public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 

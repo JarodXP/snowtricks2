@@ -31,7 +31,7 @@ class TrickGroup
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="trickGroup")
      */
-    private ?ArrayCollection $tricks;
+    private ?Collection $tricks;
 
     public function __construct()
     {
