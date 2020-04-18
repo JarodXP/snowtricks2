@@ -1,4 +1,2 @@
-#Creates the swiftmailer.yaml config file
-echo "swiftmailer:
-      url: '%env(MAILER_URL)%'
-      spool: { type: 'memory' }">config/packages/swiftmailer.yaml
+#Creates the swiftmailer.yaml.dist config file
+mv config/packages/swiftmailer.yaml.dist config/packages/swiftmailer.yaml
