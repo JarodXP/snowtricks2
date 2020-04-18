@@ -43,11 +43,7 @@
 
   #trick-card{
     width: 70%;
-    margin: calc(#{$desktop-nav-height} + 30px) auto 50px auto;
     background: whitesmoke;
-    box-shadow: 10px 10px 15px $dark-primary-color;
-    border-radius: 10px;
-    padding-bottom: 5%;
 
     & section{
       margin: 5% 0;

@@ -56,6 +56,7 @@ const mediaSlider = {
             this.toggleBtn.firstElementChild.textContent = 'Voir les medias ';
         } else {
             this.toggleBtn.firstElementChild.textContent = 'Masquer les medias ';
+            this.displayArrows();
         }
     },
 
