@@ -10,7 +10,7 @@
     <header id="home-header">
 
         <h1>Figures de Style</h1>
-        <p class="scroll-arrow"><a href="/#trick-list"><i class="fas fa-arrow-circle-down jxp-clickable"></i></a></p>
+        <p class="scroll-arrow"><a href="{{ path('home')~'#trick-list' }}"><i class="fas fa-arrow-circle-down jxp-clickable"></i></a></p>
 
     </header>
     <!--end header-->
@@ -22,7 +22,7 @@
         <div id="trick-list">
 
             {% for trick in tricks %}
-                <div class=card>
+                <div class="card jxp-clickable">
                     <img class="card-img-top" src="{{ asset('/media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
                     <div class="card-body">
                         <h5 class="trick-name"><a href="{{ path('trick',{trickName:trick.name}) }}">{{ trick.name }}</a></h5>

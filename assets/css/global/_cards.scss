@@ -1,0 +1,36 @@
+.form-card {
+  @extend .page-card;
+
+  padding: 30px;
+
+  & h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+}
+@media (orientation:landscape) and (min-width: 576px){
+
+  .page-card{
+    box-shadow: 10px 10px 15px $dark-primary-color;
+    border-radius: 10px;
+    padding-bottom: 5%;
+    margin: calc(#{$desktop-nav-height} + 30px) auto 50px auto;
+  }
+
+  .form-card{
+    @extend .page-card;
+
+    width: 60%;
+    background-color: white;
+
+    & h1{
+      font-size: 2.3rem;
+      margin-bottom: 50px;
+    }
+
+    & .form-group{
+      margin-bottom: 1.3rem;
+    }
+  }
+}

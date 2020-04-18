@@ -1,23 +1,28 @@
-{% extends 'auth/layout.html.twig' %}
+{% extends 'front/layout.html.twig' %}
 
 {% block title %}Sign Up{% endblock %}
 
-{% block formH1 %}Sign Up{% endblock %}
+{% block mainContent %}
+    <div class="form-card">
+        <h1>Sign Up</h1>
 
-{% block formContent %}
+        {{ form_start(registrationForm) }}
+        {{ form_row(registrationForm.username) }}
+        {{ form_row(registrationForm.email) }}
+        {{ form_row(registrationForm.passwordGroup) }}
 
-    {{ form_start(registrationForm) }}
-    {{ form_row(registrationForm.username) }}
-    {{ form_row(registrationForm.email) }}
-    {{ form_row(registrationForm.passwordGroup) }}
+        <p><a href="{{ path('privacy') }}">Terms of use</a> </p>
+        {{ form_row(registrationForm.agreeTerms) }}
 
-    <p><a href="{{ path('privacy') }}">Terms of use</a> </p>
-    {{ form_row(registrationForm.agreeTerms) }}
+        <div class="jxp-group-btn">
+            <button class="btn btn-primary">Register</button>
+            <button class="btn btn-dark">Back Home</button>
+        </div>
+        {{ form_end(registrationForm) }}
 
-    <div class="jxp-group-btn">
-        <button class="btn btn-primary">Register</button>
-        <button class="btn btn-dark">Back Home</button>
     </div>
-    {{ form_end(registrationForm) }}
-
 {% endblock %}
+
+
+
+

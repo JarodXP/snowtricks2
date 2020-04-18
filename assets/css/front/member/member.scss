@@ -1,26 +1,4 @@
 #member-profile{
-  display: grid;
-  grid-template-columns: 5% 90% 5%;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-          ". title ."
-          ". form .";
-  place-items: center;
-  padding-top: 30px;
-
-  &>h1{
-    font-size: 2rem;
-    grid-area: title;
-    margin: 20px 0 30px 0;
-  }
-
-  &>form{
-    grid-area: form;
-  }
-
-  & .form-group{
-    margin-bottom: 1.3rem;
-  }
 
   & .avatar-container{
     width: 60px;
@@ -40,6 +18,7 @@
   }
 
   & #btn-change-pwd{
+    width: 40%;
     display: block;
     margin: 0 auto 1.3rem auto;
   }
@@ -50,15 +29,6 @@
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
-  #user-profile{
-    grid-template-columns: 35% 30% 35%;
-    margin-bottom: 20px;
-
-    & form{
-      border-radius: 5px;
-      box-shadow: 15px 15px 15px $dark-primary-color;
-    }
-  }
 
   #form-group-avatar{
     display: flex;
@@ -66,4 +36,6 @@
     justify-content: space-between;
     align-items: center;
   }
+
+
 }
