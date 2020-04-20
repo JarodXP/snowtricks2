@@ -5,7 +5,7 @@
 {# if edit mode, adds the buttons edit and remove on the main image  #}
 {% macro displayHeader(editMode,trick) %}
 
-    <div id="trick-main-image">
+    <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
         {% if editMode == true %}
             {{ editBtns | raw }}
         {% endif %}
@@ -47,37 +47,19 @@
 {% endmacro %}
 
 {# Displays either the trick description or the description form depending on the edit mode  #}
-{% macro displayDescriptionSection(editMode, trick) %}
+{% macro displayDescriptionSection(editMode, trick, trickForm) %}
 
     {% if editMode == true %}
 
-        <form id="edit-trick-form" class="jxp-form">
-            <div id="group-title" class="jxp-form-field-block">
-                <label for="trick-title">Titre: </label>
-                <input id="trick-title" class="jxp-form-input">
-            </div>
+        {{ form_start(trickForm) }}
+            {{ form_widget(trickForm) }}
 
-            <div id="group-description" class="jxp-form-field-block">
-                <label for="description">Description de la figure: </label>
-                <textarea id="description" class="tiny-area" cols="60" rows="50"></textarea>
-            </div>
+        <div class="jxp-group-btn">
+            <button class="btn btn-primary">Enregistrer</button>
+            <button class="btn btn-dark">Supprimer</button>
+        </div>
 
-            <div id="group-cat" class="jxp-form-field-block">
-                <label for="trick-group">Trick TrickGroup :</label>
-                <input list="trick-group-list" type="text" id="trick-group" class="jxp-form-input">
-                <datalist id="trick-group-list">
-                    <option value="Stances">
-                    <option value="Straight Airs">
-                    <option value="Grabs">
-                    <option value="Spins">
-                </datalist>
-            </div>
-
-            <div class="jxp-group-btn">
-                <button class="jxp-btn-save">Enregistrer</button>
-                <button class="jxp-btn-remove">Supprimer</button>
-            </div>
-        </form>
+        {{ form_end(trickForm) }}
 
     {% else %}
 
@@ -97,4 +79,53 @@
 
     {% endif %}
 
+{% endmacro %}
+
+{% macro displayComments(comments, commentForm) %}
+    <section id="comments">
+        <div class="divider"></div>
+
+        {% if is_granted('ROLE_USER') %}
+
+            {{ form_start(commentForm) }}
+            {{ form_widget(commentForm) }}
+
+            <div class="jxp-group-btn">
+                <button class="btn btn-primary">Send Comment</button>
+            </div>
+
+            {{ form_end(commentForm) }}
+
+        {% else %}
+            <div id="cta-signup-comments">
+                <p>If you want to participate, sign up for free.</p>
+                <a class="btn btn-secondary" href="{{ path('app_signup') }}">Sign Up</a>
+            </div>
+        {% endif %}
+
+        {% if comments is empty %}
+            <p class="comment-group">Something to say? Please, write a comment!</p>
+        {% else %}
+
+            {% for comment in comments %}
+
+                <div class="comment-group">
+                    <div class="avatar-container">
+                        <div class="jxp-avatar-thumbnail">
+                            <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
+                                 alt="{{ comment.user.avatar.alt }}">
+                        </div>
+                    </div>
+                    <p class="comment-content">{{ comment.content }}</p>
+                </div>
+
+            {% endfor %}
+
+        {% endif %}
+
+        <button class="btn btn-secondary load-btn" type="button">
+            <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
+            See more comments
+        </button>
+    </section>
 {% endmacro %}

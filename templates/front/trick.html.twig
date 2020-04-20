@@ -20,7 +20,7 @@
     </div>
 
     <article id="trick-card" class="page-card">
-        {{ displayTrick.displayheader(true, trick) }}
+        {{ displayTrick.displayheader(editMode, trick) }}
 
         <section id="trick-medias">
             <div id="media-slider-element">
@@ -29,7 +29,7 @@
 
                     {% for media in trick.medias %}
 
-                        {{ displayTrick.displayMedias(true, media) }}
+                        {{ displayTrick.displayMedias(editMode, media) }}
 
                     {% endfor %}
 
@@ -43,50 +43,18 @@
         </section>
 
         <section id="trick-description">
-            {{ displayTrick.displayDescriptionSection(true, trick) }}
+            {{ displayTrick.displayDescriptionSection(editMode, trick, trickForm) }}
         </section>
 
-        {% if edit != true %}
-            <section id="comments">
-                <div class="divider"></div>
+        {% if editMode != true %}
 
-                <form id="comment-form">
-                    <label for="comment" class="hidden"></label>
-                    <textarea id="comment" class="jxp-form-input" name="comment"></textarea>
-                    <button class="btn btn-primary">Envoyer</button>
-                </form>
-
-                {% if trick.comments is empty %}
-                    <p class="comment-group">Something to say? Please, right a comment!</p>
-                {% else %}
-
-                    {% for comment in trick.comments %}
-
-                        <div class="comment-group">
-                            <div class="avatar-container">
-                                <div class="jxp-avatar-thumbnail">
-                                    <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
-                                         alt="{{ comment.user.avatar.alt }}">
-                                </div>
-                            </div>
-                            <p class="comment-content">{{ comment.content }}</p>
-                        </div>
-
-                    {% endfor %}
-
-                {% endif %}
-
-                <button class="btn btn-secondary load-btn" type="button">
-                    <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
-                    Plus...
-                </button>
-            </section>
+            {{ displayTrick.displayComments(trick.comments, commentForm) }}
 
         {% endif %}
 
     </article>
 
-    {% if edit != true %}
+    {% if editMode != true %}
         <!-- Lightbox -->
         <div class="modal fade" id="carouselLightBox" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -140,7 +108,7 @@
     {{ parent() }}
     {{ encore_entry_script_tags('trick_page') }}
 
-    {% if edit == true %}
+    {% if editMode == true %}
         {# TinyMCE #}
         {{ tinyMCE() | raw }}
     {% endif %}
