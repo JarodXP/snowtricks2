@@ -40,11 +40,19 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/edit-{trickName}",name="edit-trick")
+     * @Route("/tricks/edit/{trickName}",name="edit-trick")
      * @param string $trickName
      */
     public function editTrickAction(string $trickName)
     {
+        $trick = $this->getDoctrine()
+            ->getRepository(Trick::class)
+            ->findOneBy(['name' => $trickName]);
+
+        return $this->render('front\trick.html.twig', [
+            'edit' => true,
+            'trick' => $trick,
+        ]);
     }
 
     /**

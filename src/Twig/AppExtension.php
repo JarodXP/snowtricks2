@@ -5,14 +5,25 @@ namespace App\Twig;
 
 use App\Entity\Media;
 use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class AppExtension extends AbstractExtension
+class AppExtension extends AbstractExtension implements GlobalsInterface
 {
+    /**
+     * @return array
+     */
+    public function getGlobals():array
+    {
+        return [
+            'editBtns' => '<div class="block-edit"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></div>'
+        ];
+    }
+
     public function getFilters()
     {
-        return[
+        return [
             new TwigFilter('userRole', [$this,'displayUserRole']),
         ];
     }
@@ -20,7 +31,6 @@ class AppExtension extends AbstractExtension
     public function getFunctions()
     {
         return [
-            new TwigFunction('editModeBtns', [$this,'editModeBtns']),
             new TwigFunction('editModeModal', [$this,'editModeModal']),
             new TwigFunction('getAvatarFilename', [$this,'getAvatarFilename']),
             new TwigFunction('tinyMCE', [$this,'tinyMCE']),
@@ -40,20 +50,6 @@ class AppExtension extends AbstractExtension
     }
 
     ///////////// FUNCTIONS /////////////
-
-    /**
-     * Displays the edit and remove buttons in edit mode
-     * @param bool $edit
-     * @return string
-     */
-    public function editModeBtns(bool $edit = null):?string
-    {
-        if ($edit === true) {
-            return '<div class="block-edit"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></div>';
-        } else {
-            return null;
-        }
-    }
 
     /**
      * Add the classes for triggering the lightBox to the thumbnails if edit mode is disabled

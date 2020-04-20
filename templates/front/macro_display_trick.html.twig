@@ -1,0 +1,100 @@
+{# Formats the template trick.html.twig depending on the edit mode
+   If editMode is false, displays the trick
+   If true, displays the form to edit the trick #}
+
+{# if edit mode, adds the buttons edit and remove on the main image  #}
+{% macro displayHeader(editMode,trick) %}
+
+    <div id="trick-main-image">
+        {% if editMode == true %}
+            {{ editBtns | raw }}
+        {% endif %}
+        <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
+        <h1>{{ trick.name }}</h1>
+    </div>
+
+{% endmacro %}
+
+{# Displays the media thumbnails internals depending on the edit mode  #}
+{% macro displayMedias(editMode,media) %}
+
+    {# Sets the modal attributes for the slider and the edit buttons #}
+    {% if editMode == false %}
+        {% set modalAttributes = 'data-toggle="modal" data-target="#carouselLightBox"' %}
+        {% set editBtns = '' %}
+    {% else %}
+        {% set modalAttributes = '' %}
+    {% endif %}
+
+    {% if (media.mimeType | slice(0,5)) == 'video' %}
+
+        <div class="media-slider-thumbnail">
+            <video {{ modalAttributes | raw }}>
+                <source src="/media/{{ media.fileName }}" type="{{ media.mimeType }}">
+                Sorry, your browser doesn\'t support embedded videos.
+            </video>
+            {{ editBtns | raw }}
+        </div>
+
+    {% else %}
+
+        <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
+            <img src="/media/{{ media.fileName }}" alt="{{ media.alt }}">
+            {{ editBtns | raw }}
+        </div>
+
+    {% endif %}
+{% endmacro %}
+
+{# Displays either the trick description or the description form depending on the edit mode  #}
+{% macro displayDescriptionSection(editMode, trick) %}
+
+    {% if editMode == true %}
+
+        <form id="edit-trick-form" class="jxp-form">
+            <div id="group-title" class="jxp-form-field-block">
+                <label for="trick-title">Titre: </label>
+                <input id="trick-title" class="jxp-form-input">
+            </div>
+
+            <div id="group-description" class="jxp-form-field-block">
+                <label for="description">Description de la figure: </label>
+                <textarea id="description" class="tiny-area" cols="60" rows="50"></textarea>
+            </div>
+
+            <div id="group-cat" class="jxp-form-field-block">
+                <label for="trick-group">Trick TrickGroup :</label>
+                <input list="trick-group-list" type="text" id="trick-group" class="jxp-form-input">
+                <datalist id="trick-group-list">
+                    <option value="Stances">
+                    <option value="Straight Airs">
+                    <option value="Grabs">
+                    <option value="Spins">
+                </datalist>
+            </div>
+
+            <div class="jxp-group-btn">
+                <button class="jxp-btn-save">Enregistrer</button>
+                <button class="jxp-btn-remove">Supprimer</button>
+            </div>
+        </form>
+
+    {% else %}
+
+        <div id="trick-description">
+            {{ trick.description }}
+        </div>
+
+        <div id="trick-tags">
+            <p>{{ trick.trickGroup.name }}</p>
+            <p>Créé le: {{ trick.dateAdded | date('d-m-Y') }}</p>
+
+            {% if trick.dateModified is not null %}
+                <p>Modifié le: {{ trick.dateModified }}</p>
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+{% endmacro %}

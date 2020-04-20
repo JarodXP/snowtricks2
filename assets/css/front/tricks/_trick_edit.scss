@@ -8,6 +8,18 @@
   box-shadow: 5px 5px 5px $dark-primary-color;
 }
 
+#trick-main-image>.block-edit{
+  position: absolute;
+  width: 80px;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+
+  &>i{
+    display: block;
+  }
+}
+
 .tox-tinymce{
   max-height: 400px;
   width: 100%;

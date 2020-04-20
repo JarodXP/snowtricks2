@@ -52,12 +52,14 @@
 .media-slider-thumbnail{
   @extend .jxp-clickable;
 
+  display: flex;
+  flex-direction: column;
   width: 120px;
   margin: 1% 2%;
   border-radius: 5px;
   transition: margin-left 0.5s ease-out, box-shadow 0.15s ease-out;
 
-  &>img, &>iframe{
+  &>img, &>iframe, &>video{
     width: inherit;
     height: 90px;
     object-fit: cover;
