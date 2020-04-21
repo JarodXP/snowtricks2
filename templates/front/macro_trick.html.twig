@@ -16,7 +16,7 @@
 {% endmacro %}
 
 {# Displays the media thumbnails internals depending on the edit mode  #}
-{% macro displayMedias(editMode,media) %}
+{% macro displayMedias(editMode, media, trick) %}
 
     {# Sets the modal attributes for the slider and the edit buttons #}
     {% if editMode == false %}
@@ -30,7 +30,7 @@
 
         <div class="media-slider-thumbnail">
             <video {{ modalAttributes | raw }}>
-                <source src="/media/{{ media.fileName }}" type="{{ media.mimeType }}">
+                <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
                 Sorry, your browser doesn\'t support embedded videos.
             </video>
             {{ editBtns | raw }}
@@ -39,11 +39,12 @@
     {% else %}
 
         <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
-            <img src="/media/{{ media.fileName }}" alt="{{ media.alt }}">
+            <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
             {{ editBtns | raw }}
         </div>
 
     {% endif %}
+
 {% endmacro %}
 
 {# Displays either the trick description or the description form depending on the edit mode  #}

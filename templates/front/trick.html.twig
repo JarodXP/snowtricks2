@@ -1,5 +1,5 @@
 {% extends 'front/layout.html.twig' %}
-{% import 'front/macro_display_trick.html.twig' as displayTrick %}
+{% import 'front/macro_trick.html.twig' as displayTrick %}
 
 {% block title %}Ollie{% endblock %}
 
@@ -29,13 +29,22 @@
 
                     {% for media in trick.medias %}
 
-                        {{ displayTrick.displayMedias(editMode, media) }}
+                        {{ displayTrick.displayMedias(editMode, media, trick) }}
 
                     {% endfor %}
 
                 </div>
                 <div id="slider-right-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-right clickable"></i></div>
             </div>
+
+            {% if editMode == true %}
+                <div id="add-media">
+                    <a class="btn btn-secondary"
+                       href="{{ path('add_trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
+                    <a class="btn btn-secondary"
+                       href="{{ path('add_trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': "new"}) }}">Add Video</a>
+                </div>
+            {% endif %}
 
             <div id="media-slider-toggle">
                 <a class="btn btn-secondary">Voir les medias</a>

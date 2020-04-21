@@ -81,6 +81,11 @@
   background-image: url("/icons/chevron-right-solid.svg");
 }
 
+#add-media{
+  margin-top:1.3rem;
+  text-align: center;
+}
+
 @media (orientation:landscape) and (min-width: 576px) {
 
   #media-slider-element{

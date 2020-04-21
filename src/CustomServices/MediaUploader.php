@@ -16,6 +16,15 @@ class MediaUploader
     }
 
     /**
+     * Gets the Media Dir set in the service parameters
+     * @return string
+     */
+    public function getMediaDir(): string
+    {
+        return $this->mediaDir;
+    }
+
+    /**
      * Stores the file into the requested directory and renames it with a random name
      * @param UploadedFile $uploadedFile
      * @param string $storageDirectory

@@ -1,0 +1,24 @@
+{# Display the page title depending on whether it's a new media or not #}
+{% macro displayTitle(media,mediaType) %}
+
+    {% if media.id is null %}
+        {% set action = 'Upload' %}
+    {% else %}
+        {% set action = 'Edit' %}
+    {% endif %}
+
+    {{ action ~ ' ' ~ mediaType }}
+
+{% endmacro %}
+
+{# Display the form fields depending on whether it's an image or video #}
+{% macro displayForm(mediaForm,mediaType) %}
+
+    {% if mediaType == 'image' %}
+        {{ form_row(mediaForm.image) }}
+        {{ form_row(mediaForm.alt) }}
+    {% else %}
+        {{ form_row(mediaForm.video) }}
+    {% endif %}
+
+{% endmacro %}
