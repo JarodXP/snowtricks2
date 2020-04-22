@@ -3,13 +3,13 @@
    If true, displays the form to edit the trick #}
 
 {# if edit mode, adds the buttons edit and remove on the main image  #}
-{% macro displayHeader(editMode,trick) %}
+{% macro displayHeader(editMode, trick) %}
 
     <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
         {% if editMode == true %}
-            {{ editBtns | raw }}
+            {{ editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': trick.mainImage.id}), path('remove_trick_media',{'mediaId': trick.mainImage.id})) | raw }}
         {% endif %}
-        <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
+        <img src="{{ asset('/media/tricks_media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
         <h1>{{ trick.name }}</h1>
     </div>
 
@@ -18,22 +18,29 @@
 {# Displays the media thumbnails internals depending on the edit mode  #}
 {% macro displayMedias(editMode, media, trick) %}
 
+    {% set mediaType = 'image' %}
+
     {# Sets the modal attributes for the slider and the edit buttons #}
     {% if editMode == false %}
         {% set modalAttributes = 'data-toggle="modal" data-target="#carouselLightBox"' %}
         {% set editBtns = '' %}
+        {% set editBtnsVideo = '' %}
     {% else %}
         {% set modalAttributes = '' %}
+        {% set editBtns = editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': media.id}), path('remove_trick_media',{'mediaId': media.id})) %}
+        {% set editBtnsVideo = editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': media.id}), path('remove_trick_media',{'mediaId': media.id})) %}
+
     {% endif %}
 
     {% if (media.mimeType | slice(0,5)) == 'video' %}
 
         <div class="media-slider-thumbnail">
+
             <video {{ modalAttributes | raw }}>
                 <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
                 Sorry, your browser doesn\'t support embedded videos.
             </video>
-            {{ editBtns | raw }}
+            {{ editBtnsVideo | raw }}
         </div>
 
     {% else %}

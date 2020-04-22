@@ -5,22 +5,11 @@ namespace App\Twig;
 
 use App\Entity\Media;
 use Twig\Extension\AbstractExtension;
-use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
-class AppExtension extends AbstractExtension implements GlobalsInterface
+class AppExtension extends AbstractExtension
 {
-    /**
-     * @return array
-     */
-    public function getGlobals():array
-    {
-        return [
-            'editBtns' => '<div class="block-edit"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></div>'
-        ];
-    }
-
     public function getFilters()
     {
         return [
@@ -34,6 +23,7 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
             new TwigFunction('editModeModal', [$this,'editModeModal']),
             new TwigFunction('getAvatarFilename', [$this,'getAvatarFilename']),
             new TwigFunction('tinyMCE', [$this,'tinyMCE']),
+            new TwigFunction('editButtons', [$this, 'editButtons'])
             ];
     }
 
@@ -92,5 +82,20 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
             'tinymce.init({
                 selector: \'.tiny-area\'
             });</script>';
+    }
+
+    /**
+     * Renders the Edit Block with the edit and trash icons and their own links
+     * @param string $editPath
+     * @param string $removePath
+     * @return string
+     */
+    public function editButtons(string $editPath, string $removePath)
+    {
+        return
+            '<div class="block-edit">
+                <a href="'.$editPath.'"><i class="far fa-edit"></i></a>
+                <a href="'.$removePath.'"><i class="far fa-trash-alt"></i></a>
+             </div>';
     }
 }

@@ -17,11 +17,9 @@ class TrickMediaFormType extends AbstractType
         $builder
             ->add('video', MediaVideoType::class, [
                 'label' => 'Upload Video',
-                'required' => false
                 ])
             ->add('image', MediaImageType::class, [
                 'label' => 'Upload Image',
-                'required' => false
                 ])
             ->add('alt', TextType::class, [
                 'label' => 'Alternative text',

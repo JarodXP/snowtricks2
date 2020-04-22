@@ -82,8 +82,14 @@
 }
 
 #add-media{
-  margin-top:1.3rem;
-  text-align: center;
+  width: 100%;
+  display: flex;
+  margin-bottom:1.3rem;
+  justify-content: center;
+
+  &>a{
+    margin: 0 auto;
+  }
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
@@ -100,4 +106,9 @@
     width: 150% !important;
     left: -25% !important;
   }
+
+  #add-media {
+    margin-top: 1.3rem;
+  }
+
 }

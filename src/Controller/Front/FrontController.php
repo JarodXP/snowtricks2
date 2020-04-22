@@ -88,7 +88,7 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("edit-{trickName}/media/{mediaType}/{mediaId}", name="add_trick_media")
+     * @Route("media/{mediaType}/{trickName}/{mediaId}", name="trick_media")
      * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
      * @ParamConverter("media", options={"mapping": {"mediaId": "id"}})
      * @param Request $request
@@ -97,10 +97,14 @@ class FrontController extends AbstractController
      * @param TrickMediaUploader $uploader
      * @param Media|null $media
      * @return Response
-     * @throws \Exception
      */
-    public function addTrickMediaAction(Request $request, string $mediaType, Trick $trick, TrickMediaUploader $uploader, Media $media = null)
-    {
+    public function trickMediaAction(
+        Request $request,
+        string $mediaType,
+        Trick $trick,
+        TrickMediaUploader $uploader,
+        Media $media = null
+    ) {
         //Instantiates a new Media entity if no media was found
         if (is_null($media)) {
             $media = new Media();
@@ -152,6 +156,16 @@ class FrontController extends AbstractController
             'trick' => $trick,
             'trickMediaForm' => $mediaForm->createView()
         ]);
+    }
+
+    /**
+     * @Route("media/remove-trick-media/{mediaId}", name="remove_trick_media")
+     * @param Media $media
+     * @return Response
+     */
+    public function removeTrickMediaAction(Media $media)
+    {
+        return $this->render('front/removeTrickMedia.html.twig');
     }
 
     /**

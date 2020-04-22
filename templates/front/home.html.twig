@@ -27,8 +27,7 @@
                     <div class="card-body">
                         <h5 class="trick-name"><a href="{{ path('trick',{trickName:trick.name}) }}">{{ trick.name }}</a></h5>
                         <p>
-                            <a class="trick-icons" href="{{ path('edit-trick',{trickName:trick.name}) }}"><i class="far fa-edit"></i></a>
-                            <a class="trick-icons" href="{{ path('remove-trick',{trickName:trick.name}) }}"><i class="far fa-trash-alt"></i></a>
+                            {{ editButtons(path('edit-trick',{trickName:trick.name}), path('remove-trick',{trickName:trick.name})) | raw }}
                         </p>
                     </div>
                 </div>

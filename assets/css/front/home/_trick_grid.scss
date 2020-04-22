@@ -15,6 +15,10 @@
   display: grid;
   grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
   grid-gap: 20px;
+
+  & .block-edit{
+    width: 100%;
+  }
 }
 
 .card-img-top{
@@ -29,10 +33,10 @@
   align-items: center;
   font-family: $font-family-sans-serif;
   color: $primary;
+}
 
-  & a{
-    color: inherit;
-  }
+.trick-name>a{
+  color: inherit;
 }
 
 .trick-text{
@@ -47,10 +51,6 @@
 .trick-text a{
   text-decoration: none;
   color: $primary;
-}
-
-.trick-icons{
-  margin-left: 10px;
 }
 
 .load-btn{

@@ -16,7 +16,7 @@
 {% block mainContent %}
 
     <div id="card-background">
-        <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
+        <img src="{{ asset('/media/tricks_media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
     </div>
 
     <article id="trick-card" class="page-card">
@@ -40,9 +40,9 @@
             {% if editMode == true %}
                 <div id="add-media">
                     <a class="btn btn-secondary"
-                       href="{{ path('add_trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
+                       href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
                     <a class="btn btn-secondary"
-                       href="{{ path('add_trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': "new"}) }}">Add Video</a>
+                       href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': "new"}) }}">Add Video</a>
                 </div>
             {% endif %}
 

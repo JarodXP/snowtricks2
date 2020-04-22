@@ -1,23 +1,10 @@
-.block-edit{
-  background-color: white;
-  color: $secondary;
-  padding: 10px;
-  display: flex;
-  justify-content: space-between;
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px $dark-primary-color;
-}
-
 #trick-main-image>.block-edit{
   position: absolute;
   width: 80px;
   top: 10px;
   right: 10px;
   z-index: 1;
-
-  &>i{
-    display: block;
-  }
+  box-shadow: 5px 5px 5px $dark-primary-color;
 }
 
 .tox-tinymce{

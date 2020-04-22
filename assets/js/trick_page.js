@@ -3,6 +3,7 @@ import '../css/front/tricks/trick_page.scss';
 const mediaSlider = {
     toggleBtn: document.getElementById('media-slider-toggle'),
     mediaSection: document.getElementById('media-slider-element'),
+    addMediaBlock: document.getElementById('add-media'),
     sliderBar: document.getElementById('media-slider-bar'),
     leftArrow: document.getElementById('slider-left-arrow'),
     rightArrow: document.getElementById('slider-right-arrow'),
@@ -41,9 +42,11 @@ const mediaSlider = {
     displayMediaBarByViewport() {
         if (document.body.clientWidth < 576) {
             this.mediaSection.classList.add('hidden');
+            this.addMediaBlock.classList.add('hidden');
             this.toggleBtn.classList.remove('hidden');
         } else {
             this.mediaSection.classList.remove('hidden');
+            this.addMediaBlock.classList.remove('hidden');
             this.toggleBtn.classList.add('hidden');
         }
     },
@@ -51,6 +54,7 @@ const mediaSlider = {
     //Displays media section depending on the toggle button
     displayMediaBarByToggleBtn() {
         this.mediaSection.classList.toggle('hidden');
+        this.addMediaBlock.classList.toggle('hidden');
 
         if (this.mediaSection.classList.contains('hidden')) {
             this.toggleBtn.firstElementChild.textContent = 'Voir les medias ';
