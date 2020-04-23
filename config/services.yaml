@@ -33,7 +33,7 @@ services:
         arguments:
             $mediaDir: '%avatars_directory%'
 
-    App\CustomServices\TrickMediaUploader:
+    App\CustomServices\TrickMediaHandler:
         arguments:
             $mediaDir: '%trick_media_directory%'
 

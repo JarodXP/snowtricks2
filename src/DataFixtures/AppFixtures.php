@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
@@ -15,11 +17,18 @@ class AppFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $passwordEncoder;
 
+    /**
+     * AppFixtures constructor.
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
     }
 
+    /**
+     * Load data fixtures with the passed EntityManager
+     */
     public function load(ObjectManager $manager)
     {
         /////////////// MEDIAS //////////////////////
@@ -179,6 +188,7 @@ class AppFixtures extends Fixture
             ->setStatus(true)
             ->setTrickGroup($straightAir)
             ->setMainImage($ollieMainImage)
+            ->addMedia($ollieMainImage)
             ->addMedia($ollieImage2)
             ->addMedia($ollieImage3)
             ->addMedia($ollieImage4)

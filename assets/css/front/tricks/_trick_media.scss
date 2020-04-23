@@ -92,6 +92,18 @@
   }
 }
 
+#current-media{
+
+  &>img, &>video{
+    display: block;
+    margin: auto;
+    width: 120px;
+    height:90px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px $dark-primary-color;
+  }
+}
+
 @media (orientation:landscape) and (min-width: 576px) {
 
   #media-slider-element{

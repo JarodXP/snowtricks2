@@ -1,4 +1,5 @@
 {% extends 'front/layout.html.twig' %}
+{% import 'front/macro_trick.html.twig' as displayTrick %}
 
 {% block title %}Snowtricks On Line{% endblock %}
 
@@ -23,7 +24,7 @@
 
             {% for trick in tricks %}
                 <div class="card jxp-clickable">
-                    <img class="card-img-top" src="{{ asset('/media/tricks_media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
+                    {{ displayTrick.displayMainImage(trick.mainImage,"card-img-top") }}
                     <div class="card-body">
                         <h5 class="trick-name"><a href="{{ path('trick',{trickName:trick.name}) }}">{{ trick.name }}</a></h5>
                         <p>

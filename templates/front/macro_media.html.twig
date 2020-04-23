@@ -11,14 +11,42 @@
 
 {% endmacro %}
 
+{# Display the current media depending on the type #}
+{% macro displayCurrentMedia(media,mediaType) %}
+
+    {% if media.id is not null %}
+        <div id="current-media">
+
+        {% if mediaType == 'image' %}
+            <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
+
+        {% else %}
+            <video>
+                <source src="{{ asset('/media/tricks_media/'~media.fileName) }}">
+            </video>
+
+        {% endif %}
+        </div>
+
+    {% endif %}
+
+{% endmacro %}
+
 {# Display the form fields depending on whether it's an image or video #}
-{% macro displayForm(mediaForm,mediaType) %}
+{% macro displayForm(media, mediaForm, mediaType) %}
+
+    {% if(media.id is null) %}
+        {% set required = {'attr': {'required': 'required'}} %}
+    {% else %}
+        {% set required = {} %}
+    {% endif %}
 
     {% if mediaType == 'image' %}
-        {{ form_row(mediaForm.image) }}
+        {{ form_row(mediaForm.image, required) }}
         {{ form_row(mediaForm.alt) }}
+        {{ form_row(mediaForm.mainImage) }}
     {% else %}
-        {{ form_row(mediaForm.video) }}
+        {{ form_row(mediaForm.video, required) }}
     {% endif %}
 
 {% endmacro %}

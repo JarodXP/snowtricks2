@@ -2,14 +2,33 @@
    If editMode is false, displays the trick
    If true, displays the form to edit the trick #}
 
+{# Sets a default image if no mainImage available #}
+{% macro displayMainImage(image,class) %}
+    {% if image is not null %}
+        <img class="{{ class }}" src="{{ asset('/media/tricks_media/'~image.filename) }}" alt="{{ image.alt }}">
+
+    {% else %}
+        <img class="{{ class }}" src="{{ asset('/media/tricks_media/default-image.jpg') }}" alt="trick image">
+
+    {% endif %}
+
+
+{% endmacro %}
+
 {# if edit mode, adds the buttons edit and remove on the main image  #}
 {% macro displayHeader(editMode, trick) %}
 
     <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
         {% if editMode == true %}
-            {{ editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': trick.mainImage.id}), path('remove_trick_media',{'mediaId': trick.mainImage.id})) | raw }}
+            {% if trick.mainImage is null %}
+                {% set mediaId = 'new' %}
+            {% else %}
+                {% set mediaId = trick.mainImage.id %}
+            {% endif %}
+            {{ editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': mediaId}), path('remove_trick_media',{'mediaId': mediaId})) | raw }}
         {% endif %}
-        <img src="{{ asset('/media/tricks_media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
+
+        {{ _self.displayMainImage(trick.mainImage) }}
         <h1>{{ trick.name }}</h1>
     </div>
 

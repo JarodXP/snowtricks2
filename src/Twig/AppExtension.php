@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\Twig;
 
@@ -8,20 +10,39 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
+/**
+ * Class AppExtension
+ * Adds specific functions and filers to the Twig environment
+ * @package App\Twig
+ */
 class AppExtension extends AbstractExtension
 {
+    /**
+     * Returns a list of filters to add to the existing list.
+     *
+     * @return TwigFilter[]
+     */
     public function getFilters()
     {
+        parent::getFilters();
+
         return [
             new TwigFilter('userRole', [$this,'displayUserRole']),
         ];
     }
 
+    /**
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return TwigFunction[]
+     */
     public function getFunctions()
     {
+        parent::getFunctions();
+
         return [
             new TwigFunction('editModeModal', [$this,'editModeModal']),
-            new TwigFunction('getAvatarFilename', [$this,'getAvatarFilename']),
+            new TwigFunction('avatarFilename', [$this,'getAvatarFilename']),
             new TwigFunction('tinyMCE', [$this,'tinyMCE']),
             new TwigFunction('editButtons', [$this, 'editButtons'])
             ];
@@ -57,7 +78,7 @@ class AppExtension extends AbstractExtension
 
     /**
      * Gets the user avatar filename or sets the default avatar
-     * @param string $filename
+     * @param Media|null $avatar
      * @return string
      */
     public function getAvatarFilename(?Media $avatar):string

@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\Controller\Front;
 
-use App\CustomServices\TrickMediaUploader;
+use App\CustomServices\TrickMediaHandler;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Form\TrickForm\CommentFormType;
@@ -16,6 +18,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * Class FrontController
+ * @package App\Controller\Front
+ */
 class FrontController extends AbstractController
 {
     /**
@@ -94,7 +100,7 @@ class FrontController extends AbstractController
      * @param Request $request
      * @param string $mediaType
      * @param Trick $trick
-     * @param TrickMediaUploader $uploader
+     * @param TrickMediaHandler $uploader
      * @param Media|null $media
      * @return Response
      */
@@ -102,7 +108,7 @@ class FrontController extends AbstractController
         Request $request,
         string $mediaType,
         Trick $trick,
-        TrickMediaUploader $uploader,
+        TrickMediaHandler $uploader,
         Media $media = null
     ) {
         //Instantiates a new Media entity if no media was found
@@ -117,29 +123,30 @@ class FrontController extends AbstractController
 
         if ($mediaForm->isSubmitted() && $mediaForm->isValid()) {
 
-            //Gets the file depending on the media type
-            if ($mediaType == 'video') {
-                $mediaFile = $mediaForm->get('video')->getData();
-            } else {
-                $mediaFile = $mediaForm->get('image')->getData();
-            }
+            //Gets the media file
+            $mediaFile = $uploader->getMediaFile($mediaForm, $mediaType);
 
-            if (!is_null($mediaType) && !is_null($media->getId())) {
+            //Handles the uploaded file
+            if (!is_null($mediaFile)) {
+                if (!is_null($media->getId())) {
 
-                //Replaces the media if already existing
-                $uploader->replaceTrickMediaFile($mediaFile, $media);
-            } elseif (!is_null($mediaType) && is_null($media->getId())) {
+                    //Replaces the media if already existing
+                    $uploader->replaceTrickMediaFile($mediaFile, $media);
+                } else {
 
-                //Moves the file and gets the filename
-                $media->setFileName($uploader->storeUploadedFile($mediaFile, $uploader->getMediaDir()));
+                    //Moves the file and gets the filename
+                    $media = $uploader->createTrickMedia($mediaFile);
+                }
+
+                //Sets the mime type
+                $media->setMimeType($mediaFile->getClientMimeType());
             }
 
             //Sets the media attribute
             $media->setAlt($mediaForm->get('alt')->getData());
-            $media->setMimeType($mediaFile->getClientMimeType());
 
-            //Binds the media
-            $trick->addMedia($media);
+            //Binds the media to the trick
+            $uploader->bindToTrick($trick, $media, $mediaForm);
 
             //Registers in database
             $manager = $this->getDoctrine()->getManager();
@@ -160,11 +167,14 @@ class FrontController extends AbstractController
 
     /**
      * @Route("media/remove-trick-media/{mediaId}", name="remove_trick_media")
+     * @ParamConverter("media", options={"mapping": {"mediaId": "id"}})
      * @param Media $media
      * @return Response
      */
     public function removeTrickMediaAction(Media $media)
     {
+
+
         return $this->render('front/removeTrickMedia.html.twig');
     }
 

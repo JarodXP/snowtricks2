@@ -16,7 +16,7 @@
 {% block mainContent %}
 
     <div id="card-background">
-        <img src="{{ asset('/media/tricks_media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
+        {{ displayTrick.displayMainImage(trick.mainImage) }}
     </div>
 
     <article id="trick-card" class="page-card">
