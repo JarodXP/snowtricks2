@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\CustomServices;
 
@@ -8,6 +10,11 @@ use App\Entity\Trick;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class TrickMediaHandler
+ * Handles the filesystem operations for Tricks' Media entities
+ * @package App\CustomServices
+ */
 class TrickMediaHandler extends MediaUploader
 {
     /**

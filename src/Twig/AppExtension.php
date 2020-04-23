@@ -109,14 +109,26 @@ class AppExtension extends AbstractExtension
      * Renders the Edit Block with the edit and trash icons and their own links
      * @param string $editPath
      * @param string $removePath
+     * @param bool $disableEdit
+     * @param bool $disableRemove
      * @return string
      */
-    public function editButtons(string $editPath, string $removePath)
+    public function editButtons(string $editPath, string $removePath, bool $disableEdit = false, bool $disableRemove = false)
     {
+        //Builds the links with the corresponding icons
+        $editLink = '<a href="'.$editPath.'"><i class="far fa-edit"></i></a>';
+        $removeLink = '<a href="'.$removePath.'"><i class="far fa-trash-alt"></i></a>';
+
+        //Possibly disables the specified links
+        if ($disableEdit === true) {
+            $editLink = '<a class="disabled"><i class="far fa-edit"></i></a>';
+        }
+        if ($disableRemove === true) {
+            $removeLink = '<a class="disabled"><i class="far fa-trash-alt"></i></a>';
+        }
+
+        //Returns the whole block
         return
-            '<div class="block-edit">
-                <a href="'.$editPath.'"><i class="far fa-edit"></i></a>
-                <a href="'.$removePath.'"><i class="far fa-trash-alt"></i></a>
-             </div>';
+            '<div class="block-edit">'.$editLink.$removeLink.'</div>';
     }
 }

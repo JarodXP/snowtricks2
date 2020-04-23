@@ -94,13 +94,13 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("media/{mediaType}/{trickName}/{mediaId}", name="trick_media")
+     * @Route("media/edit-trick-media/{mediaType}/{trickName}/{mediaId}", name="trick_media")
      * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
      * @ParamConverter("media", options={"mapping": {"mediaId": "id"}})
      * @param Request $request
      * @param string $mediaType
      * @param Trick $trick
-     * @param TrickMediaHandler $uploader
+     * @param TrickMediaHandler $mediaHandler
      * @param Media|null $media
      * @return Response
      */
@@ -108,7 +108,7 @@ class FrontController extends AbstractController
         Request $request,
         string $mediaType,
         Trick $trick,
-        TrickMediaHandler $uploader,
+        TrickMediaHandler $mediaHandler,
         Media $media = null
     ) {
         //Instantiates a new Media entity if no media was found
@@ -124,18 +124,18 @@ class FrontController extends AbstractController
         if ($mediaForm->isSubmitted() && $mediaForm->isValid()) {
 
             //Gets the media file
-            $mediaFile = $uploader->getMediaFile($mediaForm, $mediaType);
+            $mediaFile = $mediaHandler->getMediaFile($mediaForm, $mediaType);
 
             //Handles the uploaded file
             if (!is_null($mediaFile)) {
                 if (!is_null($media->getId())) {
 
                     //Replaces the media if already existing
-                    $uploader->replaceTrickMediaFile($mediaFile, $media);
+                    $mediaHandler->replaceTrickMediaFile($mediaFile, $media);
                 } else {
 
                     //Moves the file and gets the filename
-                    $media = $uploader->createTrickMedia($mediaFile);
+                    $media = $mediaHandler->createTrickMedia($mediaFile);
                 }
 
                 //Sets the mime type
@@ -146,7 +146,7 @@ class FrontController extends AbstractController
             $media->setAlt($mediaForm->get('alt')->getData());
 
             //Binds the media to the trick
-            $uploader->bindToTrick($trick, $media, $mediaForm);
+            $mediaHandler->bindToTrick($trick, $media, $mediaForm);
 
             //Registers in database
             $manager = $this->getDoctrine()->getManager();
@@ -166,16 +166,31 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("media/remove-trick-media/{mediaId}", name="remove_trick_media")
+     * @Route("media/remove-trick-media/{trickName}/{mediaId}", name="remove_trick_media")
+     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
      * @ParamConverter("media", options={"mapping": {"mediaId": "id"}})
      * @param Media $media
+     * @param Trick $trick
+     * @param TrickMediaHandler $mediaHandler
      * @return Response
      */
-    public function removeTrickMediaAction(Media $media)
+    public function removeTrickMediaAction(Media $media, Trick $trick, TrickMediaHandler $mediaHandler)
     {
+        //Gets the manager
+        $manager = $this->getDoctrine()->getManager();
 
+        //Sets the tricks' mainImage to null
+        $trick->setMainImage(null);
 
-        return $this->render('front/removeTrickMedia.html.twig');
+        //Updates manager
+        $manager->persist($trick);
+        $mediaHandler->removeMedia($media);
+
+        //Syncs with database
+        $manager->flush();
+        $this->addFlash('notice', 'Your media has been removed');
+
+        return $this->redirectToRoute('edit-trick', ['trickName'=>$trick->getName()]);
     }
 
     /**

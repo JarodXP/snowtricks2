@@ -35,6 +35,10 @@ h3{
   display: none!important;
 }
 
+.disabled{
+  color: $dark-primary-color!important;
+}
+
 @media (orientation:landscape) and (min-width: 576px){
   :root{
     font-size: 1em;

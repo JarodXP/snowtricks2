@@ -1,18 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\CustomServices;
 
 use App\Entity\Media;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * Class MediaUploader
+ * Handles filesystem operations for Media entities
+ * @package App\CustomServices
+ */
 class MediaUploader
 {
     protected string $mediaDir;
 
-    public function __construct(string $mediaDir)
+    protected EntityManagerInterface $manager;
+
+    /**
+     * MediaUploader constructor.
+     * @param string $mediaDir
+     * @param EntityManagerInterface $manager
+     */
+    public function __construct(string $mediaDir, EntityManagerInterface $manager)
     {
         $this->mediaDir = $mediaDir;
+        $this->manager = $manager;
     }
 
     /**
@@ -66,5 +82,16 @@ class MediaUploader
             ->setMimeType($uploadedFile->getClientMimeType());
 
         return $newMedia;
+    }
+
+    /**
+     * Removes a media and the corresponding file
+     * @param Media $media
+     */
+    public function removeMedia(Media $media)
+    {
+        $this->manager->remove($media);
+
+        unlink($this->mediaDir.'/'.$media->getFileName());
     }
 }

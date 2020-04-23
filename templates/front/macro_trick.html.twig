@@ -22,10 +22,15 @@
         {% if editMode == true %}
             {% if trick.mainImage is null %}
                 {% set mediaId = 'new' %}
+                {% set disableRemove = true %}
             {% else %}
                 {% set mediaId = trick.mainImage.id %}
+                {% set disableRemove = false %}
             {% endif %}
-            {{ editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': mediaId}), path('remove_trick_media',{'mediaId': mediaId})) | raw }}
+            {{ editButtons(
+                path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': mediaId}),
+                path('remove_trick_media',{'mediaId': mediaId, 'trickName': trick.name}),
+                false, disableRemove) | raw }}
         {% endif %}
 
         {{ _self.displayMainImage(trick.mainImage) }}
@@ -46,8 +51,12 @@
         {% set editBtnsVideo = '' %}
     {% else %}
         {% set modalAttributes = '' %}
-        {% set editBtns = editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': media.id}), path('remove_trick_media',{'mediaId': media.id})) %}
-        {% set editBtnsVideo = editButtons(path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': media.id}), path('remove_trick_media',{'mediaId': media.id})) %}
+        {% set editBtns = editButtons(
+            path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': media.id}),
+            path('remove_trick_media',{'mediaId': media.id, 'trickName': trick.name})) %}
+        {% set editBtnsVideo = editButtons(
+            path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': media.id}),
+            path('remove_trick_media',{'mediaId': media.id, 'trickName': trick.name})) %}
 
     {% endif %}
 
