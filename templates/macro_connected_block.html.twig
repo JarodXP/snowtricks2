@@ -21,7 +21,7 @@
     <li class="nav-item {{ dropType }}">
         <div class="connection-block dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <div class="jxp-avatar-thumbnail">
-                <img src="/media/avatars/{{ getAvatarFilename(app.user.avatar) }}" alt="avatar">
+                <img src="/media/avatars/{{ avatarFilename(app.user.avatar) }}" alt="avatar">
             </div>
             {{ usernameLabel | raw }}
         </div>

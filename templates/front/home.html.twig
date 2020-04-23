@@ -1,4 +1,5 @@
 {% extends 'front/layout.html.twig' %}
+{% import 'front/macro_trick.html.twig' as displayTrick %}
 
 {% block title %}Snowtricks On Line{% endblock %}
 
@@ -23,12 +24,11 @@
 
             {% for trick in tricks %}
                 <div class="card jxp-clickable">
-                    <img class="card-img-top" src="{{ asset('/media/'~trick.mainImage.fileName) }}" alt="{{ trick.mainImage.alt }}">
+                    {{ displayTrick.displayMainImage(trick.mainImage,"card-img-top") }}
                     <div class="card-body">
                         <h5 class="trick-name"><a href="{{ path('trick',{trickName:trick.name}) }}">{{ trick.name }}</a></h5>
                         <p>
-                            <a class="trick-icons" href="{{ path('edit-trick',{trickName:trick.name}) }}"><i class="far fa-edit"></i></a>
-                            <a class="trick-icons" href="{{ path('remove-trick',{trickName:trick.name}) }}"><i class="far fa-trash-alt"></i></a>
+                            {{ editButtons(path('edit-trick',{trickName:trick.name}), path('remove-trick',{trickName:trick.name})) | raw }}
                         </p>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
 
         <button class="btn btn-secondary load-btn" type="button">
             <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
-            Plus...
+            See more tricks
         </button>
 
     </section>

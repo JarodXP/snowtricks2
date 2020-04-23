@@ -1,0 +1,27 @@
+{% extends 'front/layout.html.twig' %}
+{% import 'front/macro_media.html.twig' as macroMedia %}
+
+
+{% block title %} {{ macroMedia.displayTitle(media,mediaType) }} {% endblock %}
+
+{% block mainContent %}
+    <div class="form-card">
+        <h1> {{ macroMedia.displayTitle(media,mediaType) }} </h1>
+
+        {{ macroMedia.displayCurrentMedia(media,mediaType) }}
+
+        {{ form_start(trickMediaForm) }}
+
+            {{ macroMedia.displayForm(media,trickMediaForm,mediaType) }}
+
+            {{ form_row(trickMediaForm._token) }}
+
+        <div class="jxp-group-btn">
+            <button type="submit" class="btn btn-primary">Upload media</button>
+            <a class="btn btn-dark" href="{{ path('home') }}">Back Home</a>
+        </div>
+
+        {{ form_end(trickMediaForm, {'render_rest': false}) }}
+
+    </div>
+{% endblock %}

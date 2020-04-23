@@ -1,4 +1,5 @@
 {% extends 'front/layout.html.twig' %}
+{% import 'front/macro_trick.html.twig' as displayTrick %}
 
 {% block title %}Ollie{% endblock %}
 
@@ -15,15 +16,11 @@
 {% block mainContent %}
 
     <div id="card-background">
-        <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
+        {{ displayTrick.displayMainImage(trick.mainImage) }}
     </div>
 
     <article id="trick-card" class="page-card">
-        <div id="trick-main-image">
-            {{ editModeBtns(edit) | raw }}
-            <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
-            <h1>{{ trick.name }}</h1>
-        </div>
+        {{ displayTrick.displayheader(editMode, trick) }}
 
         <section id="trick-medias">
             <div id="media-slider-element">
@@ -32,22 +29,7 @@
 
                     {% for media in trick.medias %}
 
-                        {% if (media.mimeType | slice(0,5)) == 'video'  %}
-
-                            <video class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
-                                <source src="/media/{{ media.fileName }}" type="{{ media.mimeType }}">
-
-                                Sorry, your browser doesn't support embedded videos.
-                            </video>
-
-                        {% else %}
-
-                            <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
-                                <img src="/media/{{ media.fileName }}" alt="{{ media.alt }}">
-                                {{ editModeBtns(edit) | raw }}
-                            </div>
-
-                        {% endif %}
+                        {{ displayTrick.displayMedias(editMode, media, trick) }}
 
                     {% endfor %}
 
@@ -55,95 +37,33 @@
                 <div id="slider-right-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-right clickable"></i></div>
             </div>
 
+            {% if editMode == true %}
+                <div id="add-media">
+                    <a class="btn btn-secondary"
+                       href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
+                    <a class="btn btn-secondary"
+                       href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': "new"}) }}">Add Video</a>
+                </div>
+            {% endif %}
+
             <div id="media-slider-toggle">
                 <a class="btn btn-secondary">Voir les medias</a>
             </div>
         </section>
 
         <section id="trick-description">
-
-            {% if edit == true %}
-                <form id="edit-trick-form" class="jxp-form">
-                    <div id="group-title" class="jxp-form-field-block">
-                        <label for="trick-title">Titre: </label>
-                        <input id="trick-title" class="jxp-form-input">
-                    </div>
-
-                    <div id="group-description" class="jxp-form-field-block">
-                        <label for="description">Description de la figure: </label>
-                        <textarea id="description" class="tiny-area" cols="60" rows="50"></textarea>
-                    </div>
-
-                    <div id="group-cat" class="jxp-form-field-block">
-                        <label for="trick-group">Trick TrickGroup :</label>
-                        <input list="trick-group-list" type="text" id="trick-group" class="jxp-form-input">
-                        <datalist id="trick-group-list">
-                            <option value="Stances">
-                            <option value="Straight Airs">
-                            <option value="Grabs">
-                            <option value="Spins">
-                        </datalist>
-                    </div>
-
-                    <div class="jxp-group-btn">
-                        <button class="jxp-btn-save">Enregistrer</button>
-                        <button class="jxp-btn-remove">Supprimer</button>
-                    </div>
-                </form>
-
-            {% else %}
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim tortor, eu porttitor quam tincidunt id. Phasellus viverra, tellus vel lacinia dictum, nunc felis sagittis nisi, vel interdum tortor ex ac quam. Nunc mollis magna nisl, eget elementum elit faucibus at nullam.</p>
-                <p>Cras ut nisl vitae mauris lacinia tempor. Nunc et porttitor elit. In accumsan turpis risus, fringilla lobortis nibh suscipit sed. Sed efficitur suscipit orci et convallis. Proin a ligula eget magna fringilla luctus. Aenean molestie sem eu malesuada accumsan. Praesent maximus sed. </p>
-
-                <div id="trick-tags">
-                    <p>Straight Airs</p>
-                    <p>Créé le: 26/02/2019</p>
-                    <p>Modifié le: 03/01/2020</p>
-                </div>
-            {% endif %}
+            {{ displayTrick.displayDescriptionSection(editMode, trick, trickForm) }}
         </section>
 
-        {% if edit != true %}
-            <section id="comments">
-                <div class="divider"></div>
+        {% if editMode != true %}
 
-                <form id="comment-form">
-                    <label for="comment" class="hidden"></label>
-                    <textarea id="comment" class="jxp-form-input" name="comment"></textarea>
-                    <button class="btn btn-primary">Envoyer</button>
-                </form>
-
-                {% if trick.comments is empty %}
-                    <p class="comment-group">Something to say? Please, right a comment!</p>
-                {% else %}
-
-                    {% for comment in trick.comments %}
-
-                        <div class="comment-group">
-                            <div class="avatar-container">
-                                <div class="jxp-avatar-thumbnail">
-                                    <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
-                                         alt="{{ comment.user.avatar.alt }}">
-                                </div>
-                            </div>
-                            <p class="comment-content">{{ comment.content }}</p>
-                        </div>
-
-                    {% endfor %}
-
-                {% endif %}
-
-                <button class="btn btn-secondary load-btn" type="button">
-                    <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
-                    Plus...
-                </button>
-            </section>
+            {{ displayTrick.displayComments(trick.comments, commentForm) }}
 
         {% endif %}
 
     </article>
 
-    {% if edit != true %}
+    {% if editMode != true %}
         <!-- Lightbox -->
         <div class="modal fade" id="carouselLightBox" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -197,7 +117,7 @@
     {{ parent() }}
     {{ encore_entry_script_tags('trick_page') }}
 
-    {% if edit == true %}
+    {% if editMode == true %}
         {# TinyMCE #}
         {{ tinyMCE() | raw }}
     {% endif %}

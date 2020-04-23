@@ -20,6 +20,20 @@
   font-size: 1.5rem;
 }
 
+.block-edit{
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  border-radius: 5px;
+
+  &>a{
+    color: $secondary;
+    margin: 0 auto;
+    font-size: 1.3rem;
+  }
+}
+
 @media (orientation:landscape) and (min-width: 576px) {
   .load-btn{
     font-size: 1.2rem;

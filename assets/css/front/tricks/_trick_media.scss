@@ -52,12 +52,14 @@
 .media-slider-thumbnail{
   @extend .jxp-clickable;
 
+  display: flex;
+  flex-direction: column;
   width: 120px;
   margin: 1% 2%;
   border-radius: 5px;
   transition: margin-left 0.5s ease-out, box-shadow 0.15s ease-out;
 
-  &>img, &>iframe{
+  &>img, &>iframe, &>video{
     width: inherit;
     height: 90px;
     object-fit: cover;
@@ -79,6 +81,29 @@
   background-image: url("/icons/chevron-right-solid.svg");
 }
 
+#add-media{
+  width: 100%;
+  display: flex;
+  margin-bottom:1.3rem;
+  justify-content: center;
+
+  &>a{
+    margin: 0 auto;
+  }
+}
+
+#current-media{
+
+  &>img, &>video{
+    display: block;
+    margin: auto;
+    width: 120px;
+    height:90px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px $dark-primary-color;
+  }
+}
+
 @media (orientation:landscape) and (min-width: 576px) {
 
   #media-slider-element{
@@ -93,4 +118,9 @@
     width: 150% !important;
     left: -25% !important;
   }
+
+  #add-media {
+    margin-top: 1.3rem;
+  }
+
 }

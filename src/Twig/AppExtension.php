@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\Twig;
 
@@ -8,22 +10,41 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
+/**
+ * Class AppExtension
+ * Adds specific functions and filers to the Twig environment
+ * @package App\Twig
+ */
 class AppExtension extends AbstractExtension
 {
+    /**
+     * Returns a list of filters to add to the existing list.
+     *
+     * @return TwigFilter[]
+     */
     public function getFilters()
     {
-        return[
+        parent::getFilters();
+
+        return [
             new TwigFilter('userRole', [$this,'displayUserRole']),
         ];
     }
 
+    /**
+     * Returns a list of functions to add to the existing list.
+     *
+     * @return TwigFunction[]
+     */
     public function getFunctions()
     {
+        parent::getFunctions();
+
         return [
-            new TwigFunction('editModeBtns', [$this,'editModeBtns']),
             new TwigFunction('editModeModal', [$this,'editModeModal']),
-            new TwigFunction('getAvatarFilename', [$this,'getAvatarFilename']),
+            new TwigFunction('avatarFilename', [$this,'getAvatarFilename']),
             new TwigFunction('tinyMCE', [$this,'tinyMCE']),
+            new TwigFunction('editButtons', [$this, 'editButtons'])
             ];
     }
 
@@ -42,20 +63,6 @@ class AppExtension extends AbstractExtension
     ///////////// FUNCTIONS /////////////
 
     /**
-     * Displays the edit and remove buttons in edit mode
-     * @param bool $edit
-     * @return string
-     */
-    public function editModeBtns(bool $edit = null):?string
-    {
-        if ($edit === true) {
-            return '<div class="block-edit"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></div>';
-        } else {
-            return null;
-        }
-    }
-
-    /**
      * Add the classes for triggering the lightBox to the thumbnails if edit mode is disabled
      * @param bool|null $edit
      * @return string|null
@@ -71,7 +78,7 @@ class AppExtension extends AbstractExtension
 
     /**
      * Gets the user avatar filename or sets the default avatar
-     * @param string $filename
+     * @param Media|null $avatar
      * @return string
      */
     public function getAvatarFilename(?Media $avatar):string
@@ -96,5 +103,32 @@ class AppExtension extends AbstractExtension
             'tinymce.init({
                 selector: \'.tiny-area\'
             });</script>';
+    }
+
+    /**
+     * Renders the Edit Block with the edit and trash icons and their own links
+     * @param string $editPath
+     * @param string $removePath
+     * @param bool $disableEdit
+     * @param bool $disableRemove
+     * @return string
+     */
+    public function editButtons(string $editPath, string $removePath, bool $disableEdit = false, bool $disableRemove = false)
+    {
+        //Builds the links with the corresponding icons
+        $editLink = '<a href="'.$editPath.'"><i class="far fa-edit"></i></a>';
+        $removeLink = '<a href="'.$removePath.'"><i class="far fa-trash-alt"></i></a>';
+
+        //Possibly disables the specified links
+        if ($disableEdit === true) {
+            $editLink = '<a class="disabled"><i class="far fa-edit"></i></a>';
+        }
+        if ($disableRemove === true) {
+            $removeLink = '<a class="disabled"><i class="far fa-trash-alt"></i></a>';
+        }
+
+        //Returns the whole block
+        return
+            '<div class="block-edit">'.$editLink.$removeLink.'</div>';
     }
 }

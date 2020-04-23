@@ -3,7 +3,7 @@
 .idea/**
 
 ###> symfony/framework-bundle ###
-/config/packages/swiftmailer.yaml
+/config/packages/dev/swiftmailer.yaml
 /.env.local
 /.env.local.php
 /.env.*.local

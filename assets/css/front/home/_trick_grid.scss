@@ -15,24 +15,29 @@
   display: grid;
   grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
   grid-gap: 20px;
+
+  & .block-edit{
+    width: 100%;
+  }
 }
 
 .card-img-top{
-  height: 100px;
+  height: 50%;
   width: 100%;
   object-fit: cover;
 }
 
 .card-body{
+  height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: $font-family-sans-serif;
   color: $primary;
+}
 
-  & a{
-    color: inherit;
-  }
+.trick-name>a{
+  color: inherit;
 }
 
 .trick-text{
@@ -47,10 +52,6 @@
 .trick-text a{
   text-decoration: none;
   color: $primary;
-}
-
-.trick-icons{
-  margin-left: 10px;
 }
 
 .load-btn{
