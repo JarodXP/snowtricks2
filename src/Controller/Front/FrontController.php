@@ -24,6 +24,10 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class FrontController extends AbstractController
 {
+    public const TRICK_VAR = 'trick';
+    public const TRICKNAME_VAR = 'trickName';
+    public const EDIT_TRICK_VAR = 'edit-trick';
+
     /**
      * @Route("/",name="home")
      */
@@ -49,7 +53,7 @@ class FrontController extends AbstractController
 
         return $this->render('front\trick.html.twig', [
             'edit' => false,
-            'trick' => $trick,
+            self::TRICK_VAR => $trick,
         ]);
     }
 
@@ -79,7 +83,7 @@ class FrontController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute('edit-trick', ['trickName' => $trick->getName()]);
+            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICKNAME_VAR => $trick->getName()]);
         }
 
         //Creates the comment form to be displayed
@@ -89,7 +93,7 @@ class FrontController extends AbstractController
             'editMode' => true,
             'trickForm' => $trickForm->createView(),
             'commentForm' => $commentForm->createView(),
-            'trick' => $trick,
+            self::TRICK_VAR => $trick,
         ]);
     }
 
@@ -154,13 +158,13 @@ class FrontController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute('edit-trick', ['trickName' => $trick->getName()]);
+            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICKNAME_VAR => $trick->getName()]);
         }
 
         return $this->render('front/media.html.twig', [
             'media' => $media,
             'mediaType' => $mediaType,
-            'trick' => $trick,
+            self::TRICK_VAR => $trick,
             'trickMediaForm' => $mediaForm->createView()
         ]);
     }
@@ -190,7 +194,7 @@ class FrontController extends AbstractController
         $manager->flush();
         $this->addFlash('notice', 'Your media has been removed');
 
-        return $this->redirectToRoute('edit-trick', ['trickName'=>$trick->getName()]);
+        return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICKNAME_VAR=>$trick->getName()]);
     }
 
     /**
