@@ -81,7 +81,7 @@
                                 {% if (media.mimeType | slice(0,5)) == 'video'  %}
 
                                     <video controls class="carousel-item">
-                                        <source src="/media/{{ media.fileName }}" type="{{ media.mimeType }}">
+                                        <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
 
                                         Sorry, your browser doesn't support embedded videos.
                                     </video>
@@ -89,7 +89,7 @@
                                 {% else %}
 
                                     <div class="carousel-item">
-                                        <img class="d-block w-100" src="/media/{{ media.fileName }}" alt="{{ media.fileName }}">
+                                        <img class="d-block w-100" src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.fileName }}">
                                     </div>
 
                                 {% endif %}
