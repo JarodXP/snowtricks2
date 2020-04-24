@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use DateTime;
@@ -21,7 +23,7 @@ class Comment
     /**
      * @ORM\Column(type="text")
      */
-    private string $content;
+    private ?string $content = null;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Trick", inversedBy="comments")
@@ -45,16 +47,26 @@ class Comment
         $this->dateAdded = new DateTime("now");
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    public function getContent(): string
+    /**
+     * @return string
+     */
+    public function getContent(): ?string
     {
         return $this->content;
     }
 
+    /**
+     * @param string $content
+     * @return $this
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
@@ -62,11 +74,18 @@ class Comment
         return $this;
     }
 
+    /**
+     * @return Trick
+     */
     public function getTrick(): Trick
     {
         return $this->trick;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function setTrick(Trick $trick): self
     {
         $this->trick = $trick;
@@ -74,11 +93,18 @@ class Comment
         return $this;
     }
 
+    /**
+     * @return User
+     */
     public function getUser(): User
     {
         return $this->user;
     }
 
+    /**
+     * @param User $user
+     * @return $this
+     */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -86,6 +112,9 @@ class Comment
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface
+     */
     public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
