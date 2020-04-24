@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#Creates a .env.local file
+touch .env.local
+"$CI_BRANCH"
+
 #Changes the name of the appspec file depending on the branch
 if [ "$CI_BRANCH" = "test" ]
 then
