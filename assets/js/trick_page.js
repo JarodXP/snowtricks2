@@ -42,11 +42,18 @@ const mediaSlider = {
     displayMediaBarByViewport() {
         if (document.body.clientWidth < 576) {
             this.mediaSection.classList.add('hidden');
-            this.addMediaBlock.classList.add('hidden');
+
+            //checks if the edit mode "addMediaBlock" exists before
+            if(this.addMediaBlock !== null){
+                this.addMediaBlock.classList.add('hidden');
+            }
             this.toggleBtn.classList.remove('hidden');
         } else {
             this.mediaSection.classList.remove('hidden');
-            this.addMediaBlock.classList.remove('hidden');
+            //checks if the edit mode "addMediaBlock" exists before
+            if(this.addMediaBlock !== null){
+                this.addMediaBlock.classList.remove('hidden');
+            }
             this.toggleBtn.classList.add('hidden');
         }
     },
@@ -54,7 +61,11 @@ const mediaSlider = {
     //Displays media section depending on the toggle button
     displayMediaBarByToggleBtn() {
         this.mediaSection.classList.toggle('hidden');
-        this.addMediaBlock.classList.toggle('hidden');
+
+        //checks if the edit mode "addMediaBlock" exists before
+        if(this.addMediaBlock !== null){
+            this.addMediaBlock.classList.toggle('hidden');
+        }
 
         if (this.mediaSection.classList.contains('hidden')) {
             this.toggleBtn.firstElementChild.textContent = 'Voir les medias ';

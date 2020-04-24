@@ -134,8 +134,11 @@
 
         {% else %}
             <div id="cta-signup-comments">
-                <p>If you want to participate, sign up for free.</p>
-                <a class="btn btn-secondary" href="{{ path('app_signup') }}">Sign Up</a>
+                <p>If you want to participate, signin or sign up for free.</p>
+                <div class="jxp-group-btn">
+                    <a class="btn btn-primary" href="{{ path('app_login') }}">Sign In</a>
+                    <a class="btn btn-secondary" href="{{ path('app_signup') }}">Sign Up</a>
+                </div>
             </div>
         {% endif %}
 
