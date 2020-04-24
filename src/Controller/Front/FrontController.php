@@ -15,6 +15,7 @@ use App\Form\TrickForm\TrickMediaFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -217,12 +218,20 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/remove-{trickName}",name="remove-trick")
-     * @param string $trickName
-     * @return void
+     * @Route("/tricks/remove/{trickName}",name="remove-trick")
+     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @param Trick $trick
+     * @return RedirectResponse
      */
-    public function removeTrickAction(string $trickName)
+    public function removeTrickAction(Trick $trick)
     {
+        $manager = $this->getDoctrine()->getManager();
+        $manager->remove($trick);
+        $manager->flush();
+
+        $this->addFlash('notice', 'The trick '.$trick->getName().' has been removed.');
+
+        return $this->redirectToRoute('home');
     }
 
     /**
