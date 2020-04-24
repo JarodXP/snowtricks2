@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\CustomServices\TrickMediaHandler;
+use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Form\TrickForm\CommentFormType;
@@ -42,18 +43,31 @@ class FrontController extends AbstractController
 
     /**
      * @Route("/tricks/{trickName}",name="trick")
-     * @param string $trickName
+     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @param Trick $trick
+     * @param Request $request
      * @return Response
      */
-    public function displayTrickAction(string $trickName, Request $request)
+    public function displayTrickAction(Trick $trick, Request $request)
     {
-        $trick = $this->getDoctrine()
-            ->getRepository(Trick::class)
-            ->findOneBy(['name' => $trickName]);
-
-        $commentForm = $this->createForm(CommentFormType::class);
+        //Creates a Comment Entity to possibly get the form data
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentFormType::class, $comment);
 
         $commentForm->handleRequest($request);
+
+        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+
+            //Binds the trick and the user to the comment
+            $user = $this->getUser();
+            $comment->setUser($user);
+            $comment->setTrick($trick);
+
+            //Syncs with database
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($comment);
+            $manager->flush();
+        }
 
         return $this->render('front\trick.html.twig', [
             'editMode' => false,
