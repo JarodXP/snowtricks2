@@ -45,14 +45,19 @@ class FrontController extends AbstractController
      * @param string $trickName
      * @return Response
      */
-    public function displayTrickAction(string $trickName)
+    public function displayTrickAction(string $trickName, Request $request)
     {
         $trick = $this->getDoctrine()
             ->getRepository(Trick::class)
             ->findOneBy(['name' => $trickName]);
 
+        $commentForm = $this->createForm(CommentFormType::class);
+
+        $commentForm->handleRequest($request);
+
         return $this->render('front\trick.html.twig', [
-            'edit' => false,
+            'editMode' => false,
+            'commentForm' => $commentForm->createView(),
             self::TRICK_VAR => $trick,
         ]);
     }

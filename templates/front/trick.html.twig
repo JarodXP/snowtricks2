@@ -52,6 +52,10 @@
         </section>
 
         <section id="trick-description">
+            {% if editMode == false %}
+                {% set trickForm = null %}
+            {% endif %}
+
             {{ displayTrick.displayDescriptionSection(editMode, trick, trickForm) }}
         </section>
 
