@@ -10,6 +10,7 @@ use App\Entity\Trick;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -25,20 +26,27 @@ class AjaxController extends AbstractController
      * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
      * @param Trick $trick
      * @param TrickRemover $remover
+     * @param Request $request
      * @return Response
      */
-    public function ajaxRemoveTrickAction(Trick $trick, TrickRemover $remover):Response
+    public function ajaxRemoveTrickAction(Trick $trick, TrickRemover $remover, Request $request):Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
 
+        $submittedToken = $request->request->get('remove_token');
+
+
         try {
-            //Removes the trick
-            $remover->removeTrick($trick);
+            if ($this->isCsrfTokenValid('delete-trick', $submittedToken)) {
+                //Removes the trick
+                $remover->removeTrick($trick);
+                return new Response('The trick '.$trick->getName().' has been removed.', 200);
+            }
         } catch (Exception $e) {
             //In case trick could'nt be removed, sends an error response
             return new Response($e->getMessage(), 500);
         }
 
-        return new Response('The trick '.$trick->getName().' has been removed.', 200);
+        return new Response('You are not allowed to do this operation', 500);
     }
 }

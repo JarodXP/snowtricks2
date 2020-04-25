@@ -17,10 +17,12 @@ const trickRemover = {
     httpRequest: new XMLHttpRequest(),
     trickName:'',
     trickRow:'',
+    tokenValue:'',
 
-    makeRequest(link, trickName){
+    makeRequest(button, trickName){
         this.trickName = trickName;
-        this.trickRow = link.parentNode.parentNode;
+        this.trickRow = button.parentNode.parentNode.parentNode;
+        this.tokenValue = button.parentNode.firstElementChild.getAttribute('value');
 
         if (!this.httpRequest) {
             alert('Abandonned :( Couldn\'t create XMLHTTP instance');
@@ -30,7 +32,7 @@ const trickRemover = {
         this.httpRequest.onreadystatechange = this.processContent;
         this.httpRequest.open('POST', 'https://127.0.0.1:8000/ajax/remove-trick/' + trickName);
         this.httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        this.httpRequest.send();
+        this.httpRequest.send("remove_token="+encodeURIComponent(this.tokenValue));
     },
 
     processContent() {
@@ -49,11 +51,11 @@ const trickRemover = {
     }
 };
 
-removeLinks = document.getElementsByClassName("remove-link");
+removeBtns = document.getElementsByClassName("remove-btn");
 
-for(let link of removeLinks){
-    link.addEventListener('click', function (e){
+for(let button of removeBtns){
+    button.addEventListener('click', function (e){
         e.preventDefault();
-        trickRemover.makeRequest(link, link.getAttribute('data-trick-name'))
+        trickRemover.makeRequest(button, button.getAttribute('data-trick-name'))
     })
 }

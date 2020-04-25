@@ -5,7 +5,7 @@
 {% block mainContent %}
     <div id="admin-trick-list" class="admin-content">
         <h1>List of tricks</h1>
-        <form>
+        <div class="table-wrapper">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -38,14 +38,17 @@
                         </td>
                         <td class="remove-icon">
                             <a href="{{ path('edit-trick', {'trickName': trick.name}) }}"><i class="far fa-edit mx-2"></i></a>
-                            <a class="remove-link" data-trick-name="{{ trick.name }}" href="{{ path('remove-trick', {'trickName': trick.name}) }}"><i class="far fa-trash-alt mx-2"></i></a>
+                            <form name="remove-form-{{ trick.name }}" action="{{ path('remove-trick', {'trickName': trick.name}) }}">
+                                <input type="hidden" name="remove_token" value="{{ csrf_token('delete-trick') }}">
+                                <button data-trick-name="{{ trick.name }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-        </form>
+        </div>
 
         {% include 'admin/_pagination.html.twig' %}
 
