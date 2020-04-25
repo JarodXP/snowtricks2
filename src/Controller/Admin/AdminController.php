@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\Controller\Admin;
 
@@ -22,7 +24,7 @@ class AdminController extends AbstractController
      */
     public function displayTrickListAction():Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN','Access Denied!!');
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
         $tricks = $this->getDoctrine()
             ->getRepository(Trick::class)
             ->findAll();

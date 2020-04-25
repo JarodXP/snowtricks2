@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\CustomServices\TrickMediaHandler;
+use App\CustomServices\TrickRemover;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
@@ -221,17 +222,18 @@ class FrontController extends AbstractController
      * @Route("/tricks/remove/{trickName}",name="remove-trick")
      * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
      * @param Trick $trick
+     * @param TrickRemover $remover
      * @return RedirectResponse
      */
-    public function removeTrickAction(Trick $trick)
+    public function removeTrickAction(Trick $trick, TrickRemover $remover)
     {
-        $manager = $this->getDoctrine()->getManager();
-        $manager->remove($trick);
-        $manager->flush();
+        //Removes the trick
+        $remover->removeTrick($trick);
 
+        //Adds a flash message
         $this->addFlash('notice', 'The trick '.$trick->getName().' has been removed.');
 
-        return $this->redirectToRoute('home');
+        return $this->redirectToRoute('home', ['_fragment'=>'tricks']);
     }
 
     /**

@@ -36,7 +36,10 @@
                                 <span class="jxp-toggle-slider"></span>
                             </label>
                         </td>
-                        <td class="remove-icon"><a href="/admin/remove-{{ trick.name }}"><i class="far fa-trash-alt"></i></a></td>
+                        <td class="remove-icon">
+                            <a href="{{ path('edit-trick', {'trickName': trick.name}) }}"><i class="far fa-edit mx-2"></i></a>
+                            <a class="remove-link" data-trick-name="{{ trick.name }}" href="{{ path('remove-trick', {'trickName': trick.name}) }}"><i class="far fa-trash-alt mx-2"></i></a>
+                        </td>
                     </tr>
                 {% endfor %}
 

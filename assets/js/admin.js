@@ -12,3 +12,48 @@ function registerStatusToggle(e) {
     //Sends a request for changing the status
     window.location = "/tricks/" + relatedTrick;
 }
+
+const trickRemover = {
+    httpRequest: new XMLHttpRequest(),
+    trickName:'',
+    trickRow:'',
+
+    makeRequest(link, trickName){
+        this.trickName = trickName;
+        this.trickRow = link.parentNode.parentNode;
+
+        if (!this.httpRequest) {
+            alert('Abandonned :( Couldn\'t create XMLHTTP instance');
+            return false;
+        }
+
+        this.httpRequest.onreadystatechange = this.processContent;
+        this.httpRequest.open('POST', 'https://127.0.0.1:8000/ajax/remove-trick/' + trickName);
+        this.httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        this.httpRequest.send();
+    },
+
+    processContent() {
+        if (trickRemover.httpRequest.readyState === XMLHttpRequest.DONE) {
+            if (trickRemover.httpRequest.status === 200) {
+                trickRemover.removeTrickOnClient();
+            } else {
+                alert('A problem has raised: ' + trickRemover.httpRequest.responseText);
+            }
+        }
+    },
+
+    removeTrickOnClient(){
+        trickRemover.trickRow.remove();
+        alert('The trick ' + trickRemover.trickName + ' has been removed');
+    }
+};
+
+removeLinks = document.getElementsByClassName("remove-link");
+
+for(let link of removeLinks){
+    link.addEventListener('click', function (e){
+        e.preventDefault();
+        trickRemover.makeRequest(link, link.getAttribute('data-trick-name'))
+    })
+}
