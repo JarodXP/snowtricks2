@@ -79,18 +79,18 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/edit/{trickName}",name="edit-trick")
+     * @Route("/tricks/edit/{trickName}", name="edit-trick")
+     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}, "strip_null": true})
      * @IsGranted({"ROLE_USER"})
-     * @param string $trickName
+     * @param Trick $trick
      * @param Request $request
      * @return Response
      */
-    public function editTrickAction(string $trickName, Request $request)
+    public function editTrickAction(?Trick $trick, Request $request)
     {
-        //Gets the trick in database
-        $trick = $this->getDoctrine()
-            ->getRepository(Trick::class)
-            ->findOneBy(['name' => $trickName]);
+        if(is_null($trick)){
+            $trick = new Trick();
+        }
 
         //Creates form and applies updates to the entity
         $trickForm = $this->createForm(TrickFormType::class, $trick);
@@ -233,7 +233,7 @@ class FrontController extends AbstractController
         //Adds a flash message
         $this->addFlash('notice', 'The trick '.$trick->getName().' has been removed.');
 
-        return $this->redirectToRoute('home', ['_fragment'=>'tricks']);
+        return $this->redirectToRoute('home', ['_fragment'=>'trick-list']);
     }
 
     /**

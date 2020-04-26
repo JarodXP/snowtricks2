@@ -2,10 +2,28 @@
    If editMode is false, displays the trick
    If true, displays the form to edit the trick #}
 
+{# Displays the title #}
+{% macro displayTitle(trick, editMode) %}
+
+    {% if editMode == true and trick.id is not null %}
+        {% set action = "Edit" %}
+        {% set trickName = trick.name %}
+    {% elseif editMode == true and trick.id is null %}
+        {% set action = "New" %}
+        {% set trickName = "Trick" %}
+    {% else %}
+        {% set action = "" %}
+        {% set trickName = trick.name %}
+    {% endif %}
+
+    {{ action~' '~trickName }}
+
+{% endmacro %}
+
 {# Sets a default image if no mainImage available #}
-{% macro displayMainImage(image,class) %}
-    {% if image is not null %}
-        <img class="{{ class }}" src="{{ asset('/media/tricks_media/'~image.filename) }}" alt="{{ image.alt }}">
+{% macro displayMainImage(trick,class) %}
+    {% if trick.id is not null and trick.mainImage is not null %}
+        <img class="{{ class }}" src="{{ asset('/media/tricks_media/'~trick.mainImage.filename) }}" alt="{{ trick.mainImage.alt }}">
 
     {% else %}
         <img class="{{ class }}" src="{{ asset('/media/tricks_media/default-image.jpg') }}" alt="trick image">
@@ -19,7 +37,7 @@
 {% macro displayHeader(editMode, trick) %}
 
     <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
-        {% if editMode == true %}
+        {% if trick.id is not null and editMode == true %}
             {% if trick.mainImage is null %}
                 {% set mediaId = 'new' %}
                 {% set disableRemove = true %}
@@ -33,8 +51,8 @@
                 false, disableRemove) | raw }}
         {% endif %}
 
-        {{ _self.displayMainImage(trick.mainImage) }}
-        <h1>{{ trick.name }}</h1>
+        {{ _self.displayMainImage(trick) }}
+        <h1>{{  _self.displayTitle(trick, editMode) }}</h1>
     </div>
 
 {% endmacro %}
@@ -100,7 +118,7 @@
     {% else %}
 
         <div id="trick-description">
-            {{ trick.description }}
+            {{ trick.description | raw }}
         </div>
 
         <div id="trick-tags">
@@ -117,6 +135,7 @@
 
 {% endmacro %}
 
+{# Displays te comment section if edit mode is false #}
 {% macro displayComments(comments, commentForm) %}
     <section id="comments">
         <div class="divider"></div>

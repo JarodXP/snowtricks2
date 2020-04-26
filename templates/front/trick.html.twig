@@ -1,9 +1,15 @@
 {% extends 'front/layout.html.twig' %}
 {% import 'front/macro_trick.html.twig' as displayTrick %}
 
-{% block title %}Ollie{% endblock %}
+{% block title %}{{ displayTrick.displayTitle(trick, editMode) }}{% endblock %}
 
-{% block metaDescription %}Fiche détaillée du trick de snowboard Ollie{% endblock %}
+{% block metaDescription %}
+
+    {% if trick.id is not null %}
+        {{ trick.description }}
+    {% endif %}
+
+{% endblock %}
 
 {% block stylesheets %}
 
@@ -16,7 +22,7 @@
 {% block mainContent %}
 
     <div id="card-background">
-        {{ displayTrick.displayMainImage(trick.mainImage) }}
+        {{ displayTrick.displayMainImage(trick) }}
     </div>
 
     <article id="trick-card" class="page-card">
@@ -27,17 +33,19 @@
                 <div id="slider-left-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-left clickable"></i></div>
                 <div id="media-slider-bar">
 
-                    {% for media in trick.medias %}
+                    {% if trick.id is not null %}
+                        {% for media in trick.medias %}
 
-                        {{ displayTrick.displayMedias(editMode, media, trick) }}
+                            {{ displayTrick.displayMedias(editMode, media, trick) }}
 
-                    {% endfor %}
+                        {% endfor %}
+                    {% endif %}
 
                 </div>
                 <div id="slider-right-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-right clickable"></i></div>
             </div>
 
-            {% if editMode == true %}
+            {% if trick.id is not null and editMode == true %}
                 <div id="add-media">
                     <a class="btn btn-secondary"
                        href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
@@ -46,9 +54,11 @@
                 </div>
             {% endif %}
 
-            <div id="media-slider-toggle">
-                <a class="btn btn-secondary">Voir les medias</a>
-            </div>
+            {% if trick.id is not null and trick.medias is not empty %}
+                <div id="media-slider-toggle">
+                    <a class="btn btn-secondary">Voir les medias</a>
+                </div>
+            {% endif %}
         </section>
 
         <section id="trick-description">

@@ -19,6 +19,10 @@
   & .block-edit{
     width: 100%;
   }
+
+  & .card{
+    max-height: 300px;
+  }
 }
 
 .card-img-top{
@@ -58,8 +62,25 @@
   margin-top: 50px;
 }
 
+#new-trick{
+  display: block;
+  width: 120px;
+  margin: 0 auto 30px auto;
+}
+
 @media (orientation:landscape) and (min-width: 576px) {
   #section-trick>h3{
     margin-bottom: 50px;
+  }
+
+  #section-trick{
+    position: relative;
+  }
+
+  #new-trick{
+    position: absolute;
+    top: 0;
+    left: 10%;
+    margin: 0;
   }
 }
