@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\CustomServices\SlugMaker;
 use App\CustomServices\TrickMediaHandler;
 use App\CustomServices\TrickRemover;
 use App\Entity\Comment;
@@ -13,6 +14,7 @@ use App\Entity\Trick;
 use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,7 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends AbstractController
 {
     public const TRICK_VAR = 'trick';
-    public const TRICKNAME_VAR = 'trickName';
+    public const TRICK_SLUG_VAR = 'trickSlug';
     public const EDIT_TRICK_VAR = 'edit-trick';
 
     /**
@@ -44,8 +46,8 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/{trickName}",name="trick")
-     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @Route("/tricks/{trickSlug}",name="trick")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @param Trick $trick
      * @param Request $request
      * @return Response
@@ -79,18 +81,23 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/tricks/edit/{trickName}", name="edit-trick")
-     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}, "strip_null": true})
+     * @Route("/tricks/edit/{trickSlug}", name="edit-trick")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}, "strip_null": true})
      * @IsGranted({"ROLE_USER"})
      * @param Trick $trick
      * @param Request $request
+     * @param SlugMaker $slugMaker
      * @return Response
+     * @throws Exception
      */
-    public function editTrickAction(?Trick $trick, Request $request)
+    public function editTrickAction(?Trick $trick, Request $request, SlugMaker $slugMaker)
     {
-        if(is_null($trick)){
+        if (is_null($trick)) {
             $trick = new Trick();
         }
+
+        //Sets the slug maker to allow Trick Entity to transform name into slug
+        $trick->setSlugMaker($slugMaker);
 
         //Creates form and applies updates to the entity
         $trickForm = $this->createForm(TrickFormType::class, $trick);
@@ -104,7 +111,7 @@ class FrontController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICKNAME_VAR => $trick->getName()]);
+            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
         }
 
         //Creates the comment form to be displayed
@@ -119,8 +126,8 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("media/edit-trick-media/{mediaType}/{trickName}/{mediaId}", name="trick_media")
-     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @Route("media/edit-trick-media/{mediaType}/{trickSlug}/{mediaId}", name="trick_media")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @ParamConverter("media", options={"mapping": {"mediaId": "id"}})
      * @param Request $request
      * @param string $mediaType
@@ -179,7 +186,7 @@ class FrontController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICKNAME_VAR => $trick->getName()]);
+            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
         }
 
         return $this->render('front/media.html.twig', [
@@ -191,8 +198,8 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("media/remove-trick-media/{trickName}/{mediaId}", name="remove_trick_media")
-     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @Route("media/remove-trick-media/{trickSlug}/{mediaId}", name="remove_trick_media")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @ParamConverter("media", options={"mapping": {"mediaId": "id"}})
      * @param Media $media
      * @param Trick $trick
@@ -215,12 +222,12 @@ class FrontController extends AbstractController
         $manager->flush();
         $this->addFlash('notice', 'Your media has been removed');
 
-        return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICKNAME_VAR=>$trick->getName()]);
+        return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICK_SLUG_VAR=>$trick->getSlug()]);
     }
 
     /**
-     * @Route("/tricks/remove/{trickName}",name="remove-trick")
-     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @Route("/tricks/remove/{trickSlug}",name="remove-trick")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @param Trick $trick
      * @param TrickRemover $remover
      * @return RedirectResponse

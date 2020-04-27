@@ -48,9 +48,9 @@
             {% if trick.id is not null and editMode == true %}
                 <div id="add-media">
                     <a class="btn btn-secondary"
-                       href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
+                       href="{{ path('trick_media',{'trickSlug':trick.slug, 'mediaType':'image', 'mediaId': "new"}) }}">Add Picture</a>
                     <a class="btn btn-secondary"
-                       href="{{ path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': "new"}) }}">Add Video</a>
+                       href="{{ path('trick_media',{'trickSlug':trick.slug, 'mediaType':'video', 'mediaId': "new"}) }}">Add Video</a>
                 </div>
             {% endif %}
 

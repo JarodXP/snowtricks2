@@ -15,12 +15,12 @@ function registerStatusToggle(e) {
 
 const trickRemover = {
     httpRequest: new XMLHttpRequest(),
-    trickName:'',
+    trickSlug:'',
     trickRow:'',
     tokenValue:'',
 
-    makeRequest(button, trickName){
-        this.trickName = trickName;
+    makeRequest(button, trickSlug){
+        this.trickSlug = trickSlug;
         this.trickRow = button.parentNode.parentNode.parentNode;
         this.tokenValue = button.parentNode.firstElementChild.getAttribute('value');
 
@@ -30,7 +30,7 @@ const trickRemover = {
         }
 
         this.httpRequest.onreadystatechange = this.processContent;
-        this.httpRequest.open('POST', 'https://127.0.0.1:8000/ajax/remove-trick/' + trickName);
+        this.httpRequest.open('POST', 'https://127.0.0.1:8000/ajax/remove-trick/' + trickSlug);
         this.httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         this.httpRequest.send("remove_token="+encodeURIComponent(this.tokenValue));
     },
@@ -47,7 +47,7 @@ const trickRemover = {
 
     removeTrickOnClient(){
         trickRemover.trickRow.remove();
-        alert('The trick ' + trickRemover.trickName + ' has been removed');
+        alert('The trick ' + trickRemover.trickSlug + ' has been removed');
     }
 };
 

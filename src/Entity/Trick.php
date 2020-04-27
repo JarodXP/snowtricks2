@@ -4,14 +4,19 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\CustomServices\SlugMaker;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TrickRepository")
+ * @UniqueEntity(fields={"name"}, message="There is already a trick with this name")
+ * @UniqueEntity(fields={"slug"}, message="There is already a trick with this slug")
  */
 class Trick
 {
@@ -73,6 +78,18 @@ class Trick
      */
     private bool $status = false;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $slug = null;
+
+    private SlugMaker $slugMaker;
+
+
+    /**
+     * Trick constructor.
+     * @throws Exception
+     */
     public function __construct()
     {
         $this->medias = new ArrayCollection();
@@ -103,6 +120,8 @@ class Trick
     public function setName(?string $name): self
     {
         $this->name = $name;
+
+        $this->slug = $this->slugMaker->sluggify($name);
 
         return $this;
     }
@@ -155,7 +174,7 @@ class Trick
 
     /**
      * @return $this
-     * @throws \Exception
+     * @throws Exception
      */
     public function setDateModified(): self
     {
@@ -312,5 +331,29 @@ class Trick
         $this->status = $status;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @return SlugMaker|null
+     */
+    public function getSlugMaker(): ?SlugMaker
+    {
+        return $this->slugMaker;
+    }
+
+    /**
+     * @param SlugMaker $slugMaker
+     */
+    public function setSlugMaker(SlugMaker $slugMaker)
+    {
+        $this->slugMaker = $slugMaker;
     }
 }

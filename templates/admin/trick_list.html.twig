@@ -24,7 +24,7 @@
                 {% for trick in tricks %}
 
                     <tr>
-                        <td><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></td>
+                        <td><a href="/tricks/{{ trick.slug }}">{{ trick.name }}</a></td>
                         <td>{{ trick.trickGroup.name }}</td>
                         <td>{{ trick.author.username }}</td>
                         <td>{{ trick.dateAdded | date('Y-m-d') }}</td>
@@ -32,15 +32,15 @@
                         <td>{{ trick.status }}</td>
                         <td>
                             <label class="jxp-admin-toggle">
-                                <input id="publish-{{ trick.name }}" type="checkbox" data-slug="{{ trick.name }}">
+                                <input id="publish-{{ trick.slug }}" type="checkbox" data-slug="{{ trick.slug }}">
                                 <span class="jxp-toggle-slider"></span>
                             </label>
                         </td>
                         <td class="remove-icon">
-                            <a href="{{ path('edit-trick', {'trickName': trick.name}) }}"><i class="far fa-edit mx-2"></i></a>
-                            <form name="remove-form-{{ trick.name }}" action="{{ path('remove-trick', {'trickName': trick.name}) }}">
+                            <a href="{{ path('edit-trick', {'trickSlug': trick.slug}) }}"><i class="far fa-edit mx-2"></i></a>
+                            <form name="remove-form-{{ trick.slug }}" action="{{ path('remove-trick', {'trickSlug': trick.slug}) }}">
                                 <input type="hidden" name="remove_token" value="{{ csrf_token('delete-trick') }}">
-                                <button data-trick-name="{{ trick.name }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
+                                <button data-trick-slug="{{ trick.slug }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
                             </form>
                         </td>
                     </tr>
