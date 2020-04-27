@@ -15,7 +15,7 @@
     font-size: 1.5rem;
   }
 
-  & form{
+  & .table-wrapper{
     box-sizing: border-box;
     max-width: 100%;
     grid-area: form;
@@ -49,7 +49,17 @@
     }
   }
 
+  & .remove-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $secondary;
+  }
+
   & .remove-icon>a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: $secondary;
   }
 }

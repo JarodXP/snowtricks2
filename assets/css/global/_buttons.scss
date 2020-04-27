@@ -25,13 +25,26 @@
   padding: 10px;
   display: flex;
   justify-content: center;
+  align-items: center;
   border-radius: 5px;
 
-  &>a{
+  & a, & button{
     color: $secondary;
     margin: 0 auto;
     font-size: 1.3rem;
   }
+}
+
+.remove-btn{
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0;
+
+  &>i{
+    color: $secondary;
+    margin: 0 auto;
+  }
+
 }
 
 @media (orientation:landscape) and (min-width: 576px) {

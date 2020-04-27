@@ -4,30 +4,46 @@ declare(strict_types=1);
 
 namespace App\DataFixtures;
 
+use App\CustomServices\SlugMaker;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
-use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\Entity\User;
+use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Exception;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class AppFixtures
+ * @package App\DataFixtures
+ */
+
+/**
+ * Class AppFixtures
+ * @package App\DataFixtures
+ */
 class AppFixtures extends Fixture
 {
     private UserPasswordEncoderInterface $passwordEncoder;
+    private SlugMaker $slugMaker;
 
     /**
      * AppFixtures constructor.
      * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param SlugMaker $slugMaker
      */
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(UserPasswordEncoderInterface $passwordEncoder, SlugMaker $slugMaker)
     {
         $this->passwordEncoder = $passwordEncoder;
+        $this->slugMaker = $slugMaker;
     }
 
     /**
      * Load data fixtures with the passed EntityManager
+     * @param ObjectManager $manager
+     * @throws Exception
      */
     public function load(ObjectManager $manager)
     {
@@ -180,6 +196,7 @@ class AppFixtures extends Fixture
         /////////////// TRICKS //////////////////////
 
         $ollie = new Trick();
+        $ollie->setSlugMaker($this->slugMaker);
 
         $ollie->setName('Ollie')
             ->setAuthor($reveolte)
@@ -199,6 +216,7 @@ class AppFixtures extends Fixture
         $manager->persist($ollie);
 
         $nollie = new Trick();
+        $nollie->setSlugMaker($this->slugMaker);
 
         $nollie->setName('Nollie')
             ->setAuthor($reveolte)
@@ -211,6 +229,7 @@ class AppFixtures extends Fixture
         $manager->persist($nollie);
 
         $switch = new Trick();
+        $switch->setSlugMaker($this->slugMaker);
 
         $switch->setName('Switch Ollie')
             ->setAuthor($wawa)
@@ -223,6 +242,7 @@ class AppFixtures extends Fixture
         $manager->persist($switch);
 
         $indy = new Trick();
+        $indy->setSlugMaker($this->slugMaker);
 
         $indy->setName('Indy Grab')
             ->setAuthor($wawa)

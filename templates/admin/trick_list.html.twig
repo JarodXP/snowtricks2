@@ -1,11 +1,12 @@
 {% extends 'admin/layout.html.twig' %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
 
 {% block title %}Admin Tricks{% endblock %}
 
 {% block mainContent %}
     <div id="admin-trick-list" class="admin-content">
         <h1>List of tricks</h1>
-        <form>
+        <div class="table-wrapper">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -24,7 +25,7 @@
                 {% for trick in tricks %}
 
                     <tr>
-                        <td><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></td>
+                        <td><a href="/tricks/{{ trick.slug }}">{{ trick.name }}</a></td>
                         <td>{{ trick.trickGroup.name }}</td>
                         <td>{{ trick.author.username }}</td>
                         <td>{{ trick.dateAdded | date('Y-m-d') }}</td>
@@ -32,17 +33,19 @@
                         <td>{{ trick.status }}</td>
                         <td>
                             <label class="jxp-admin-toggle">
-                                <input id="publish-{{ trick.name }}" type="checkbox" data-slug="{{ trick.name }}">
+                                <input id="publish-{{ trick.slug }}" type="checkbox" data-slug="{{ trick.slug }}">
                                 <span class="jxp-toggle-slider"></span>
                             </label>
                         </td>
-                        <td class="remove-icon"><a href="/admin/remove-{{ trick.name }}"><i class="far fa-trash-alt"></i></a></td>
+                        <td class="remove-icon">
+                            {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
+                        </td>
                     </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-        </form>
+        </div>
 
         {% include 'admin/_pagination.html.twig' %}
 

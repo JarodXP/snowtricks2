@@ -20,15 +20,17 @@
 
         <h3>Tricks</h3>
 
+        <a id="new-trick" class="btn btn-secondary" href="{{ path('edit-trick',{'trickSlug':'new'}) }}">Create Trick</a>
+
         <div id="trick-list">
 
             {% for trick in tricks %}
                 <div class="card jxp-clickable">
-                    {{ displayTrick.displayMainImage(trick.mainImage,"card-img-top") }}
+                    {{ displayTrick.displayMainImage(trick,"card-img-top") }}
                     <div class="card-body">
-                        <h5 class="trick-name"><a href="{{ path('trick',{trickName:trick.name}) }}">{{ trick.name }}</a></h5>
+                        <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name }}</a></h5>
                         <p>
-                            {{ editButtons(path('edit-trick',{trickName:trick.name}), path('remove-trick',{trickName:trick.name})) | raw }}
+                            {{ editButtons(path('edit-trick',{trickSlug:trick.slug}), path('remove-trick',{trickSlug:trick.slug})) | raw }}
                         </p>
                     </div>
                 </div>

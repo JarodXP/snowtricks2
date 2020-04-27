@@ -2,10 +2,28 @@
    If editMode is false, displays the trick
    If true, displays the form to edit the trick #}
 
+{# Displays the title #}
+{% macro displayTitle(trick, editMode) %}
+
+    {% if editMode == true and trick.id is not null %}
+        {% set action = "Edit" %}
+        {% set trickName = trick.name %}
+    {% elseif editMode == true and trick.id is null %}
+        {% set action = "New" %}
+        {% set trickName = "Trick" %}
+    {% else %}
+        {% set action = "" %}
+        {% set trickName = trick.name %}
+    {% endif %}
+
+    {{ action~' '~trickName }}
+
+{% endmacro %}
+
 {# Sets a default image if no mainImage available #}
-{% macro displayMainImage(image,class) %}
-    {% if image is not null %}
-        <img class="{{ class }}" src="{{ asset('/media/tricks_media/'~image.filename) }}" alt="{{ image.alt }}">
+{% macro displayMainImage(trick,class) %}
+    {% if trick.id is not null and trick.mainImage is not null %}
+        <img class="{{ class }}" src="{{ asset('/media/tricks_media/'~trick.mainImage.filename) }}" alt="{{ trick.mainImage.alt }}">
 
     {% else %}
         <img class="{{ class }}" src="{{ asset('/media/tricks_media/default-image.jpg') }}" alt="trick image">
@@ -18,29 +36,32 @@
 {# if edit mode, adds the buttons edit and remove on the main image  #}
 {% macro displayHeader(editMode, trick) %}
 
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
     <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
-        {% if editMode == true %}
+        {% if trick.id is not null and editMode == true %}
             {% if trick.mainImage is null %}
-                {% set mediaId = 'new' %}
-                {% set disableRemove = true %}
+                {% set editBtns = buttons.editTrickMediaBtns('new', 'image', trick.slug, 'icon', null) %}
             {% else %}
-                {% set mediaId = trick.mainImage.id %}
-                {% set disableRemove = false %}
+                {% set editBtns = buttons.editTrickMediaBtns(trick.mainImage.id, 'image', trick.slug, 'icon', 'icon') %}
             {% endif %}
-            {{ editButtons(
-                path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': mediaId}),
-                path('remove_trick_media',{'mediaId': mediaId, 'trickName': trick.name}),
-                false, disableRemove) | raw }}
+
+            <div class="block-edit">
+                {{ editBtns | raw }}
+            </div>
+
         {% endif %}
 
-        {{ _self.displayMainImage(trick.mainImage) }}
-        <h1>{{ trick.name }}</h1>
+        {{ _self.displayMainImage(trick) }}
+        <h1>{{  _self.displayTitle(trick, editMode) }}</h1>
     </div>
 
 {% endmacro %}
 
 {# Displays the media thumbnails internals depending on the edit mode  #}
 {% macro displayMedias(editMode, media, trick) %}
+
+    {% import 'macro_edit_btns.html.twig' as buttons %}
 
     {% set mediaType = 'image' %}
 
@@ -51,13 +72,8 @@
         {% set editBtnsVideo = '' %}
     {% else %}
         {% set modalAttributes = '' %}
-        {% set editBtns = editButtons(
-            path('trick_media',{'trickName':trick.name, 'mediaType':'image', 'mediaId': media.id}),
-            path('remove_trick_media',{'mediaId': media.id, 'trickName': trick.name})) %}
-        {% set editBtnsVideo = editButtons(
-            path('trick_media',{'trickName':trick.name, 'mediaType':'video', 'mediaId': media.id}),
-            path('remove_trick_media',{'mediaId': media.id, 'trickName': trick.name})) %}
-
+        {% set editBtns = buttons.editTrickMediaBtns(media.id, 'image', trick.slug, 'icon', 'icon') %}
+        {% set editBtnsVideo = buttons.editTrickMediaBtns(media.id, 'video', trick.slug, 'icon', 'icon') %}
     {% endif %}
 
     {% if (media.mimeType | slice(0,5)) == 'video' %}
@@ -68,14 +84,18 @@
                 <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
                 Sorry, your browser doesn\'t support embedded videos.
             </video>
-            {{ editBtnsVideo | raw }}
+            <div class="block-edit">
+                {{ editBtnsVideo | raw }}
+            </div>
         </div>
 
     {% else %}
 
         <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
             <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
-            {{ editBtns | raw }}
+            <div class="block-edit">
+                {{ editBtns | raw }}
+            </div>
         </div>
 
     {% endif %}
@@ -85,22 +105,30 @@
 {# Displays either the trick description or the description form depending on the edit mode  #}
 {% macro displayDescriptionSection(editMode, trick, trickForm) %}
 
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
     {% if editMode == true %}
 
         {{ form_start(trickForm) }}
             {{ form_widget(trickForm) }}
+        {{ form_end(trickForm) }}
+
 
         <div class="jxp-group-btn">
-            <button class="btn btn-primary">Enregistrer</button>
-            <button class="btn btn-dark">Supprimer</button>
-        </div>
+            <button type="submit" class="btn btn-primary" form="trick_form">Save</button>
 
-        {{ form_end(trickForm) }}
+            {% if trick.id is not null %}
+                {{ buttons.editTrickBtns(trick.slug, null, 'button')  | raw }}
+            {% endif %}
+
+            <a href="{{ path('home') }}" class="btn btn-dark">Back</a>
+
+        </div>
 
     {% else %}
 
         <div id="trick-description">
-            {{ trick.description }}
+            {{ trick.description | raw }}
         </div>
 
         <div id="trick-tags">
@@ -117,6 +145,7 @@
 
 {% endmacro %}
 
+{# Displays te comment section if edit mode is false #}
 {% macro displayComments(comments, commentForm) %}
     <section id="comments">
         <div class="divider"></div>
