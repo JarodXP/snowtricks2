@@ -22,8 +22,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class AjaxController extends AbstractController
 {
     /**
-     * @Route("/ajax/remove-trick/{trickName}", name="ajax_remove_trick")
-     * @ParamConverter("trick", options={"mapping": {"trickName": "name"}})
+     * @Route("/ajax/remove-trick/{trickSlug}", name="ajax_remove_trick")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @param Trick $trick
      * @param TrickRemover $remover
      * @param Request $request

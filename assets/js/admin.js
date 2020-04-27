@@ -56,6 +56,6 @@ removeBtns = document.getElementsByClassName("remove-btn");
 for(let button of removeBtns){
     button.addEventListener('click', function (e){
         e.preventDefault();
-        trickRemover.makeRequest(button, button.getAttribute('data-trick-name'))
+        trickRemover.makeRequest(button, button.getAttribute('data-trick-slug'))
     })
 }

@@ -70,7 +70,7 @@ class TrickMediaHandler extends MediaUploader
             $trick->setMainImage($media);
         }
         //Removes the main image if the checkbox was unchecked
-        elseif ($trick->getMainImage()->getId() == $media->getId()) {
+        elseif (!is_null($trick->getMainImage()) && $trick->getMainImage()->getId() == $media->getId()) {
             $trick->setMainImage(null);
         }
     }

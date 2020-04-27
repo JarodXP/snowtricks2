@@ -99,8 +99,13 @@ class FrontController extends AbstractController
         //Sets the slug maker to allow Trick Entity to transform name into slug
         $trick->setSlugMaker($slugMaker);
 
+        //Sets the author
+        $trick->setAuthor($this->getUser());
+
         //Creates form and applies updates to the entity
-        $trickForm = $this->createForm(TrickFormType::class, $trick);
+        $trickForm = $this->createForm(TrickFormType::class, $trick, [
+            'attr'=> ['id'=>'trick_form']
+        ]);
 
         $trickForm->handleRequest($request);
 

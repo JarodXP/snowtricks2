@@ -1,4 +1,5 @@
 {% extends 'admin/layout.html.twig' %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
 
 {% block title %}Admin Tricks{% endblock %}
 
@@ -37,11 +38,7 @@
                             </label>
                         </td>
                         <td class="remove-icon">
-                            <a href="{{ path('edit-trick', {'trickSlug': trick.slug}) }}"><i class="far fa-edit mx-2"></i></a>
-                            <form name="remove-form-{{ trick.slug }}" action="{{ path('remove-trick', {'trickSlug': trick.slug}) }}">
-                                <input type="hidden" name="remove_token" value="{{ csrf_token('delete-trick') }}">
-                                <button data-trick-slug="{{ trick.slug }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
-                            </form>
+                            {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
                         </td>
                     </tr>
                 {% endfor %}

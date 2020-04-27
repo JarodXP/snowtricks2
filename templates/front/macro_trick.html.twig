@@ -36,19 +36,20 @@
 {# if edit mode, adds the buttons edit and remove on the main image  #}
 {% macro displayHeader(editMode, trick) %}
 
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
     <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
         {% if trick.id is not null and editMode == true %}
             {% if trick.mainImage is null %}
-                {% set mediaId = 'new' %}
-                {% set disableRemove = true %}
+                {% set editBtns = buttons.editTrickMediaBtns('new', 'image', trick.slug, 'icon', null) %}
             {% else %}
-                {% set mediaId = trick.mainImage.id %}
-                {% set disableRemove = false %}
+                {% set editBtns = buttons.editTrickMediaBtns(trick.mainImage.id, 'image', trick.slug, 'icon', 'icon') %}
             {% endif %}
-            {{ editButtons(
-                path('trick_media',{'trickSlug':trick.slug, 'mediaType':'image', 'mediaId': mediaId}),
-                path('remove_trick_media',{'mediaId': mediaId, 'trickSlug': trick.slug}),
-                false, disableRemove) | raw }}
+
+            <div class="block-edit">
+                {{ editBtns | raw }}
+            </div>
+
         {% endif %}
 
         {{ _self.displayMainImage(trick) }}
@@ -60,6 +61,8 @@
 {# Displays the media thumbnails internals depending on the edit mode  #}
 {% macro displayMedias(editMode, media, trick) %}
 
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
     {% set mediaType = 'image' %}
 
     {# Sets the modal attributes for the slider and the edit buttons #}
@@ -69,13 +72,8 @@
         {% set editBtnsVideo = '' %}
     {% else %}
         {% set modalAttributes = '' %}
-        {% set editBtns = editButtons(
-            path('trick_media',{'trickSlug':trick.slug, 'mediaType':'image', 'mediaId': media.id}),
-            path('remove_trick_media',{'mediaId': media.id, 'trickSlug': trick.slug})) %}
-        {% set editBtnsVideo = editButtons(
-            path('trick_media',{'trickSlug':trick.slug, 'mediaType':'video', 'mediaId': media.id}),
-            path('remove_trick_media',{'mediaId': media.id, 'trickSlug': trick.slug})) %}
-
+        {% set editBtns = buttons.editTrickMediaBtns(media.id, 'image', trick.slug, 'icon', 'icon') %}
+        {% set editBtnsVideo = buttons.editTrickMediaBtns(media.id, 'video', trick.slug, 'icon', 'icon') %}
     {% endif %}
 
     {% if (media.mimeType | slice(0,5)) == 'video' %}
@@ -86,14 +84,18 @@
                 <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
                 Sorry, your browser doesn\'t support embedded videos.
             </video>
-            {{ editBtnsVideo | raw }}
+            <div class="block-edit">
+                {{ editBtnsVideo | raw }}
+            </div>
         </div>
 
     {% else %}
 
         <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
             <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
-            {{ editBtns | raw }}
+            <div class="block-edit">
+                {{ editBtns | raw }}
+            </div>
         </div>
 
     {% endif %}
@@ -103,17 +105,25 @@
 {# Displays either the trick description or the description form depending on the edit mode  #}
 {% macro displayDescriptionSection(editMode, trick, trickForm) %}
 
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
     {% if editMode == true %}
 
         {{ form_start(trickForm) }}
             {{ form_widget(trickForm) }}
+        {{ form_end(trickForm) }}
+
 
         <div class="jxp-group-btn">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button class="btn btn-dark">Remove</button>
-        </div>
+            <button type="submit" class="btn btn-primary" form="trick_form">Save</button>
 
-        {{ form_end(trickForm) }}
+            {% if trick.id is not null %}
+                {{ buttons.editTrickBtns(trick.slug, null, 'button')  | raw }}
+            {% endif %}
+
+            <a href="{{ path('home') }}" class="btn btn-dark">Back</a>
+
+        </div>
 
     {% else %}
 

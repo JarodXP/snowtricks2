@@ -1,0 +1,61 @@
+{# Displays the buttons or links to edit and remove a trick #}
+{% macro editTrickBtns(trickSlug, editBtnType, removeBtnType) %}
+    {% set editPath = path('edit-trick', {'trickSlug': trickSlug}) %}
+    {% set removePath = path('remove-trick', {'trickSlug': trickSlug}) %}
+    {% set targetId = trickSlug %}
+    {% set csrfToken = 'delete-trick' %}
+    {% set dataTarget = 'data-trick-slug' %}
+
+    {{ _self.buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) }}
+
+{% endmacro %}
+
+{# Displays the buttons or links to edit and remove a media #}
+{% macro editTrickMediaBtns(mediaId, mediaType,trickSlug, editBtnType, removeBtnType) %}
+    {% set editPath = path('trick_media', {'mediaId': mediaId, 'mediaType': mediaType, 'trickSlug': trickSlug}) %}
+    {% set removePath = path('remove_trick_media', {'mediaId': mediaId, 'trickSlug': trickSlug}) %}
+    {% set targetId = mediaId %}
+    {% set csrfToken = 'delete-trick-media' %}
+    {% set dataTarget = 'data-media-id' %}
+
+    {{ _self.buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) }}
+
+{% endmacro %}
+
+{% macro buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) %}
+
+    {% if editBtnType is not null %}
+        {{ _self.editBtn(editPath, editBtnType) }}
+    {% endif %}
+
+    {% if removeBtnType is not null %}
+        {{ _self.removeBtn(removePath, targetId, dataTarget, removeBtnType, csrfToken) }}
+    {% endif %}
+
+{% endmacro %}
+
+{# Displays the buton or link to edit an element #}
+{% macro editBtn(editPath, editBtnType) %}
+
+    {% if editBtnType == 'icon' %}
+        <a href="{{ editPath }}"><i class="far fa-edit mx-2"></i></a>
+    {% else %}
+        <a href="{{ editPath }}" class="btn btn-primary">Edit</a>
+    {% endif %}
+
+{% endmacro %}
+
+{# Displays the buton or link to remove an element #}
+{% macro removeBtn(removePath, targetId, dataTarget, removeBtnType, csrfToken) %}
+
+    <form name="remove-form-{{ targetId }}" action="{{ removePath }}">
+        <input type="hidden" name="remove_token" value="{{ csrf_token(csrfToken) }}">
+
+        {% if removeBtnType == 'icon' %}
+            <button {{ dataTarget }}="{{ targetId }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
+        {% else %}
+            <button {{ dataTarget }}="{{ targetId }}" type="submit" class="btn btn-danger">Remove</button>
+        {% endif %}
+
+    </form>
+{% endmacro %}
