@@ -11,6 +11,7 @@ use App\CustomServices\TrickRemover;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
+use App\Form\HomeListFormType;
 use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
@@ -35,14 +36,38 @@ class FrontController extends AbstractController
 
     /**
      * @Route("/",name="home")
+     * @param Request $request
+     * @return Response
      */
-    public function displayFrontTrickListAction()
+    public function displayFrontTrickListAction(Request $request)
     {
+        $limit = 10;
+
+        $filterGroupId = null;
+
+        $homeForm = $this->createForm(HomeListFormType::class);
+
+        $homeForm->handleRequest($request);
+
+        if ($homeForm->isSubmitted() && $homeForm->isValid()) {
+            $filterGroup = $homeForm->get('trickGroup')->getData();
+
+            if (!is_null($filterGroup)) {
+                $filterGroupId = $filterGroup->getId();
+            }
+        }
+
+
         $tricks = $this->getDoctrine()
             ->getRepository(Trick::class)
-            ->findAll();
+            ->getHomeTrickList(4, $filterGroupId)
+        ;
 
-        return $this->render('front/home.html.twig', ['tricks' => $tricks]);
+        return $this->render('front/home.html.twig', [
+            'tricks' => $tricks,
+            'limit' => $limit,
+            'homeForm' => $homeForm->createView()
+            ]);
     }
 
     /**

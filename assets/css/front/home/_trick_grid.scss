@@ -7,6 +7,31 @@
     color: $secondary;
     text-shadow: 1px 1px $dark-primary-color;
   }
+
+  & #list-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2.6rem;
+
+    & > form {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      justify-content: center;
+
+      & > select, & > button{
+        margin: 0 10px;
+      }
+
+      & > select{
+        max-width: 150px;
+      }
+    }
+
+  }
+
 }
 
 #trick-list{

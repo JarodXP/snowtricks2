@@ -22,6 +22,16 @@
 
         <a id="new-trick" class="btn btn-secondary" href="{{ path('edit-trick',{'trickSlug':'new'}) }}">Create Trick</a>
 
+        <div id="list-options">
+            {{ form_start(homeForm) }}
+
+            {{ form_widget(homeForm.trickGroup) }}
+
+            <button class="btn btn-primary">Filter by Trick Group</button>
+
+            {{ form_end(homeForm) }}
+        </div>
+
         <div id="trick-list">
 
             {% for trick in tricks %}
@@ -29,9 +39,8 @@
                     {{ displayTrick.displayMainImage(trick,"card-img-top") }}
                     <div class="card-body">
                         <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name }}</a></h5>
-                        <p>
-                            {{ editButtons(path('edit-trick',{trickSlug:trick.slug}), path('remove-trick',{trickSlug:trick.slug})) | raw }}
-                        </p>
+                        <p class="font-italic">{{ trick.trickGroup.name }}</p>
+                        {{ editButtons(path('edit-trick',{trickSlug:trick.slug}), path('remove-trick',{trickSlug:trick.slug})) | raw }}
                     </div>
                 </div>
             {% endfor %}
