@@ -1,3 +1,5 @@
+const $ = require('jquery');
+
 /*Toggle button on admin tables*/
 const toggleBtnArray = document.querySelectorAll('.jxp-admin-toggle>input');
 
@@ -21,41 +23,35 @@ const trickRemover = {
 
     makeRequest(button, trickSlug){
         this.trickSlug = trickSlug;
-        this.trickRow = button.parentNode.parentNode.parentNode;
-        this.tokenValue = button.parentNode.firstElementChild.getAttribute('value');
+        this.trickRow = button.parents().eq(3);
+        this.tokenValue = button.parent().find("input[name='remove_token']").attr('value');
 
         if (!this.httpRequest) {
             alert('Abandonned :( Couldn\'t create XMLHTTP instance');
             return false;
         }
 
-        this.httpRequest.onreadystatechange = this.processContent;
-        this.httpRequest.open('POST', 'https://127.0.0.1:8000/ajax/remove-trick/' + trickSlug);
-        this.httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        this.httpRequest.send("remove_token="+encodeURIComponent(this.tokenValue));
-    },
-
-    processContent() {
-        if (trickRemover.httpRequest.readyState === XMLHttpRequest.DONE) {
-            if (trickRemover.httpRequest.status === 200) {
-                trickRemover.removeTrickOnClient();
-            } else {
+        //Sets the ajax object
+        $.ajax({
+            url: 'ajax/remove-trick/',
+            method: 'POST',
+            data: 'remove_token='+encodeURIComponent(this.tokenValue),
+            success: function () {
+                this.trickRow.remove();
+                alert('The trick ' + trickRemover.trickSlug + ' has been removed');
+            },
+            error: function () {
                 alert('A problem has raised: ' + trickRemover.httpRequest.responseText);
             }
-        }
+        })
     },
-
-    removeTrickOnClient(){
-        trickRemover.trickRow.remove();
-        alert('The trick ' + trickRemover.trickSlug + ' has been removed');
-    }
 };
 
-removeBtns = document.getElementsByClassName("remove-btn");
+removeBtns = $(".remove-btn");
 
 for(let button of removeBtns){
-    button.addEventListener('click', function (e){
+    button.on('click', function (e){
         e.preventDefault();
         trickRemover.makeRequest(button, button.getAttribute('data-trick-slug'))
-    })
+    });
 }
