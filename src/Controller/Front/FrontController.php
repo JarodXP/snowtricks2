@@ -5,13 +5,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\CustomServices\HomeTrickLister;
 use App\CustomServices\SlugMaker;
 use App\CustomServices\TrickMediaHandler;
 use App\CustomServices\TrickRemover;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
-use App\Form\HomeListFormType;
 use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
@@ -37,37 +37,23 @@ class FrontController extends AbstractController
     /**
      * @Route("/",name="home")
      * @param Request $request
+     * @param HomeTrickLister $lister
      * @return Response
      */
-    public function displayFrontTrickListAction(Request $request)
+    public function displayFrontTrickListAction(Request $request, HomeTrickLister $lister)
     {
-        $limit = 10;
+        //Sets the default value for trick list
+        $responseVars['limit'] = 5;
+        $responseVars['filterId'] = null;
 
-        $filterGroupId = null;
+        //Get the tricks list
+        $responseVars = $lister->getTrickList($request, $responseVars);
 
-        $homeForm = $this->createForm(HomeListFormType::class);
+        //Adds the forms to response variables
+        $responseVars['homeForm'] = $responseVars['homeForm']->createView();
+        $responseVars['limitForm'] = $responseVars['limitForm']->createView();
 
-        $homeForm->handleRequest($request);
-
-        if ($homeForm->isSubmitted() && $homeForm->isValid()) {
-            $filterGroup = $homeForm->get('trickGroup')->getData();
-
-            if (!is_null($filterGroup)) {
-                $filterGroupId = $filterGroup->getId();
-            }
-        }
-
-
-        $tricks = $this->getDoctrine()
-            ->getRepository(Trick::class)
-            ->getHomeTrickList(4, $filterGroupId)
-        ;
-
-        return $this->render('front/home.html.twig', [
-            'tricks' => $tricks,
-            'limit' => $limit,
-            'homeForm' => $homeForm->createView()
-            ]);
+        return $this->render('front/home.html.twig', $responseVars);
     }
 
     /**

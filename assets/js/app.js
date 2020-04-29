@@ -64,7 +64,7 @@ for(let button of loadBtns){
     button.addEventListener('click',function () {
         let spinner = button.children[0];
 
-        button.setAttribute('disabled',"");
+        button.classList.toggle('disabled');
         spinner.classList.toggle('collapse');
     })
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\CustomServices\HomeTrickLister;
 use App\CustomServices\TrickRemover;
 use App\Entity\Trick;
 use Exception;
@@ -29,7 +30,7 @@ class AjaxController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function ajaxRemoveTrickAction(Trick $trick, TrickRemover $remover, Request $request):Response
+    public function ajaxRemoveTrick(Trick $trick, TrickRemover $remover, Request $request):Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
 
@@ -48,5 +49,18 @@ class AjaxController extends AbstractController
         }
 
         return new Response('You are not allowed to do this operation', 500);
+    }
+
+    /**
+     * @Route("/ajax/home-tricks", name="ajax_home_tricks")
+     * @param Request $request
+     * @param HomeTrickLister $lister
+     * @return Response
+     */
+    public function ajaxDisplayHomeList(Request $request, HomeTrickLister $lister)
+    {
+        $responseVars = $lister->getTrickList($request);
+
+        return $this->render('front/_trick_list.html.twig', $responseVars);
     }
 }

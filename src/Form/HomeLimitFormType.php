@@ -5,8 +5,6 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-
-use App\Form\CustomType\TrickGroupSelectType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -18,7 +16,7 @@ use Symfony\Component\Validator\Constraints\Type;
  * Class HomeListFormType
  * @package App\Form
  */
-class HomeListFormType extends AbstractType
+class HomeLimitFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,15 +24,22 @@ class HomeListFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('trickGroup', TrickGroupSelectType::class, [
-                'placeholder' => 'All',
-                'required' => false
+            ->add('trickGroup', HiddenType::class, [
+                'constraints'=>[
+                    new Type([
+                         'type' => 'digit',
+                         'message' => 'The trick group is not valid!'
+                             ]),
+                    new Positive([
+                         'message' => 'The trick group  is not valid!'
+                                 ])
+                ]
             ])
             ->add('limit', HiddenType::class, [
                 'constraints'=>[
                     new Type([
                         'type' => 'digit',
-                        'message' => 'The limit is not valid!'
+                        'message' => 'The limit type is not valid!'
                              ]),
                     new Positive([
                         'message' => 'The limit is not valid!'
@@ -51,7 +56,7 @@ class HomeListFormType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_field_name' => '_csrf_token',
-            'csrf_token_id'   => 'home_list',
+            'csrf_token_id'   => 'limit',
         ]);
     }
 }
