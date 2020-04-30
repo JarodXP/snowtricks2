@@ -6,13 +6,12 @@ declare(strict_types=1);
 namespace App\Form;
 
 
+use App\Form\CustomType\LimitFieldType;
 use App\Form\CustomType\TrickGroupSelectType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Positive;
-use Symfony\Component\Validator\Constraints\Type;
+
 
 /**
  * Class HomeListFormType
@@ -30,18 +29,7 @@ class HomeListFormType extends AbstractType
                 'placeholder' => 'All',
                 'required' => false
             ])
-            ->add('limit', HiddenType::class, [
-                'constraints'=>[
-                    new Type([
-                        'type' => 'digit',
-                        'message' => 'The limit is not valid!'
-                             ]),
-                    new Positive([
-                        'message' => 'The limit is not valid!'
-                                 ])
-                ]
-            ])
-        ;
+            ->add('limit', LimitFieldType::class);
     }
 
     /**

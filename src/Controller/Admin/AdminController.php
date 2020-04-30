@@ -7,7 +7,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Trick;
 use App\Entity\User;
+use App\Form\PaginationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -18,19 +20,64 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin/tricks",name="admin-tricks")
-     * @Route("/admin/",name="admin")
+     * @Route("/admin/tricks/{page}",name="admin-tricks")
+     * @Route("/admin/{page}",name="admin")
+     * @param int|null $page
+     * @param Request $request
      * @return Response
      */
-    public function displayTrickListAction():Response
+    public function displayTrickListAction(Request $request, int $page = null):Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
+
+        if (is_null($page)) {
+            $page = 1;
+        }
+
+        //Default query parameters
+        $queryParameters = [
+            'offset' => 0,
+            'order' => 'name',
+            'direction' => 'DESC',
+            'limit' => 5,
+            'filter' => 'all'
+            ];
+
+        $paginationForm = $this->createForm(PaginationFormType::class, null, [
+            'sortFieldList'=>['name','trickGroup', 'author', 'dateAdded', 'dateModified', 'status'],
+            'filterFieldList' => ['all']
+        ]);
+
+        $paginationForm->handleRequest($request);
+
+        if ($paginationForm->isSubmitted() && $paginationForm->isValid()) {
+
+            //Sets the new parameters for the query
+            $queryParameters['limit'] = $paginationForm->get('limit')->getData();
+            $queryParameters['order'] = $paginationForm->get('order')->getData();
+            $queryParameters['direction'] = $paginationForm->get('direction')->getData();
+
+            //Sets the offset
+            if (!is_null($page)) {
+                $queryParameters['offset'] = ($page - 1)*$queryParameters['limit'];
+            }
+        }
+
+        //Gets the trick list
         $tricks = $this->getDoctrine()
             ->getRepository(Trick::class)
-            ->findAll();
+            ->getAdminTrickList($queryParameters);
+
+        //Gets the number of pages depending on the limit
+        $pages = round(count($tricks) / (int) $queryParameters['limit']);
 
         return $this->render('admin\trick_list.html.twig', [
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'paginationForm' => $paginationForm->createView(),
+            'params' => $queryParameters,
+            'route' => 'admin-tricks',
+            'pages' => $pages,
+            'currentPage' => $page
         ]);
     }
 

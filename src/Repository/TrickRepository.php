@@ -26,6 +26,7 @@ class TrickRepository extends ServiceEntityRepository
     }
 
     /**
+     * Gets the trick list for Home trick grid
      * @param int $limit
      * @param int|null $filterGroupId
      * @return Paginator
@@ -43,6 +44,26 @@ class TrickRepository extends ServiceEntityRepository
         if (!is_null($filterGroupId)) {
             $queryBuilder->where('tg.id = '.$filterGroupId);
         }
+
+        return new Paginator($queryBuilder->getQuery());
+    }
+
+    /**
+     * Gets the trick list for the admin list table
+     * @param array $queryParameters
+     * @return Paginator
+     */
+    public function getAdminTrickList(array $queryParameters):Paginator
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        $queryBuilder
+            ->select('t')
+            ->setFirstResult($queryParameters['offset'])
+            ->setMaxResults($queryParameters['limit'])
+            ->join('t.trickGroup', 'tg')
+            ->join('t.author', 'a')
+            ->orderBy('t.'.$queryParameters['order'], $queryParameters['direction']);
 
         return new Paginator($queryBuilder->getQuery());
     }

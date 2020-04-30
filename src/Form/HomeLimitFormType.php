@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
+use App\Form\CustomType\LimitFieldType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -35,18 +36,7 @@ class HomeLimitFormType extends AbstractType
                                  ])
                 ]
             ])
-            ->add('limit', HiddenType::class, [
-                'constraints'=>[
-                    new Type([
-                        'type' => 'digit',
-                        'message' => 'The limit type is not valid!'
-                             ]),
-                    new Positive([
-                        'message' => 'The limit is not valid!'
-                                 ])
-                ]
-            ])
-        ;
+            ->add('limit', LimitFieldType::class);
     }
 
     /**
