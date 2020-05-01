@@ -61,7 +61,7 @@ class PaginationFormType extends AbstractType
     {
         $resolver->setDefaults([
             'csrf_field_name' => '_csrf_token',
-            'csrf_token_id'   => 'home_list',
+            'csrf_token_id'   => 'pagination',
             'sortFieldList'=>[],
             'filterFieldList'=>[],
             'attr'=>['id'=>'pagination']

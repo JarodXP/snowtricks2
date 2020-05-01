@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Front;
 
+use App\CustomServices\CommentLister;
 use App\CustomServices\HomeTrickLister;
 use App\CustomServices\SlugMaker;
 use App\CustomServices\TrickMediaHandler;
@@ -12,9 +13,11 @@ use App\CustomServices\TrickRemover;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
+use App\Form\SimplePaginationFormType;
 use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
+use App\Repository\CommentRepository;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -59,11 +62,14 @@ class FrontController extends AbstractController
     /**
      * @Route("/tricks/{trickSlug}",name="trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @Route("/tricks/{trickSlug}/Comments-{page}",name="trick_comments")
      * @param Trick $trick
      * @param Request $request
+     * @param CommentLister $lister
+     * @param int|null $page
      * @return Response
      */
-    public function displayTrickAction(Trick $trick, Request $request)
+    public function displayTrickAction(Trick $trick, Request $request, CommentLister $lister, int $page = null)
     {
         //Creates a Comment Entity to possibly get the form data
         $comment = new Comment();
@@ -84,9 +90,25 @@ class FrontController extends AbstractController
             $manager->flush();
         }
 
+        //Gets comment list
+        //Sets the page number if null
+        if (is_null($page)) {
+            $page = 1;
+        }
+
+        $comments = $lister->getCommentList($request, $trick, $page);
+
+        //Creates pagination form
+        $paginationForm = $this->createForm(SimplePaginationFormType::class);
+
         return $this->render('front\trick.html.twig', [
             'editMode' => false,
+            'comments' => $comments,
             'commentForm' => $commentForm->createView(),
+            'paginationForm' =>$paginationForm->createView(),
+            'currentPage' => $page,
+            'pages' => round(count($comments))/CommentRepository::LIMIT_DISPLAY,
+            'route' => 'trick_comments',
             self::TRICK_VAR => $trick,
         ]);
     }

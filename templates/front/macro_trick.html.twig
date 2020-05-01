@@ -146,7 +146,7 @@
 {% endmacro %}
 
 {# Displays te comment section if edit mode is false #}
-{% macro displayComments(comments, commentForm) %}
+{% macro displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) %}
     <section id="comments">
         <div class="divider"></div>
 
@@ -175,25 +175,8 @@
             <p class="comment-group">Something to say? Please, write a comment!</p>
         {% else %}
 
-            {% for comment in comments %}
-
-                <div class="comment-group">
-                    <div class="avatar-container">
-                        <div class="jxp-avatar-thumbnail">
-                            <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
-                                 alt="{{ comment.user.avatar.alt }}">
-                        </div>
-                    </div>
-                    <p class="comment-content">{{ comment.content }}</p>
-                </div>
-
-            {% endfor %}
+            {% include 'front/_comments.html.twig' %}
 
         {% endif %}
-
-        <button class="btn btn-secondary load-btn" type="button">
-            <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
-            See more comments
-        </button>
     </section>
 {% endmacro %}

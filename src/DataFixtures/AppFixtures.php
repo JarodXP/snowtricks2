@@ -416,21 +416,43 @@ class AppFixtures extends Fixture
 
         /////////////// COMMENTS //////////////////////
 
-        $comment1 = new Comment();
+        $randomContent = [
+            'Awesome',
+            'I love this trick',
+            'Don\'t forget to raise the back of the board',
+            'How do you achieve this?',
+            'Thanks for the explanations',
+            'I think you need some wings to achieve it',
+            'Easy !',
+            'It\'s also called the Jimmy Hendrix!',
+            'Do you have a tip for this?',
+            'I just lost my leg by doing it',
+            'What\'s he secret?',
+            'You have to turn your neck to the right and your bottom to the left',
+            'Great stuff Key, I like the ways you get real specific with the techniques. keep it up, Im sure your site is going to be very usefull for alot of people. ',
+            'Was wondering if you have any indepth tips for newbies starting jumps. i\'ve been having trouble going off a jump, air and then the landing. thanks ',
+            'Before going through any particulars, start off by checking your body alignment. Shoulders hips in line with you board as you ride, with knees and ankles slightly flexed in a comfortable position (knees over toes). Maybe get a friend to film you riding towards them on a shallow gradient just to check everything is looking good.',
+            'Think of the following 2 things when next trying them.
+            1. front hand out, relaxed, over the nose of your board - keep it there on the run in, in the air and on the run out.
+            2. Keep the head up looking forward. Focus on the lip, or object you want to jump over on the run in, as you reach this point transfer your focus point into the direction of travel and finally the landing.',
+            'For style - I would recommend bending your knees to the tips of your board a little more, and then straightening up your back so you are more balanced on your board. ',
+        ];
 
-        $comment1->setContent('J\'adore ce trick!')
-            ->setTrick($ollie)
-            ->setUser($wawa);
+        $users = [$wawa, $juju, $reveolte];
 
-        $manager->persist($comment1);
+        $tricks = [$ollie, $nollie, $switch, $indy, $noseGrab, $backflip, $mctwist, $melon, $mute, $tripod];
 
-        $comment2 = new Comment();
+        foreach ($tricks as $trick) {
+            for ($i = 1; $i < 11; $i++) {
+                $comment = new Comment();
+                $comment
+                    ->setTrick($trick)
+                    ->setUser($users[array_rand($users)])
+                    ->setContent($randomContent[array_rand($randomContent)]);
 
-        $comment2->setContent('Ne pas oublier de lever la planche en sautant')
-            ->setTrick($ollie)
-            ->setUser($reveolte);
-
-        $manager->persist($comment2);
+                $manager->persist($comment);
+            }
+        }
 
         $manager->flush();
     }

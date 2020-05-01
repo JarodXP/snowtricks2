@@ -52,6 +52,7 @@ removeBtns = $(".remove-btn");
 for(let button of removeBtns){
     button.on('click', function (e){
         e.preventDefault();
-        trickRemover.makeRequest(button, button.getAttribute('data-trick-slug'))
+        //trickRemover.makeRequest(button, button.getAttribute('data-trick-slug'))
+        console.log('test remove');
     });
 }

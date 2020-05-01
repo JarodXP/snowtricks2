@@ -1,0 +1,56 @@
+{# Displays the buttons on the pagination bar depending on the current page #}
+{% macro paginationNav(currentPage, pages, paginationForm, route, routeParameters) %}
+
+    {% set previousPage = currentPage-1 %}
+    {% set nextPage = currentPage+1 %}
+
+{% if pages > 1 %}
+    <nav id="pagination-nav" aria-label="pagination-nav">
+    <ul class="pagination">
+        {% if currentPage > 1 %}
+
+            <li class="page-item">
+                <button class="page-link" type="submit" form="{{ paginationForm.vars.attr.id }}"
+                        formaction="{{ path(route, {'page':1}|merge(routeParameters)) }}"> << </button>
+            </li>
+
+            <li class="page-item">
+                <button class="page-link" type="submit" form="{{ paginationForm.vars.attr.id }}"
+                        formaction="{{ path(route, {'page':previousPage}|merge(routeParameters)) }}"> < </button>
+            </li>
+
+        {% endif %}
+
+        {% if previousPage >= 1 %}
+            <li class="page-item">
+                <button class="page-link" type="submit" form="{{ paginationForm.vars.attr.id }}"
+                        formaction="{{ path(route, {'page':previousPage}|merge(routeParameters)) }}">{{ previousPage }}</button>
+            </li>
+        {% endif %}
+
+        <li class="page-item">
+            <button class="page-link disabled " ><u>{{ currentPage }}</u></button>
+        </li>
+
+        {% if nextPage <= pages %}
+            <li class="page-item">
+                <button class="page-link" type="submit" form="{{ paginationForm.vars.attr.id }}"
+                        formaction="{{ path(route, {'page':nextPage}|merge(routeParameters)) }}">{{ nextPage }}</button>
+            </li>
+            <li class="page-item">
+                <button class="page-link" type="submit" form="{{ paginationForm.vars.attr.id }}"
+                        formaction="{{ path(route, {'page':nextPage}|merge(routeParameters)) }}"> > </button>
+            </li>
+        {% endif %}
+
+        {% if currentPage < pages %}
+            <li class="page-item">
+                <button class="page-link" type="submit" form="{{ paginationForm.vars.attr.id }}"
+                        formaction="{{ path(route, {'page':pages}|merge(routeParameters)) }}"> >> </button>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% endmacro %}

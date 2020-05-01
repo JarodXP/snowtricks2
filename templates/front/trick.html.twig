@@ -71,7 +71,7 @@
 
         {% if editMode != true %}
 
-            {{ displayTrick.displayComments(trick.comments, commentForm) }}
+            {{ displayTrick.displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) }}
 
         {% endif %}
 
