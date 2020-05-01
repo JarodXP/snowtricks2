@@ -27,7 +27,7 @@ const trickRemover = {
 };
 
 //Sets the event handler for every remove-btn
-removeBtns = $('.remove-btn');
+const removeBtns = $('.remove-btn');
 removeBtns.on('click', function (e){
     e.preventDefault();
     e.stopPropagation();

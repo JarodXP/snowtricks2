@@ -8,6 +8,7 @@ namespace App\CustomServices;
 use App\Entity\Trick;
 use App\Form\HomeLimitFormType;
 use App\Form\HomeListFormType;
+use App\Repository\TrickRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +19,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class HomeTrickLister
 {
+    public const HOME_FORM = 'homeForm';
+    public const LIMIT_FORM = 'limitForm';
+    public const FILTER_ID = 'filterId';
+    public const TRICK_GROUP = 'trickGroup';
+
     private EntityManagerInterface $manager;
     private FormFactoryInterface $formFactory;
 
@@ -41,49 +47,49 @@ class HomeTrickLister
     public function getTrickList(Request $request, array $responseVars = null):array
     {
         //Creates the form for group filter
-        $responseVars['homeForm'] = $this->formFactory->create(HomeListFormType::class);
-        $responseVars['homeForm']->handleRequest($request);
+        $responseVars[self::HOME_FORM] = $this->formFactory->create(HomeListFormType::class);
+        $responseVars[self::HOME_FORM]->handleRequest($request);
 
         //Creates the form for more tricks
-        $responseVars['limitForm'] = $this->formFactory->create(HomeLimitFormType::class);
-        $responseVars['limitForm']->handleRequest($request);
+        $responseVars[self::LIMIT_FORM] = $this->formFactory->create(HomeLimitFormType::class);
+        $responseVars[self::LIMIT_FORM]->handleRequest($request);
 
-        if ($responseVars['homeForm']->isSubmitted() && $responseVars['homeForm']->isValid()) {
+        if ($responseVars[self::HOME_FORM]->isSubmitted() && $responseVars[self::HOME_FORM]->isValid()) {
 
             //Sets the trick group filter
-            if (!is_null($responseVars['homeForm']->get('trickGroup')->getData())) {
-                $responseVars['filterId'] = $responseVars['homeForm']->get('trickGroup')->getData()->getId();
+            if (!is_null($responseVars[self::HOME_FORM]->get(self::TRICK_GROUP)->getData())) {
+                $responseVars[self::FILTER_ID] = $responseVars[self::HOME_FORM]->get(self::TRICK_GROUP)->getData()->getId();
             } else {
-                $responseVars['filterId'] = null;
+                $responseVars[self::FILTER_ID] = null;
             }
 
             //Sets the limit of displayed tricks
-            if (!is_null($responseVars['homeForm']->get('limit')->getData())) {
-                $responseVars['limit'] = (int) $responseVars['homeForm']->get('limit')->getData();
+            if (!is_null($responseVars[self::HOME_FORM]->get(TrickRepository::LIMIT_FIELD)->getData())) {
+                $responseVars[TrickRepository::LIMIT_FIELD] = (int) $responseVars[self::HOME_FORM]->get(TrickRepository::LIMIT_FIELD)->getData();
             } else {
-                $responseVars['limit'] = 5;
+                $responseVars[TrickRepository::LIMIT_FIELD] = 5;
             }
-        } elseif ($responseVars['limitForm']->isSubmitted() && $responseVars['limitForm']->isValid()) {
+        } elseif ($responseVars[self::LIMIT_FORM]->isSubmitted() && $responseVars[self::LIMIT_FORM]->isValid()) {
 
             //Sets the trick group filter
-            if (!is_null($responseVars['limitForm']->get('trickGroup')->getData())) {
-                $responseVars['filterId'] = (int) $responseVars['limitForm']->get('trickGroup')->getData();
+            if (!is_null($responseVars[self::LIMIT_FORM]->get(self::TRICK_GROUP)->getData())) {
+                $responseVars[self::FILTER_ID] = (int) $responseVars[self::LIMIT_FORM]->get(self::TRICK_GROUP)->getData();
             } else {
-                $responseVars['filterId'] = null;
+                $responseVars[self::FILTER_ID] = null;
             }
 
             //Sets the limit of displayed tricks
-            if (!is_null($responseVars['limitForm']->get('limit')->getData())) {
-                $responseVars['limit'] = (int) $responseVars['limitForm']->get('limit')->getData() + 5;
+            if (!is_null($responseVars[self::LIMIT_FORM]->get(TrickRepository::LIMIT_FIELD)->getData())) {
+                $responseVars[TrickRepository::LIMIT_FIELD] = (int) $responseVars[self::LIMIT_FORM]->get(TrickRepository::LIMIT_FIELD)->getData() + 5;
             } else {
-                $responseVars['limit'] = 5;
+                $responseVars[TrickRepository::LIMIT_FIELD] = 5;
             }
         }
 
         //Gets the list of tricks
         $tricks = $this->manager
             ->getRepository(Trick::class)
-            ->getHomeTrickList($responseVars['limit'], $responseVars['filterId']);
+            ->getHomeTrickList($responseVars[TrickRepository::LIMIT_FIELD], $responseVars[self::FILTER_ID]);
 
         $responseVars['tricks'] = $tricks;
 
