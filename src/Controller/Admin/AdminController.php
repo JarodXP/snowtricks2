@@ -9,6 +9,7 @@ use App\CustomServices\TrickRemover;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\PaginationFormType;
+use App\Repository\TrickRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -40,9 +41,9 @@ class AdminController extends AbstractController
         //Default query parameters
         $queryParameters = [
             'offset' => 0,
-            'order' => 'name',
-            'direction' => 'DESC',
-            'limit' => 5,
+            TrickRepository::ORDER_FIELD => 'name',
+            TrickRepository::DIRECTION_FIELD => 'DESC',
+            TrickRepository::LIMIT_FIELD => 5,
             'filter' => 'all'
             ];
 
@@ -56,13 +57,13 @@ class AdminController extends AbstractController
         if ($paginationForm->isSubmitted() && $paginationForm->isValid()) {
 
             //Sets the new parameters for the query
-            $queryParameters['limit'] = $paginationForm->get('limit')->getData();
-            $queryParameters['order'] = $paginationForm->get('order')->getData();
-            $queryParameters['direction'] = $paginationForm->get('direction')->getData();
+            $queryParameters[TrickRepository::LIMIT_FIELD] = $paginationForm->get(TrickRepository::LIMIT_FIELD)->getData();
+            $queryParameters[TrickRepository::ORDER_FIELD] = $paginationForm->get(TrickRepository::ORDER_FIELD)->getData();
+            $queryParameters[TrickRepository::DIRECTION_FIELD] = $paginationForm->get(TrickRepository::DIRECTION_FIELD)->getData();
 
             //Sets the offset
             if (!is_null($page)) {
-                $queryParameters['offset'] = ($page - 1)*$queryParameters['limit'];
+                $queryParameters['offset'] = ($page - 1)*$queryParameters[TrickRepository::LIMIT_FIELD];
             }
         }
 
@@ -72,7 +73,7 @@ class AdminController extends AbstractController
             ->getAdminTrickList($queryParameters);
 
         //Gets the number of pages depending on the limit
-        $pages = round(count($tricks) / (int) $queryParameters['limit']);
+        $pages = round(count($tricks) / (int) $queryParameters[TrickRepository::LIMIT_FIELD]);
 
         return $this->render('admin\trick_list.html.twig', [
             'tricks' => $tricks,
