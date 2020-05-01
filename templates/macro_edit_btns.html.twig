@@ -1,7 +1,11 @@
 {# Displays the buttons or links to edit and remove a trick #}
 {% macro editTrickBtns(trickSlug, editBtnType, removeBtnType) %}
     {% set editPath = path('edit-trick', {'trickSlug': trickSlug}) %}
-    {% set removePath = path('remove-trick', {'trickSlug': trickSlug}) %}
+    {% if is_granted('ROLE_ADMIN')  %}
+        {% set removePath = path('admin_remove_trick', {'trickSlug': trickSlug}) %}
+    {% else %}
+        {% set removePath = path('remove-trick', {'trickSlug': trickSlug}) %}
+    {% endif %}
     {% set targetId = trickSlug %}
     {% set csrfToken = 'delete-trick' %}
     {% set dataTarget = 'data-trick-slug' %}

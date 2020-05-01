@@ -5,10 +5,13 @@ declare(strict_types=1);
 
 namespace App\Controller\Admin;
 
+use App\CustomServices\TrickRemover;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\PaginationFormType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -99,5 +102,23 @@ class AdminController extends AbstractController
             'users' => $users,
             'user' => $user
         ]);
+    }
+
+    /**
+     * @Route("/admin/remove-trick/{trickSlug}",name="admin_remove_trick")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @param Trick $trick
+     * @param TrickRemover $remover
+     * @return RedirectResponse
+     */
+    public function removeTrickAction(Trick $trick, TrickRemover $remover)
+    {
+        //Removes the trick
+        $remover->removeTrick($trick);
+
+        //Adds a flash message
+        $this->addFlash('notice', 'The trick ' . $trick->getName() . ' has been removed.');
+
+        return $this->redirectToRoute('admin-tricks');
     }
 }

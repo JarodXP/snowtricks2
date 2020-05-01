@@ -1,16 +1,16 @@
+import './trickRemover';
+
 const $ = require('jquery');
 
 /*Sets a 'click' listener on the cards to redirect to the corresponding trick page*/
-const cards = document.getElementsByClassName('card');
+const cards = $('.card');
 
-for(let card of cards){
-    card.addEventListener('click',function () {
+cards.on('click',function () {
 
-        //Gets the link located in the trick name anchor
-        let trickLink = card.children[1].children[0].children[0].getAttribute('href');
-        window.location.replace(trickLink);
-    })
-}
+    //Gets the link located in the trick name anchor
+    let trickLink = $(this).find('.trick-name').children().attr('href');
+    window.location.replace(trickLink);
+});
 
 /*Ajax object to update home trick list*/
 const trickLister = {
