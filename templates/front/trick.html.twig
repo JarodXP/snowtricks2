@@ -33,6 +33,7 @@
                 <div id="slider-left-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-left clickable"></i></div>
                 <div id="media-slider-bar">
 
+                    {# Formats the media thumbnail bar depending on the edit mode #}
                     {% if trick.id is not null %}
                         {% for media in trick.medias %}
 
@@ -61,6 +62,7 @@
             {% endif %}
         </section>
 
+        {# Displays the trick info either as text or a form depending on the edit mode #}
         <section id="trick-description">
             {% if editMode == false %}
                 {% set trickForm = null %}
@@ -69,14 +71,19 @@
             {{ displayTrick.displayDescriptionSection(editMode, trick, trickForm) }}
         </section>
 
+        {# If in edit mode, the comment section is not displayed #}
         {% if editMode != true %}
 
-            {{ displayTrick.displayComments(trick.comments, commentForm) }}
+            <section id="comments">
+                {{ displayTrick.displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) }}
+            </section>
+
 
         {% endif %}
 
     </article>
 
+    {# The slider in lightbox is not displayed in edit mode #}
     {% if editMode != true %}
         <!-- Lightbox -->
         <div class="modal fade" id="carouselLightBox" tabindex="-1" role="dialog" aria-hidden="true">

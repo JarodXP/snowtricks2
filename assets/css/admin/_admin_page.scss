@@ -35,7 +35,7 @@
     }
   }
 
-  & #pagination-nav{
+  & #admin-pagination{
     grid-area: pagination;
     display: flex;
     flex-direction: column;
@@ -73,7 +73,7 @@
 
     min-height: calc(100vh - #{$desktop-nav-height});
 
-    & #pagination-nav{
+    & #admin-pagination{
       flex-direction: row;
       justify-content: space-around;
 

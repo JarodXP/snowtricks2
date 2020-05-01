@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 /**
  * @method Comment|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +17,34 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class CommentRepository extends ServiceEntityRepository
 {
+    public const LIMIT_DISPLAY = 5;
+
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
     }
 
+    /**
+     * Gets the trick list for the admin list table
+     * @param array $queryParameters
+     * @return Paginator
+     */
+    public function getPaginatedList(array $queryParameters):Paginator
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        $queryBuilder
+            ->select('c')
+            ->setFirstResult($queryParameters['offset'])
+            ->setMaxResults($queryParameters['limit'])
+            ->join('c.trick', 't')
+            ->join('c.user', 'u')
+            ->orderBy('c.dateAdded', 'DESC')
+            ->where('t.id = '.$queryParameters['trickId']);
+
+        return new Paginator($queryBuilder->getQuery());
+    }
 }

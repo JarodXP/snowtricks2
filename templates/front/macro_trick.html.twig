@@ -146,54 +146,35 @@
 {% endmacro %}
 
 {# Displays te comment section if edit mode is false #}
-{% macro displayComments(comments, commentForm) %}
-    <section id="comments">
-        <div class="divider"></div>
+{% macro displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) %}
+    <div class="divider"></div>
 
-        {% if is_granted('ROLE_USER') %}
+    {% if is_granted('ROLE_USER') %}
 
-            {{ form_start(commentForm) }}
-            {{ form_widget(commentForm) }}
+        {{ form_start(commentForm) }}
+        {{ form_widget(commentForm) }}
 
+        <div class="jxp-group-btn">
+            <button class="btn btn-primary">Send Comment</button>
+        </div>
+
+        {{ form_end(commentForm) }}
+
+    {% else %}
+        <div id="cta-signup-comments">
+            <p>If you want to participate, signin or sign up for free.</p>
             <div class="jxp-group-btn">
-                <button class="btn btn-primary">Send Comment</button>
+                <a class="btn btn-primary" href="{{ path('app_login') }}">Sign In</a>
+                <a class="btn btn-secondary" href="{{ path('app_signup') }}">Sign Up</a>
             </div>
+        </div>
+    {% endif %}
 
-            {{ form_end(commentForm) }}
+    {% if comments is empty %}
+        <p class="comment-group">Something to say? Please, write a comment!</p>
+    {% else %}
 
-        {% else %}
-            <div id="cta-signup-comments">
-                <p>If you want to participate, signin or sign up for free.</p>
-                <div class="jxp-group-btn">
-                    <a class="btn btn-primary" href="{{ path('app_login') }}">Sign In</a>
-                    <a class="btn btn-secondary" href="{{ path('app_signup') }}">Sign Up</a>
-                </div>
-            </div>
-        {% endif %}
+        {% include 'front/_comments.html.twig' %}
 
-        {% if comments is empty %}
-            <p class="comment-group">Something to say? Please, write a comment!</p>
-        {% else %}
-
-            {% for comment in comments %}
-
-                <div class="comment-group">
-                    <div class="avatar-container">
-                        <div class="jxp-avatar-thumbnail">
-                            <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
-                                 alt="{{ comment.user.avatar.alt }}">
-                        </div>
-                    </div>
-                    <p class="comment-content">{{ comment.content }}</p>
-                </div>
-
-            {% endfor %}
-
-        {% endif %}
-
-        <button class="btn btn-secondary load-btn" type="button">
-            <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
-            See more comments
-        </button>
-    </section>
+    {% endif %}
 {% endmacro %}

@@ -1,0 +1,30 @@
+{# Partial template for list of comments #}
+
+{% import 'macro_pagination.html.twig' as pagination%}
+
+{% for comment in comments %}
+
+   <div id="comments-list">
+      <div class="comment-group">
+         <div class="avatar-container">
+            <div class="jxp-avatar-thumbnail">
+               <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
+                    alt="{{ comment.user.avatar.alt }}">
+            </div>
+         </div>
+         <div class="comment-container">
+            <p class="font-italic">Posted on : {{ comment.dateAdded | date('m/d/Y') }} by: {{ comment.user.firstName }} {{ comment.user.lastName }}</p>
+            <p class="comment-content">{{ comment.content }}</p>
+         </div>
+      </div>
+
+
+      {% endfor %}
+
+      {{ form_start(paginationForm) }}
+
+      {% set routeParams = {'trickSlug':trick.slug} %}
+      {{ pagination.paginationNav(currentPage, pages, paginationForm, 'trick_comments', routeParams, trick.slug) }}
+
+      {{ form_end(paginationForm) }}
+   </div>

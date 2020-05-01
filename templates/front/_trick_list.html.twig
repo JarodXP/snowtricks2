@@ -1,0 +1,22 @@
+{% import 'front/macro_trick.html.twig' as displayTrick %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
+
+{% block trickList %}
+
+<div id="trick-list">
+
+    {% for trick in tricks %}
+        <div class="card jxp-clickable">
+            {{ displayTrick.displayMainImage(trick,"card-img-top") }}
+            <div class="card-body">
+                <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name }}</a></h5>
+                <p class="font-italic">{{ trick.trickGroup.name }}</p>
+                <div class="block-edit">
+                    {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

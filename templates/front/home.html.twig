@@ -22,26 +22,35 @@
 
         <a id="new-trick" class="btn btn-secondary" href="{{ path('edit-trick',{'trickSlug':'new'}) }}">Create Trick</a>
 
-        <div id="trick-list">
+        <div id="list-options">
+            {{ form_start(homeForm) }}
 
-            {% for trick in tricks %}
-                <div class="card jxp-clickable">
-                    {{ displayTrick.displayMainImage(trick,"card-img-top") }}
-                    <div class="card-body">
-                        <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name }}</a></h5>
-                        <p>
-                            {{ editButtons(path('edit-trick',{trickSlug:trick.slug}), path('remove-trick',{trickSlug:trick.slug})) | raw }}
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
+            {{ form_widget(homeForm.trickGroup) }}
 
+            {{ form_row(homeForm.limit, {'attr':{'value':limit}}) }}
+
+            <button class="btn btn-primary load-btn modify-list" data-group="filter" type="submit">
+                <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
+                Filter by Trick Group
+            </button>
+
+            {{ form_end(homeForm) }}
         </div>
 
-        <button class="btn btn-secondary load-btn" type="button">
+        {% include 'front/_trick_list.html.twig' %}
+
+        {{ form_start(limitForm) }}
+
+        {{ form_row(limitForm.trickGroup, {'attr':{'value':filterId}}) }}
+
+        {{ form_row(limitForm.limit, {'attr':{'value':limit}}) }}
+
+        <button class="btn btn-secondary load-btn modify-list" data-group="limit" type="submit">
             <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
             See more tricks
         </button>
+
+        {{ form_end(limitForm) }}
 
     </section>
 
