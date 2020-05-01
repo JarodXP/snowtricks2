@@ -4,25 +4,27 @@
 
 {% for comment in comments %}
 
-    <div class="comment-group">
-        <div class="avatar-container">
+   <div id="comments-list">
+      <div class="comment-group">
+         <div class="avatar-container">
             <div class="jxp-avatar-thumbnail">
-                <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
-                     alt="{{ comment.user.avatar.alt }}">
+               <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
+                    alt="{{ comment.user.avatar.alt }}">
             </div>
-        </div>
-        <div class="comment-container">
+         </div>
+         <div class="comment-container">
             <p class="font-italic">Posted on : {{ comment.dateAdded | date('m/d/Y') }} by: {{ comment.user.firstName }} {{ comment.user.lastName }}</p>
             <p class="comment-content">{{ comment.content }}</p>
-        </div>
-    </div>
+         </div>
+      </div>
 
 
-{% endfor %}
+      {% endfor %}
 
-{{ form_start(paginationForm) }}
+      {{ form_start(paginationForm) }}
 
-{% set routeParams = {'trickSlug':trick.slug} %}
-{{ pagination.paginationNav(currentPage, pages, paginationForm, 'trick_comments', routeParams) }}
+      {% set routeParams = {'trickSlug':trick.slug} %}
+      {{ pagination.paginationNav(currentPage, pages, paginationForm, 'trick_comments', routeParams, trick.slug) }}
 
-{{ form_end(paginationForm) }}
+      {{ form_end(paginationForm) }}
+   </div>

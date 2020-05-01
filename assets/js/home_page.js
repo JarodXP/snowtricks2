@@ -60,7 +60,8 @@ const trickLister = {
     },
 };
 
-listForms = [$('#section-trick').find("form[name='home_list_form']"),$('#section-trick').find("form[name='home_limit_form']")];
+const sectionTrick = $('#section-trick');
+const listForms = [sectionTrick.find("form[name='home_list_form']"),sectionTrick.find("form[name='home_limit_form']")];
 
 for(let form of listForms) {
     form.on('submit',function (e){

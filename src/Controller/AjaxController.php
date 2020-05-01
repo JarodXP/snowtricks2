@@ -5,9 +5,13 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Controller\Front\FrontController;
+use App\CustomServices\CommentLister;
 use App\CustomServices\HomeTrickLister;
 use App\CustomServices\TrickRemover;
 use App\Entity\Trick;
+use App\Form\SimplePaginationFormType;
+use App\Repository\CommentRepository;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -22,6 +26,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AjaxController extends AbstractController
 {
+    private CommentLister $lister;
+
+    /**
+     * AjaxController constructor.
+     * @param CommentLister $lister
+     */
+    public function __construct(CommentLister $lister)
+    {
+        $this->lister = $lister;
+    }
+
     /**
      * @Route("/ajax/remove-trick/{trickSlug}", name="ajax_remove_trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
@@ -62,5 +77,30 @@ class AjaxController extends AbstractController
         $responseVars = $lister->getTrickList($request);
 
         return $this->render('front/_trick_list.html.twig', $responseVars);
+    }
+
+    /**
+     * @Route("/ajax/trick-comments/{trickSlug}/{page}", name="ajax_trick_comments")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @param Trick $trick
+     * @param int $page
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxDisplayComments(Trick $trick, int $page, Request $request)
+    {
+        $comments = $this->lister->getCommentList($request, $trick, $page);
+
+        //Creates pagination form
+        $paginationForm = $this->createForm(SimplePaginationFormType::class);
+
+        return $this->render('front\_comments.html.twig', [
+            'comments' => $comments,
+            'paginationForm' => $paginationForm->createView(),
+            'currentPage' => $page,
+            'pages' => round(count($comments))/CommentRepository::LIMIT_DISPLAY,
+            'route' => 'ajax_trick_comments',
+            FrontController::TRICK_VAR => $trick,
+        ]);
     }
 }
