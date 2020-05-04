@@ -33,7 +33,7 @@ class HomeLimitFormType extends AbstractType
                              ]),
                     new Positive([
                          'message' => 'The trick group  is not valid!'
-                                 ])
+                                 ]),
                 ]
             ])
             ->add('limit', LimitFieldType::class);
