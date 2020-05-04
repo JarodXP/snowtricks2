@@ -10,6 +10,13 @@ const trickRemover = {
     //Sets the event handler for every remove-btn
     setEventHandler(delegateSelector, wrapperElementNodeLevel){
         const delegate = $(delegateSelector);
+
+        delegate.on('click', 'form[name^="remove-form"]',function (e){
+            e.preventDefault();
+            e.stopPropagation();
+            $(this).submit()
+        });
+
         delegate.on('submit', 'form[name^="remove-form"]',function (e){
             e.preventDefault();
             e.stopPropagation();
