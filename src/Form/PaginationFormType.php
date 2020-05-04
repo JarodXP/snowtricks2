@@ -32,7 +32,10 @@ class PaginationFormType extends AbstractType
                     '25' => 25,
                     '50' => 50
                 ],
-                'label' => 'Lines per page:'
+                'label' => 'Lines per page:',
+                'constraints' => [
+                    new NotBlank()
+                ]
             ])
             ->add('filter', HiddenType::class, [
                 'constraints'=>[

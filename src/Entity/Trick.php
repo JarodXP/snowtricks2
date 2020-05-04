@@ -83,7 +83,7 @@ class Trick
      */
     private ?string $slug = null;
 
-    private SlugMaker $slugMaker;
+    private ?SlugMaker $slugMaker = null;
 
 
     /**

@@ -11,9 +11,13 @@
             <div class="card-body">
                 <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name }}</a></h5>
                 <p class="font-italic">{{ trick.trickGroup.name }}</p>
-                <div class="block-edit">
-                    {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
-                </div>
+
+                {% if is_granted('edit',trick) %}
+                    <div class="block-edit">
+                        {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     {% endfor %}
