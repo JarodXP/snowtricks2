@@ -1,4 +1,4 @@
-import './trickRemover';
+import {trickRemover} from "./AJAX/_trickRemover";
 
 const $ = require('jquery');
 
@@ -69,4 +69,7 @@ for(let form of listForms) {
         trickLister.makeRequest(form);
     })
 }
+
+//Sets the event handler and the <card> (parents[3]) as parent wrapper
+trickRemover.setEventHandler('#section-trick',2);
 
