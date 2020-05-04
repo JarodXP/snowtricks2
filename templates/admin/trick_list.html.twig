@@ -30,12 +30,17 @@
                         <td>{{ trick.author.username }}</td>
                         <td>{{ trick.dateAdded | date('Y-m-d') }}</td>
                         <td>{{ trick.dateModified | date('Y-m-d') }}</td>
-                        <td>{{ trick.status }}</td>
+                        <td class="status-cell">{{ trick.status }}</td>
                         <td>
-                            <label class="jxp-admin-toggle">
-                                <input id="publish-{{ trick.slug }}" type="checkbox" data-slug="{{ trick.slug }}">
-                                <span class="jxp-toggle-slider"></span>
-                            </label>
+                            <form id="status-form">
+                                <label class="jxp-admin-toggle">
+                                    <input id="publish-{{ trick.slug }}" class="status-toggler" type="checkbox" data-slug="{{ trick.slug }}"
+                                    {% if trick.status == 1 %} checked {% endif %}>
+                                    <span class="jxp-toggle-slider"></span>
+                                </label>
+                                <input type="hidden" name="token" value="{{ csrf_token('change-status') }}"/>
+                            </form>
+
                         </td>
                         <td class="remove-icon">
                             {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
