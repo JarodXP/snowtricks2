@@ -1,0 +1,50 @@
+<?php
+
+declare(strict_types=1);
+
+
+namespace App\CustomServices;
+
+
+use Symfony\Component\Form\FormInterface;
+
+/**
+ * Class AdminLister
+ * Organizes lists treatment wuth the repositories
+ * @package App\CustomServices
+ */
+class AdminLister extends AbstractLister
+{
+
+    /**
+     * @return void
+     */
+    protected function queryDefaultParameters():void
+    {
+        $this->queryParameters = [
+            self::OFFSET_FIELD => 0,
+            self::ORDER_FIELD => 'name',
+            self::DIRECTION_FIELD => 'DESC',
+            self::LIMIT_FIELD => 5,
+            self::FILTER_FIELD => 'all'
+        ];
+    }
+
+    /**
+     * @param FormInterface $paginationForm
+     * @param int $page
+     * @return void
+     */
+    protected function getQueryParametersFromForm(FormInterface $paginationForm, int $page):void
+    {
+        //Sets the new parameters for the query
+        $this->queryParameters[self::LIMIT_FIELD] = $paginationForm->get(self::LIMIT_FIELD)->getData();
+        $this->queryParameters[self::ORDER_FIELD] = $paginationForm->get(self::ORDER_FIELD)->getData();
+        $this->queryParameters[self::DIRECTION_FIELD] = $paginationForm->get(self::DIRECTION_FIELD)->getData();
+
+        //Sets the offset
+        if ($this->page > 0) {
+            $this->queryParameters[self::OFFSET_FIELD] = ($this->page - 1)*$this->queryParameters[self::LIMIT_FIELD];
+        }
+    }
+}

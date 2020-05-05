@@ -12,15 +12,15 @@ use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Class CommentLister
  * @package App\CustomServices
  */
-class CommentLister
+class CommentLister extends AbstractLister
 {
-    private EntityManagerInterface $manager;
     private FormFactoryInterface $formFactory;
 
     /**
@@ -29,7 +29,7 @@ class CommentLister
      */
     public function __construct(EntityManagerInterface $manager, FormFactoryInterface $formFactory)
     {
-        $this->manager = $manager;
+        parent::__construct($manager);
         $this->formFactory = $formFactory;
     }
 
@@ -53,5 +53,22 @@ class CommentLister
         ];
 
         return $this->manager->getRepository(Comment::class)->getPaginatedList($queryParameters);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function queryDefaultParameters(): void
+    {
+        // TODO: Implement queryDefaultParameters() method.
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getQueryParametersFromForm(FormInterface $paginationForm, int $page): void
+    {
+        // TODO: Implement getQueryParametersFromForm() method.
     }
 }

@@ -8,11 +8,11 @@ namespace App\CustomServices;
 use App\Entity\Trick;
 use App\Form\HomeLimitFormType;
 use App\Form\HomeListFormType;
-use App\Repository\TrickRepository;
 use App\Security\EditTrickVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
@@ -21,14 +21,13 @@ use Symfony\Component\Security\Core\Security;
  * Class HomeTrickLister
  * @package App\CustomServices
  */
-class HomeTrickLister
+class HomeTrickLister extends AbstractLister
 {
     public const HOME_FORM = 'homeForm';
     public const LIMIT_FORM = 'limitForm';
     public const FILTER_ID = 'filterId';
     public const TRICK_GROUP = 'trickGroup';
 
-    private EntityManagerInterface $manager;
     private FormFactoryInterface $formFactory;
     private Security $security;
 
@@ -41,7 +40,7 @@ class HomeTrickLister
      */
     public function __construct(EntityManagerInterface $manager, FormFactoryInterface $formFactory, Security $security)
     {
-        $this->manager = $manager;
+        parent::__construct($manager);
         $this->formFactory = $formFactory;
         $this->security = $security;
     }
@@ -72,10 +71,10 @@ class HomeTrickLister
             }
 
             //Sets the limit of displayed tricks
-            if (!is_null($responseVars[self::HOME_FORM]->get(TrickRepository::LIMIT_FIELD)->getData())) {
-                $responseVars[TrickRepository::LIMIT_FIELD] = (int) $responseVars[self::HOME_FORM]->get(TrickRepository::LIMIT_FIELD)->getData();
+            if (!is_null($responseVars[self::HOME_FORM]->get(self::LIMIT_FIELD)->getData())) {
+                $responseVars[self::LIMIT_FIELD] = (int) $responseVars[self::HOME_FORM]->get(self::LIMIT_FIELD)->getData();
             } else {
-                $responseVars[TrickRepository::LIMIT_FIELD] = 5;
+                $responseVars[self::LIMIT_FIELD] = 5;
             }
         } elseif ($responseVars[self::LIMIT_FORM]->isSubmitted() && $responseVars[self::LIMIT_FORM]->isValid()) {
 
@@ -87,23 +86,24 @@ class HomeTrickLister
             }
 
             //Sets the limit of displayed tricks
-            if (!is_null($responseVars[self::LIMIT_FORM]->get(TrickRepository::LIMIT_FIELD)->getData())) {
-                $responseVars[TrickRepository::LIMIT_FIELD] = (int) $responseVars[self::LIMIT_FORM]->get(TrickRepository::LIMIT_FIELD)->getData() + 5;
+            if (!is_null($responseVars[self::LIMIT_FORM]->get(self::LIMIT_FIELD)->getData())) {
+                $responseVars[self::LIMIT_FIELD] = (int) $responseVars[self::LIMIT_FORM]->get(self::LIMIT_FIELD)->getData() + 5;
             } else {
-                $responseVars[TrickRepository::LIMIT_FIELD] = 5;
+                $responseVars[self::LIMIT_FIELD] = 5;
             }
         }
 
         //Gets the list of tricks
         $responseVars['tricks'] = $this->filterList($this->manager
             ->getRepository(Trick::class)
-            ->getHomeTrickList($responseVars[TrickRepository::LIMIT_FIELD], $responseVars[self::FILTER_ID]));
+            ->getHomeTrickList($responseVars[self::LIMIT_FIELD], $responseVars[self::FILTER_ID]));
 
 
         return $responseVars;
     }
 
     /**
+     * Applies a filter to the list by owner or admin for the drafts tricks
      * @param Paginator $list
      * @return array
      */
@@ -112,7 +112,7 @@ class HomeTrickLister
         $tricksList = [];
         $i = 0;
 
-
+        //Checks if the user is granted to see the drafts
         foreach ($list as $trick) {
             if ($trick->getStatus() == 1 || $this->security->isGranted('edit', $trick)) {
                 $tricksList[$i] = $trick;
@@ -120,5 +120,22 @@ class HomeTrickLister
             }
         }
         return $tricksList;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function queryDefaultParameters(): void
+    {
+        // TODO: Implement queryDefaultParameters() method.
+    }
+
+
+    /**
+     * @inheritDoc
+     */
+    protected function getQueryParametersFromForm(FormInterface $paginationForm, int $page): void
+    {
+        // TODO: Implement getQueryParametersFromForm() method.
     }
 }

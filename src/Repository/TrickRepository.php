@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\CustomServices\AbstractLister;
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -17,11 +18,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class TrickRepository extends ServiceEntityRepository
 {
-    public const ORDER_FIELD = 'order';
-    public const DIRECTION_FIELD = 'direction';
-    public const LIMIT_FIELD = 'limit';
-    public const OFFSET_FIELD = 'offset';
-
     /**
      * @param ManagerRegistry $registry
      */
@@ -64,11 +60,11 @@ class TrickRepository extends ServiceEntityRepository
 
         $queryBuilder
             ->select('t')
-            ->setFirstResult($queryParameters[self::OFFSET_FIELD])
-            ->setMaxResults($queryParameters[self::LIMIT_FIELD])
+            ->setFirstResult($queryParameters[AbstractLister::OFFSET_FIELD])
+            ->setMaxResults($queryParameters[AbstractLister::LIMIT_FIELD])
             ->join('t.trickGroup', 'tg')
             ->join('t.author', 'a')
-            ->orderBy('t.'.$queryParameters[self::ORDER_FIELD], $queryParameters[self::DIRECTION_FIELD]);
+            ->orderBy('t.'.$queryParameters[AbstractLister::ORDER_FIELD], $queryParameters[AbstractLister::DIRECTION_FIELD]);
 
         return new Paginator($queryBuilder->getQuery());
     }
