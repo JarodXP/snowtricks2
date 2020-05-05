@@ -48,6 +48,10 @@
   & .card{
     max-height: 300px;
   }
+
+  & .draft>.card-img-top{
+    filter: blur(2px);
+  }
 }
 
 .card-img-top{

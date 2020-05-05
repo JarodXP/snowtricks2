@@ -109,10 +109,7 @@
 
     {% if editMode == true %}
 
-        {{ form_start(trickForm) }}
-            {{ form_widget(trickForm) }}
-        {{ form_end(trickForm) }}
-
+        {{ form(trickForm) }}
 
         <div class="jxp-group-btn">
             <button type="submit" class="btn btn-primary" form="trick_form">Save</button>

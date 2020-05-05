@@ -8,6 +8,7 @@ use App\Entity\Trick;
 use App\Form\CustomType\TinyMceTextAreaType;
 use App\Form\CustomType\TrickGroupSelectType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -39,7 +40,17 @@ class TrickFormType extends AbstractType
                 'constraints' => [
                     new NotBlank()
                 ]
-            ]);
+            ])
+            ->add('status', ChoiceType::class, [
+                'choices' => [
+                    'Published' => 1,
+                    'Draft' => 0
+                ],
+                'constraints' => [
+                    new NotBlank()
+                ]
+            ])
+        ;
     }
 
     /**

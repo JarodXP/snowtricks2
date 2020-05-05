@@ -9,9 +9,13 @@ use App\Entity\Trick;
 use App\Form\HomeLimitFormType;
 use App\Form\HomeListFormType;
 use App\Repository\TrickRepository;
+use App\Security\EditTrickVoter;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Class HomeTrickLister
@@ -26,16 +30,20 @@ class HomeTrickLister
 
     private EntityManagerInterface $manager;
     private FormFactoryInterface $formFactory;
+    private Security $security;
 
     /**
      * HomeTrickLister constructor.
      * @param EntityManagerInterface $manager
      * @param FormFactoryInterface $formFactory
+     * @param EditTrickVoter $voter
+     * @param TokenInterface $token
      */
-    public function __construct(EntityManagerInterface $manager, FormFactoryInterface $formFactory)
+    public function __construct(EntityManagerInterface $manager, FormFactoryInterface $formFactory, Security $security)
     {
         $this->manager = $manager;
         $this->formFactory = $formFactory;
+        $this->security = $security;
     }
 
     /**
@@ -87,12 +95,30 @@ class HomeTrickLister
         }
 
         //Gets the list of tricks
-        $tricks = $this->manager
+        $responseVars['tricks'] = $this->filterList($this->manager
             ->getRepository(Trick::class)
-            ->getHomeTrickList($responseVars[TrickRepository::LIMIT_FIELD], $responseVars[self::FILTER_ID]);
+            ->getHomeTrickList($responseVars[TrickRepository::LIMIT_FIELD], $responseVars[self::FILTER_ID]));
 
-        $responseVars['tricks'] = $tricks;
 
         return $responseVars;
+    }
+
+    /**
+     * @param Paginator $list
+     * @return array
+     */
+    private function filterList(Paginator $list):array
+    {
+        $tricksList = [];
+        $i = 0;
+
+
+        foreach ($list as $trick) {
+            if ($trick->getStatus() == 1 || $this->security->isGranted('edit', $trick)) {
+                $tricksList[$i] = $trick;
+                $i++;
+            }
+        }
+        return $tricksList;
     }
 }
