@@ -1,8 +1,8 @@
-import {flashbag} from './_flashbag';
+import {Flashbag} from './Flashbag';
 
 const $ = require('jquery');
 
-const trickRemover = {
+const TrickRemover = {
     trickSlug:'',
     trickWrapper:'',//Parent element to be removed on success
     tokenValue:'',
@@ -21,7 +21,7 @@ const trickRemover = {
             e.preventDefault();
             e.stopPropagation();
 
-            trickRemover.makeRequest($(this), $(this).parents().eq(wrapperElementNodeLevel))
+            TrickRemover.makeRequest($(this), $(this).parents().eq(wrapperElementNodeLevel))
         });
     },
 
@@ -36,14 +36,14 @@ const trickRemover = {
             method: 'POST',
             data: 'remove_token='+encodeURIComponent(this.tokenValue),
             success: function () {
-                trickRemover.trickWrapper.remove();
-                flashbag.displayFlashbag('The trick ' + trickRemover.trickSlug + ' has been removed','notice');
+                TrickRemover.trickWrapper.remove();
+                Flashbag.displayFlashbag('The trick ' + TrickRemover.trickSlug + ' has been removed','notice');
             },
             error: function (xhr) {
-                flashbag.displayFlashbag(xhr.responseText,'error');
+                Flashbag.displayFlashbag(xhr.responseText,'error');
             }
         })
     }
 };
 
-export {trickRemover};
+export {TrickRemover};

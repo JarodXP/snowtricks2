@@ -1,8 +1,8 @@
-import {trickRemover} from './AJAX/_trickRemover';
-import {statusToggler} from './AJAX/_statusToggler';
+import {TrickRemover} from './AJAX/TrickRemover';
+import {StatusToggler} from './AJAX/StatusToggler';
 
 //Sets the event handler for the TrickRemover and the <tr> (parents[2]) as parent wrapper
-trickRemover.setEventHandler('tr',1);
+TrickRemover.setEventHandler('tr',1);
 
 //Sets the event handler for the StatusToggler
-statusToggler.setEventHandler(true);
+StatusToggler.setEventHandler(true);

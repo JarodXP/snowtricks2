@@ -1,6 +1,6 @@
 const $ = require('jquery');
 
-const flashbag = {
+const Flashbag = {
 
     displayFlashbag(message, type){
         let bodyElt = $('body');
@@ -15,4 +15,4 @@ const flashbag = {
     }
 };
 
-export {flashbag};
+export {Flashbag};

@@ -1,9 +1,9 @@
-import {flashbag} from './_flashbag';
+import {Flashbag} from './Flashbag';
 
 const $ = require('jquery');
 
 /*Toggle trick status*/
-const statusToggler = {
+const StatusToggler = {
     toggleForm:'',
     statusElement: '',
 
@@ -13,14 +13,14 @@ const statusToggler = {
 
         statusCheckBox.on('change', function (){
             //Sets the form element to be serialized
-            statusToggler.toggleForm = $(this).parents().eq(1);
+            StatusToggler.toggleForm = $(this).parents().eq(1);
 
             //Sets the status element if an element displays the current status
             if(displayStatus === true){
-                statusToggler.statusElement = $(this).parents().eq(3).find('.status-cell');
+                StatusToggler.statusElement = $(this).parents().eq(3).find('.status-cell');
             }
 
-            statusToggler.makeRequest($(this).attr('data-slug'), displayStatus);
+            StatusToggler.makeRequest($(this).attr('data-slug'), displayStatus);
         });
     },
 
@@ -35,14 +35,14 @@ const statusToggler = {
 
                 if(displayStatus === true){
                     //Changes status
-                    statusToggler.changeStatus(statusToggler.statusElement);
+                    StatusToggler.changeStatus(StatusToggler.statusElement);
                 }
 
                 //Displays flash message
-                flashbag.displayFlashbag('Status of ' + trickSlug + ' has been updated.','notice');
+                Flashbag.displayFlashbag('Status of ' + trickSlug + ' has been updated.','notice');
             },
             error: function (xhr) {
-                flashbag.displayFlashbag(xhr.responseText,'error');
+                Flashbag.displayFlashbag(xhr.responseText,'error');
             }
         })
     },
@@ -61,4 +61,4 @@ const statusToggler = {
     }
 };
 
-export {statusToggler};
+export {StatusToggler};
