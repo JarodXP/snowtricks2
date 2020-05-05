@@ -8,7 +8,6 @@ use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use phpDocumentor\Reflection\Types\Self_;
 
 /**
  * @method Trick|null find($id, $lockMode = null, $lockVersion = null)

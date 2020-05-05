@@ -12,12 +12,14 @@ use App\CustomServices\TrickRemover;
 use App\Entity\Trick;
 use App\Form\SimplePaginationFormType;
 use App\Repository\CommentRepository;
-use Exception;
+use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 /**
  * Class AjaxController
@@ -47,23 +49,27 @@ class AjaxController extends AbstractController
      */
     public function ajaxRemoveTrick(Trick $trick, TrickRemover $remover, Request $request):Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
-
-        $submittedToken = $request->request->get('remove_token');
-
-
         try {
+            //Uses Security voter to grant access
+            $this->denyAccessUnlessGranted('edit', $trick);
+
+            $submittedToken = $request->request->get('remove_token');
+
             if ($this->isCsrfTokenValid('delete-trick', $submittedToken)) {
                 //Removes the trick
                 $remover->removeTrick($trick);
-                return new Response('The trick '.$trick->getName().' has been removed.', 200);
-            }
-        } catch (Exception $e) {
-            //In case trick could'nt be removed, sends an error response
-            return new Response($e->getMessage(), 500);
-        }
 
-        return new Response('You are not allowed to do this operation', 500);
+                return new Response('The trick ' . $trick->getName() . ' has been removed.', 200);
+            } else {
+                //Throws exception if CSRF token is invalid
+                throw new InvalidCsrfTokenException('You are not allowed to do this operation', 500);
+            }
+        } catch (AccessDeniedHttpException | InvalidCsrfTokenException | RuntimeException $e) {
+            $message = $e->getMessage();
+            $errorCode = $e->getCode();
+
+            return new Response($message, $errorCode);
+        }
     }
 
     /**
@@ -102,5 +108,33 @@ class AjaxController extends AbstractController
             'route' => 'ajax_trick_comments',
             FrontController::TRICK_VAR => $trick,
         ]);
+    }
+
+    /**
+     * @Route("/ajax/trick-status/{trickSlug}", name="ajax_trick_status")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @param Trick $trick
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxChangeStatus(Trick $trick, Request $request)
+    {
+        //Check token
+        $submittedToken = $request->request->get('token');
+
+        if ($this->isCsrfTokenValid('change-status', $submittedToken)) {
+
+            //Toggles status
+            $trick->setStatus(!$trick->getStatus());
+
+            //Syncs with database
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($trick);
+            $manager->flush();
+
+            return $this->json(['status' => $trick->getStatus()]);
+        }
+
+        return new Response('Invalid token', 400);
     }
 }

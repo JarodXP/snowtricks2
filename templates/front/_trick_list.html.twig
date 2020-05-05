@@ -6,10 +6,19 @@
 <div id="trick-list">
 
     {% for trick in tricks %}
-        <div class="card jxp-clickable">
+
+        {% if trick.status == 0 %}
+            {% set statusClass = 'draft' %}
+            {% set draftText = ' - Draft' %}
+        {% else %}
+            {% set statusClass = '' %}
+            {% set draftText = '' %}
+        {% endif %}
+
+        <div class="card jxp-clickable {{ statusClass }}">
             {{ displayTrick.displayMainImage(trick,"card-img-top") }}
             <div class="card-body">
-                <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name }}</a></h5>
+                <h5 class="trick-name"><a href="{{ path('trick',{trickSlug:trick.slug}) }}">{{ trick.name~' '~draftText }}</a></h5>
                 <p class="font-italic">{{ trick.trickGroup.name }}</p>
 
                 {% if is_granted('edit',trick) %}
