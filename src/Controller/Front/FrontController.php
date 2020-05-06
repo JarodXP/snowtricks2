@@ -9,7 +9,7 @@ use App\CustomServices\CommentLister;
 use App\CustomServices\HomeTrickLister;
 use App\CustomServices\SlugMaker;
 use App\CustomServices\TrickMediaHandler;
-use App\CustomServices\TrickRemover;
+use App\CustomServices\EntityRemover;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
@@ -267,16 +267,19 @@ class FrontController extends AbstractController
      * @Route("/tricks/remove/{trickSlug}",name="remove-trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @param Trick $trick
-     * @param TrickRemover $remover
+     * @param EntityRemover $remover
      * @return RedirectResponse
      */
-    public function removeTrickAction(Trick $trick, TrickRemover $remover)
+    public function removeTrickAction(Request $request, Trick $trick, EntityRemover $remover)
     {
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('edit', $trick);
+
         //Removes the trick
-        $remover->removeTrick($trick);
+        $removeResponse = $remover->removeEntity($request, $trick, 'delete-trick');
 
         //Adds a flash message
-        $this->addFlash('notice', 'The trick '.$trick->getName().' has been removed.');
+        $this->addFlash($removeResponse['flashType'], $removeResponse['message']);
 
         return $this->redirectToRoute('home', ['_fragment'=>'trick-list']);
     }

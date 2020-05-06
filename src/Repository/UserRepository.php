@@ -69,4 +69,15 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
         return new Paginator($queryBuilder->getQuery());
     }
+
+    /**
+     * @param User $user
+     * @throws ORMException
+     */
+    public function remove(User $user)
+    {
+        $manager = $this->getEntityManager();
+
+        $manager->remove($user);
+    }
 }

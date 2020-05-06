@@ -1,6 +1,6 @@
 import {CardClicker} from "./CardClicker";
 import {TrickLister} from "./AJAX/TricksGridLister";
-import {TrickRemover} from "./AJAX/TrickRemover";
+import {ElementRemover} from "./AJAX/ElementRemover";
 
 /*Sets a 'click' listener on the cards to redirect to the corresponding trick page*/
 CardClicker.setClickHandler();
@@ -9,5 +9,5 @@ CardClicker.setClickHandler();
 TrickLister.setEventHandler();
 
 //Sets the event handler for the trick remover and the <card> (parents[3]) as parent wrapper
-TrickRemover.setEventHandler('#section-trick',2);
+ElementRemover.setEventHandler('#section-trick',2);
 

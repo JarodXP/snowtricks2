@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\CustomServices\Removable;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -11,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MediaRepository")
  */
-class Media
+class Media implements Removable
 {
     /**
      * @ORM\Id()
@@ -57,16 +60,26 @@ class Media
         $this->dateAdded = new DateTime("now");
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFileName(): ?string
     {
         return $this->fileName;
     }
 
+    /**
+     * @param string|null $fileName
+     * @return $this
+     */
     public function setFileName(?string $fileName): self
     {
         $this->fileName = $fileName;
@@ -74,11 +87,18 @@ class Media
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getMimeType(): string
     {
         return $this->mimeType;
     }
 
+    /**
+     * @param string $mimeType
+     * @return $this
+     */
     public function setMimeType(string $mimeType): self
     {
         $this->mimeType = $mimeType;
@@ -86,11 +106,18 @@ class Media
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getAlt(): ?string
     {
         return $this->alt;
     }
 
+    /**
+     * @param string|null $alt
+     * @return $this
+     */
     public function setAlt(?string $alt): self
     {
         $this->alt = $alt;
@@ -98,6 +125,9 @@ class Media
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface
+     */
     public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
@@ -111,6 +141,10 @@ class Media
         return $this->tricks;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function addTrick(Trick $trick): self
     {
         if (!$this->tricks->contains($trick)) {
@@ -121,6 +155,10 @@ class Media
         return $this;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->contains($trick)) {
@@ -139,6 +177,10 @@ class Media
         return $this->tricksMainImages;
     }
 
+    /**
+     * @param Trick $tricksMainImage
+     * @return $this
+     */
     public function addTricksMainImage(Trick $tricksMainImage): self
     {
         if (!$this->tricksMainImages->contains($tricksMainImage)) {
@@ -149,6 +191,10 @@ class Media
         return $this;
     }
 
+    /**
+     * @param Trick $tricksMainImage
+     * @return $this
+     */
     public function removeTricksMainImage(Trick $tricksMainImage): self
     {
         if ($this->tricksMainImages->contains($tricksMainImage)) {

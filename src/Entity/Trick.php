@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\CustomServices\Removable;
 use App\CustomServices\SlugMaker;
 use DateTime;
 use DateTimeInterface;
@@ -18,7 +19,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @UniqueEntity(fields={"name"}, message="There is already a trick with this name")
  * @UniqueEntity(fields={"slug"}, message="There is already a trick with this slug")
  */
-class Trick
+class Trick implements Removable
 {
     /**
      * @ORM\Id()

@@ -7,7 +7,7 @@ namespace App\Controller\Admin;
 
 use App\CustomServices\AdminLister;
 use App\CustomServices\AbstractLister;
-use App\CustomServices\TrickRemover;
+use App\CustomServices\EntityRemover;
 use App\Entity\Trick;
 use App\Entity\User;
 use App\Form\PaginationFormType;
@@ -89,17 +89,21 @@ class AdminController extends AbstractController
     /**
      * @Route("/admin/remove-trick/{trickSlug}",name="admin_remove_trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @param Request $request
      * @param Trick $trick
-     * @param TrickRemover $remover
+     * @param EntityRemover $remover
      * @return RedirectResponse
      */
-    public function removeTrickAction(Trick $trick, TrickRemover $remover)
+    public function removeTrickAction(Request $request, Trick $trick, EntityRemover $remover)
     {
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('edit', $trick);
+
         //Removes the trick
-        $remover->removeTrick($trick);
+        $removeResponse = $remover->removeEntity($request, $trick, 'delete-trick');
 
         //Adds a flash message
-        $this->addFlash('notice', 'The trick ' . $trick->getName() . ' has been removed.');
+        $this->addFlash($removeResponse['flashType'], $removeResponse['message']);
 
         return $this->redirectToRoute('admin-tricks');
     }
@@ -139,15 +143,23 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/remove-user/{username)",name="admin_remove_user")
+     * @Route("/admin/remove-user/{username}",name="admin_remove_user")
      * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     * @param Request $request
      * @param User $user
+     * @param EntityRemover $remover
      * @return RedirectResponse
      */
-    public function removeUserAction(User $user)
+    public function removeUserAction(Request $request, User $user, EntityRemover $remover)
     {
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        //Removes the trick
+        $removeResponse = $remover->removeEntity($request, $user, 'delete-user');
+
         //Adds a flash message
-        $this->addFlash('notice', 'The user ' . $user->getUsername() . ' has been removed.');
+        $this->addFlash($removeResponse['flashType'], $removeResponse['message']);
 
         return $this->redirectToRoute('admin-users');
     }

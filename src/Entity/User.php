@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\CustomServices\Removable;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,7 +18,7 @@ use DateTimeInterface;
  * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
  * @UniqueEntity(fields={"email"}, message="This email address is already used.")
  */
-class User implements UserInterface
+class User implements UserInterface, Removable
 {
     /**
      * @var string token to be used if password forgotten
@@ -117,16 +120,25 @@ class User implements UserInterface
         $this->username = $data['username'];
     }
 
+    /**
+     * @return string|null
+     */
     public function getResetToken(): ?string
     {
         return $this->resetToken;
     }
 
+    /**
+     * @param string|null $resetToken
+     */
     public function setResetToken(?string $resetToken): void
     {
         $this->resetToken = $resetToken;
     }
 
+    /**
+     * @return int
+     */
     public function getId(): int
     {
         return $this->id;
@@ -142,6 +154,10 @@ class User implements UserInterface
         return $this->username;
     }
 
+    /**
+     * @param string|null $username
+     * @return $this
+     */
     public function setUsername(?string $username): self
     {
         $this->username = $username;
@@ -161,6 +177,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -176,6 +196,10 @@ class User implements UserInterface
         return (string) $this->password;
     }
 
+    /**
+     * @param string|null $password
+     * @return $this
+     */
     public function setPassword(?string $password): self
     {
         if ($password !== null) {
@@ -208,6 +232,10 @@ class User implements UserInterface
         return $this->tricks;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function addTrick(Trick $trick): self
     {
         if (!$this->tricks->contains($trick)) {
@@ -218,6 +246,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->contains($trick)) {
@@ -231,11 +263,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Media|null
+     */
     public function getAvatar(): ?Media
     {
         return $this->avatar;
     }
 
+    /**
+     * @param Media|null $avatar
+     * @return $this
+     */
     public function setAvatar(?Media $avatar): self
     {
         $this->avatar = $avatar;
@@ -251,6 +290,10 @@ class User implements UserInterface
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -261,6 +304,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->contains($comment)) {
@@ -274,11 +321,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string|null $firstName
+     * @return $this
+     */
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
@@ -286,11 +340,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string|null $lastName
+     * @return $this
+     */
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
@@ -298,11 +359,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string|null $email
+     * @return $this
+     */
     public function setEmail(?string $email): self
     {
         $this->email = $email;
@@ -310,11 +378,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return DateTimeInterface
+     */
     public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
     }
 
+    /**
+     * @param DateTimeInterface $dateAdded
+     * @return $this
+     */
     public function setDateAdded(DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;

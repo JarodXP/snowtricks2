@@ -56,3 +56,12 @@
 
     </div>
 {% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+    {# Encore JS #}
+    {{ encore_entry_script_tags('admin-tricks') }}
+
+{% endblock %}

@@ -8,18 +8,16 @@ namespace App\Controller;
 use App\Controller\Front\FrontController;
 use App\CustomServices\CommentLister;
 use App\CustomServices\HomeTrickLister;
-use App\CustomServices\TrickRemover;
+use App\CustomServices\EntityRemover;
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Form\SimplePaginationFormType;
 use App\Repository\CommentRepository;
-use RuntimeException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 
 /**
  * Class AjaxController
@@ -43,33 +41,38 @@ class AjaxController extends AbstractController
      * @Route("/ajax/remove-trick/{trickSlug}", name="ajax_remove_trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
      * @param Trick $trick
-     * @param TrickRemover $remover
+     * @param EntityRemover $remover
      * @param Request $request
      * @return Response
      */
-    public function ajaxRemoveTrick(Trick $trick, TrickRemover $remover, Request $request):Response
+    public function ajaxRemoveTrick(Trick $trick, EntityRemover $remover, Request $request):Response
     {
-        try {
-            //Uses Security voter to grant access
-            $this->denyAccessUnlessGranted('edit', $trick);
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('edit', $trick);
 
-            $submittedToken = $request->request->get('remove_token');
+        //Removes the trick and gets the http message and status code
+        $removeResponse = $remover->removeEntity($request, $trick, 'delete-trick');
 
-            if ($this->isCsrfTokenValid('delete-trick', $submittedToken)) {
-                //Removes the trick
-                $remover->removeTrick($trick);
+        return new Response($removeResponse['message'], $removeResponse['httpCode']);
+    }
 
-                return new Response('The trick ' . $trick->getName() . ' has been removed.', 200);
-            } else {
-                //Throws exception if CSRF token is invalid
-                throw new InvalidCsrfTokenException('You are not allowed to do this operation', 500);
-            }
-        } catch (AccessDeniedHttpException | InvalidCsrfTokenException | RuntimeException $e) {
-            $message = $e->getMessage();
-            $errorCode = $e->getCode();
+    /**
+     * @Route("/ajax/remove-user/{username}", name="ajax_remove_user")
+     * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     * @param User $user
+     * @param EntityRemover $remover
+     * @param Request $request
+     * @return Response
+     */
+    public function ajaxRemoveUser(User $user, EntityRemover $remover, Request $request):Response
+    {
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-            return new Response($message, $errorCode);
-        }
+        //Removes the user and gets the http message and status code
+        $removeResponse = $remover->removeEntity($request, $user, 'delete-user');
+
+        return new Response($removeResponse['message'], $removeResponse['httpCode']);
     }
 
     /**
