@@ -14,6 +14,22 @@
 
 {% endmacro %}
 
+{# Displays the buttons or links to edit and remove a user #}
+{% macro editUsersBtns(username, editBtnType, removeBtnType) %}
+    {% set editPath = path('member-profile', {'username': username}) %}
+    {% if is_granted('ROLE_ADMIN')  %}
+        {% set removePath = path('admin_remove_user', {'username': username}) %}
+    {% else %}
+        {% set removePath = path('remove-account', {'username': username}) %}
+    {% endif %}
+    {% set targetId = username %}
+    {% set csrfToken = 'delete-user' %}
+    {% set dataTarget = 'data-username' %}
+
+    {{ _self.buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) }}
+
+{% endmacro %}
+
 {# Displays the buttons or links to edit and remove a media #}
 {% macro editTrickMediaBtns(mediaId, mediaType,trickSlug, editBtnType, removeBtnType) %}
     {% set editPath = path('trick_media', {'mediaId': mediaId, 'mediaType': mediaType, 'trickSlug': trickSlug}) %}

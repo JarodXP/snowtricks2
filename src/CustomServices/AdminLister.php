@@ -5,7 +5,8 @@ declare(strict_types=1);
 
 namespace App\CustomServices;
 
-
+use App\Entity\Trick;
+use App\Entity\User;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -23,11 +24,20 @@ class AdminLister extends AbstractLister
     {
         $this->queryParameters = [
             self::OFFSET_FIELD => 0,
-            self::ORDER_FIELD => 'name',
             self::DIRECTION_FIELD => 'DESC',
             self::LIMIT_FIELD => 5,
             self::FILTER_FIELD => 'all'
         ];
+
+        switch ($this->className) {
+            case Trick::class:
+                $this->queryParameters[self::ORDER_FIELD] = 'name';
+                break;
+            case User::class:
+                $this->queryParameters[self::ORDER_FIELD] = 'username';
+                break;
+            default:break;
+        }
     }
 
     /**

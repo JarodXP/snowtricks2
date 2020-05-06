@@ -1,11 +1,12 @@
 {% extends 'admin/layout.html.twig' %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
 
 {% block title %}Admin Users{% endblock %}
 
 {% block mainContent %}
-    <div id="admin-users-list" class="admin-content">
+    <div id="admin-list" class="admin-content">
         <h1>List of users</h1>
-        <form>
+        <div class="table-wrapper">
             <table class="table table-hover">
                 <thead class="thead-dark">
                 <tr>
@@ -24,7 +25,7 @@
                     <tr>
                         <td>
                             <div class="jxp-avatar-thumbnail">
-                                <img src="/media/{{ user.avatar.filename }}" alt="{{ user.avatar.alt }}">
+                                <img src="/media/avatars/{{ user.avatar.fileName }}" alt="{{ user.avatar.alt }}">
                             </div>
                         </td>
                         <td>{{ user.username }}</td>
@@ -33,13 +34,15 @@
                         <td>{{ user.dateAdded |date('Y-m-d') }}</td>
                         <td>{{ user.email }}</td>
                         <td>{% for role in user.roles %} {{ role | userRole }} {% endfor %}</td>
-                        <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                        <td class="remove-icon">
+                            {{ buttons.editUsersBtns(user.username, 'icon', 'icon')  | raw }}
+                        </td>
                     </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-        </form>
+        </div>
 
         {% include 'admin/_admin_pagination.html.twig' %}
 

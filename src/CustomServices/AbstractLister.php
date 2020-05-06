@@ -31,6 +31,7 @@ abstract class AbstractLister
 
     protected array $queryParameters;
     protected ?int $page = null;
+    protected string $className;
 
     /**
      * AbstractLister constructor.
@@ -59,8 +60,10 @@ abstract class AbstractLister
      * @param int|null $page
      * @return array
      */
-    public function getQueryParameters(Request $request, FormInterface $paginationForm, int $page = null):array
+    public function getQueryParameters(Request $request, string $className, FormInterface $paginationForm, int $page = null):array
     {
+        $this->className = $className;
+
         $this->queryDefaultParameters();
 
         $paginationForm->handleRequest($request);
@@ -77,10 +80,10 @@ abstract class AbstractLister
      * @param string $repoList
      * @return Paginator
      */
-    public function getList(string $className, string $repoList):Paginator
+    public function getList(string $repoList):Paginator
     {
         return $this->manager
-            ->getRepository($className)
+            ->getRepository($this->className)
             ->$repoList($this->queryParameters);
     }
 

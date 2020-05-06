@@ -9,6 +9,7 @@ use App\CustomServices\AdminLister;
 use App\CustomServices\AbstractLister;
 use App\CustomServices\TrickRemover;
 use App\Entity\Trick;
+use App\Entity\User;
 use App\Form\PaginationFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -86,7 +87,27 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/admin/remove-trick/{trickSlug}",name="admin_remove_trick")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @param Trick $trick
+     * @param TrickRemover $remover
+     * @return RedirectResponse
+     */
+    public function removeTrickAction(Trick $trick, TrickRemover $remover)
+    {
+        //Removes the trick
+        $remover->removeTrick($trick);
+
+        //Adds a flash message
+        $this->addFlash('notice', 'The trick ' . $trick->getName() . ' has been removed.');
+
+        return $this->redirectToRoute('admin-tricks');
+    }
+
+    /**
      * @Route("/admin/users/{page}",name="admin-users")
+     * @param Request $request
+     * @param AdminLister $lister
      * @param int $page
      * @return Response
      */
@@ -103,35 +124,31 @@ class AdminController extends AbstractController
             'filterFieldList' => ['all']
         ]);
 
-        $queryParameters = $lister->getQueryParameters($request, $paginationForm, $page);
+        $queryParameters = $lister->getQueryParameters($request, User::class, $paginationForm, $page);
 
-        $tricks = $lister->getList(Trick::class, AbstractLister::ADMIN_TRICK_LIST);
+        $users = $lister->getList(AbstractLister::ADMIN_USER_LIST);
 
-        return $this->render('admin\trick_list.html.twig', [
-            'tricks' => $tricks,
+        return $this->render('admin\users_list.html.twig', [
+            'users' => $users,
             'paginationForm' => $paginationForm->createView(),
             'params' => $queryParameters,
-            'route' => 'admin-tricks',
-            'pages' => $lister->getTotalPages($tricks),
+            'route' => 'admin-users',
+            'pages' => $lister->getTotalPages($users),
             'currentPage' => $page
         ]);
     }
 
     /**
-     * @Route("/admin/remove-trick/{trickSlug}",name="admin_remove_trick")
-     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
-     * @param Trick $trick
-     * @param TrickRemover $remover
+     * @Route("/admin/remove-user/{username)",name="admin_remove_user")
+     * @ParamConverter("user", options={"mapping": {"username": "username"}})
+     * @param User $user
      * @return RedirectResponse
      */
-    public function removeTrickAction(Trick $trick, TrickRemover $remover)
+    public function removeUserAction(User $user)
     {
-        //Removes the trick
-        $remover->removeTrick($trick);
-
         //Adds a flash message
-        $this->addFlash('notice', 'The trick ' . $trick->getName() . ' has been removed.');
+        $this->addFlash('notice', 'The user ' . $user->getUsername() . ' has been removed.');
 
-        return $this->redirectToRoute('admin-tricks');
+        return $this->redirectToRoute('admin-users');
     }
 }
