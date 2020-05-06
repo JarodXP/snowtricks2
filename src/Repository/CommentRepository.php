@@ -17,8 +17,6 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class CommentRepository extends ServiceEntityRepository
 {
-    public const LIMIT_DISPLAY = 5;
-
     /**
      * @param ManagerRegistry $registry
      */

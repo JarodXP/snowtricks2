@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\Type;
 
 /**
- * Class HomeListFormType
+ * Class HomeFilterFormType
  * @package App\Form
  */
 class HomeLimitFormType extends AbstractType
@@ -25,7 +25,7 @@ class HomeLimitFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('trickGroup', HiddenType::class, [
+            ->add('trickGroupId', HiddenType::class, [
                 'constraints'=>[
                     new Type([
                          'type' => 'digit',

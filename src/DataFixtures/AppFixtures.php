@@ -204,6 +204,15 @@ class AppFixtures extends Fixture
 
         /////////////// USERS //////////////////////
 
+        $anonymous = new User();
+
+        $anonymous->setEmail('reveolte@gmail.com')
+            ->setUsername('Anonymous')
+            ->setPassword($this->passwordEncoder->encodePassword($anonymous, 'azerty'))
+            ->setRoles(['ROLE_USER']);
+
+        $manager->persist($anonymous);
+
         $reveolte = new User();
 
         $reveolte->setEmail('reveolte@gmail.com')

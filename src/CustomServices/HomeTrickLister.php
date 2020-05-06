@@ -7,28 +7,24 @@ namespace App\CustomServices;
 
 use App\Entity\Trick;
 use App\Form\HomeLimitFormType;
-use App\Form\HomeListFormType;
-use App\Repository\TrickRepository;
-use App\Security\EditTrickVoter;
+use App\Form\HomeFilterFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Security;
 
 /**
  * Class HomeTrickLister
  * @package App\CustomServices
  */
-class HomeTrickLister
+class HomeTrickLister extends AbstractLister
 {
-    public const HOME_FORM = 'homeForm';
-    public const LIMIT_FORM = 'limitForm';
     public const FILTER_ID = 'filterId';
     public const TRICK_GROUP = 'trickGroup';
+    public const TRICK_GROUP_ID = 'trickGroupId';
 
-    private EntityManagerInterface $manager;
+
     private FormFactoryInterface $formFactory;
     private Security $security;
 
@@ -36,83 +32,29 @@ class HomeTrickLister
      * HomeTrickLister constructor.
      * @param EntityManagerInterface $manager
      * @param FormFactoryInterface $formFactory
-     * @param EditTrickVoter $voter
-     * @param TokenInterface $token
+     * @param Security $security
      */
     public function __construct(EntityManagerInterface $manager, FormFactoryInterface $formFactory, Security $security)
     {
-        $this->manager = $manager;
+        parent::__construct($manager);
         $this->formFactory = $formFactory;
         $this->security = $security;
     }
 
     /**
-     * Gets the trick list for the home page depending on the filter and limit
-     * @param array $responseVars
-     * @param Request $request
+     * Gets the trick list and applies a filter to the list by owner or admin for the drafts tricks
      * @return array
      */
-    public function getTrickList(Request $request, array $responseVars = null):array
+    public function getGrantedList():array
     {
-        //Creates the form for group filter
-        $responseVars[self::HOME_FORM] = $this->formFactory->create(HomeListFormType::class);
-        $responseVars[self::HOME_FORM]->handleRequest($request);
+        //Gets the list of tricks with the registered query parameters
+        $list = $this->getList('getHomeTrickList');
 
-        //Creates the form for more tricks
-        $responseVars[self::LIMIT_FORM] = $this->formFactory->create(HomeLimitFormType::class);
-        $responseVars[self::LIMIT_FORM]->handleRequest($request);
-
-        if ($responseVars[self::HOME_FORM]->isSubmitted() && $responseVars[self::HOME_FORM]->isValid()) {
-
-            //Sets the trick group filter
-            if (!is_null($responseVars[self::HOME_FORM]->get(self::TRICK_GROUP)->getData())) {
-                $responseVars[self::FILTER_ID] = $responseVars[self::HOME_FORM]->get(self::TRICK_GROUP)->getData()->getId();
-            } else {
-                $responseVars[self::FILTER_ID] = null;
-            }
-
-            //Sets the limit of displayed tricks
-            if (!is_null($responseVars[self::HOME_FORM]->get(TrickRepository::LIMIT_FIELD)->getData())) {
-                $responseVars[TrickRepository::LIMIT_FIELD] = (int) $responseVars[self::HOME_FORM]->get(TrickRepository::LIMIT_FIELD)->getData();
-            } else {
-                $responseVars[TrickRepository::LIMIT_FIELD] = 5;
-            }
-        } elseif ($responseVars[self::LIMIT_FORM]->isSubmitted() && $responseVars[self::LIMIT_FORM]->isValid()) {
-
-            //Sets the trick group filter
-            if (!is_null($responseVars[self::LIMIT_FORM]->get(self::TRICK_GROUP)->getData())) {
-                $responseVars[self::FILTER_ID] = (int) $responseVars[self::LIMIT_FORM]->get(self::TRICK_GROUP)->getData();
-            } else {
-                $responseVars[self::FILTER_ID] = null;
-            }
-
-            //Sets the limit of displayed tricks
-            if (!is_null($responseVars[self::LIMIT_FORM]->get(TrickRepository::LIMIT_FIELD)->getData())) {
-                $responseVars[TrickRepository::LIMIT_FIELD] = (int) $responseVars[self::LIMIT_FORM]->get(TrickRepository::LIMIT_FIELD)->getData() + 5;
-            } else {
-                $responseVars[TrickRepository::LIMIT_FIELD] = 5;
-            }
-        }
-
-        //Gets the list of tricks
-        $responseVars['tricks'] = $this->filterList($this->manager
-            ->getRepository(Trick::class)
-            ->getHomeTrickList($responseVars[TrickRepository::LIMIT_FIELD], $responseVars[self::FILTER_ID]));
-
-
-        return $responseVars;
-    }
-
-    /**
-     * @param Paginator $list
-     * @return array
-     */
-    private function filterList(Paginator $list):array
-    {
+        //Sets a new array to pick up only the granted tricks from the list
         $tricksList = [];
         $i = 0;
 
-
+        //Checks if the user is granted to see the drafts
         foreach ($list as $trick) {
             if ($trick->getStatus() == 1 || $this->security->isGranted('edit', $trick)) {
                 $tricksList[$i] = $trick;
@@ -120,5 +62,74 @@ class HomeTrickLister
             }
         }
         return $tricksList;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setQueryDefaultParameters(): void
+    {
+        //Sets the default value for trick list
+        $this->queryParameters = [
+            self::LIMIT_FIELD => 5,
+            self::FILTER_ID => null
+        ];
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function setQueryParametersFromForm(FormInterface $paginationForm, int $page = null, string $formName = null): void
+    {
+        $newParameters = [];
+
+        //Sets the new parameters depending on the form type
+        switch ($formName) {
+            case 'home_filter_form':
+                is_null($paginationForm->get(self::TRICK_GROUP)->getData())
+                    ? $newParameters[self::FILTER_ID] = null
+                    : $newParameters[self::FILTER_ID] = $paginationForm->get(self::TRICK_GROUP)->getData()->getId();
+                $newParameters[self::LIMIT_FIELD] = (int) $paginationForm->get(self::LIMIT_FIELD)->getData();
+            break;
+
+            case 'home_limit_form':
+                $newParameters[self::FILTER_ID] = $paginationForm->get(self::TRICK_GROUP_ID)->getData();
+                $newParameters[self::LIMIT_FIELD] = (int) $paginationForm->get(self::LIMIT_FIELD)->getData() + 5;
+            break;
+
+            default: break;
+        }
+
+        //Merges the default parameters and the new parameters
+        $this->queryParameters = array_merge($this->queryParameters, $newParameters);
+
+        dump($this->queryParameters);
+    }
+
+    /**
+     * Returns the trick list and the parameters for the template (limit, filter)
+     * @param Request $request
+     * @return array
+     */
+    public function getTrickListAndParameters(Request $request)
+    {
+        //Creates the forms for limit and filter (either HomeForm or Limit is submitted)
+        $filterForm = $this->formFactory->create(HomeFilterFormType::class);
+        $limitForm = $this->formFactory->create(HomeLimitFormType::class);
+
+        //Sets the query parameters for filterForm
+        $this->setQueryParameters($request, Trick::class, $filterForm);
+        $this->setQueryParameters($request, Trick::class, $limitForm);
+
+        $responseVars = $this->getQueryParameters();
+
+        //Get the tricks list
+        $responseVars['tricks'] = $this->getGrantedList();
+
+        //Adds the forms to response variables
+        $responseVars['filterForm'] = $filterForm->createView();
+        $responseVars['limitForm'] = $limitForm->createView();
+
+        return $responseVars;
     }
 }

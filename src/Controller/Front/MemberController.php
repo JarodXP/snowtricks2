@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\Controller\Front;
 
@@ -7,7 +9,6 @@ use App\CustomServices\AvatarUploader;
 use App\Entity\Media;
 use App\Entity\User;
 use App\Form\UserProfileType;
-use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
+/**
+ * Class MemberController
+ * @package App\Controller\Front
+ */
 class MemberController extends AbstractController
 {
     /**
@@ -24,28 +29,13 @@ class MemberController extends AbstractController
      * @param TokenGeneratorInterface $tokenGenerator
      * @return Response
      */
-    public function profileFormAction(Request $request, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
+    public function profileFormAction(Request $request, User $user, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
     {
-        //Gets the current user.
-        //Doctrine is used to create a User object different from the session User before form validation
-        $user = $this->getDoctrine()
-            ->getManager()
-            ->getRepository(User::class)
-            ->findOneBy(['username' => $this->getUser()->getUsername()]);
-
-        //Creates a new token and registers it into the database
-        $token = $tokenGenerator->generateToken();
-
         $manager = $this->getDoctrine()->getManager();
 
-        try {
-            $user->setResetToken($token);
-            $manager->flush();
-        } catch (Exception $e) {
-            $this->addFlash('warning', $e->getMessage());
-
-            return $this->redirectToRoute('home');
-        }
+        //Creates a new token for password resetting
+        $token = $tokenGenerator->generateToken();
+        $user->setResetToken($token);
 
         //Creates the form & handles request
         $formProfile = $this->createForm(UserProfileType::class, $user);
@@ -96,10 +86,22 @@ class MemberController extends AbstractController
             return $this->redirectToRoute('member-profile', ['username'=>$user->getUsername()]);
         }
 
+        //registers it into the database
+        $manager->persist($user);
+        $manager->flush();
+
         //If no data has been submitted, renders the blank form
         return $this->render('front/member_profile.html.twig', [
             'formProfile' => $formProfile->createView(),
             'user' => $user,
         ]);
+    }
+
+    /**
+     * @Route("/member/remove-account", name="remove-account")
+     */
+    public function removeAccountAction()
+    {
+        $this->redirectToRoute('home');
     }
 }

@@ -12,7 +12,7 @@
 
             <div id="form-group-avatar" class="form-group">
                 <div class="avatar-container">
-                    <img src="{{ asset('media/avatars/'~getAvatarFilename(user.avatar)) }}" alt="avatar picture">
+                    <img src="{{ asset('media/avatars/'~avatarFilename(user.avatar)) }}" alt="avatar picture">
                 </div>
 
                 {{ form_widget(formProfile.avatar) }}

@@ -1,7 +1,7 @@
 const $ = require('jquery');
 
 /*Ajax object to update home trick list*/
-const TrickLister = {
+const TrickGridLister = {
 
     trickGroup : '',
     limit: '',
@@ -9,14 +9,15 @@ const TrickLister = {
     setEventHandler(){
         const delegateSelector = $('#section-trick');
 
-        delegateSelector.on('submit','form[name="home_list_form"]',function (e){
+        delegateSelector.on('submit','form[name="home_filter_form"]',function (e){
             e.preventDefault();
-            TrickLister.makeRequest($(this));
+            TrickGridLister.makeRequest($(this));
+
         });
 
         delegateSelector.on('submit','form[name="home_limit_form"]',function (e){
             e.preventDefault();
-            TrickLister.makeRequest($(this));
+            TrickGridLister.makeRequest($(this));
         });
     },
 
@@ -31,9 +32,9 @@ const TrickLister = {
             method: 'POST',
             data: form.serialize(),
             success: function (data) {
-                TrickLister.updateList(data);
-                TrickLister.resetLoadBtns(form);
-                TrickLister.updateFormFields(form);
+                TrickGridLister.updateList(data);
+                TrickGridLister.resetLoadBtns(form);
+                TrickGridLister.updateFormFields(form);
             }
         });
     },
@@ -62,4 +63,4 @@ const TrickLister = {
     },
 };
 
-export {TrickLister};
+export {TrickGridLister};

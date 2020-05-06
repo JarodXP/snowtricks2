@@ -2,10 +2,18 @@ import {Flashbag} from './Flashbag';
 
 const $ = require('jquery');
 
-const TrickRemover = {
-    trickSlug:'',
-    trickWrapper:'',//Parent element to be removed on success
+const ElementRemover = {
+    ajaxUrl: '',
+    dataAttributeName:'',
+    elementIdentifier:'',
+    elementWrapper:'',//Parent element to be removed on success
     tokenValue:'',
+
+    initialize(delegateSelector,wrapperElementNodeLevel,dataAttributeName, ajaxUrl){
+        this.dataAttributeName = dataAttributeName;
+        this.ajaxUrl = ajaxUrl;
+        this.setEventHandler(delegateSelector,wrapperElementNodeLevel);
+    },
 
     //Sets the event handler for every remove-btn
     setEventHandler(delegateSelector, wrapperElementNodeLevel){
@@ -21,23 +29,23 @@ const TrickRemover = {
             e.preventDefault();
             e.stopPropagation();
 
-            TrickRemover.makeRequest($(this), $(this).parents().eq(wrapperElementNodeLevel))
+            ElementRemover.makeRequest($(this), $(this).parents().eq(wrapperElementNodeLevel))
         });
     },
 
     makeRequest(form, trickWrapper){
-        this.trickWrapper = trickWrapper;
-        this.trickSlug = form.find('.remove-btn').attr('data-trick-slug');
+        this.elementWrapper = trickWrapper;
+        this.elementIdentifier = form.find('.remove-btn').attr(ElementRemover.dataAttributeName);
         this.tokenValue = form.find("input[name='remove_token']").attr('value');
 
         //Sets the ajax object
         $.ajax({
-            url: '/ajax/remove-trick/' + this.trickSlug,
+            url: ElementRemover.ajaxUrl + this.elementIdentifier,
             method: 'POST',
             data: 'remove_token='+encodeURIComponent(this.tokenValue),
             success: function () {
-                TrickRemover.trickWrapper.remove();
-                Flashbag.displayFlashbag('The trick ' + TrickRemover.trickSlug + ' has been removed','notice');
+                ElementRemover.elementWrapper.remove();
+                Flashbag.displayFlashbag('The element ' + ElementRemover.elementIdentifier + ' has been removed','notice');
             },
             error: function (xhr) {
                 Flashbag.displayFlashbag(xhr.responseText,'error');
@@ -46,4 +54,4 @@ const TrickRemover = {
     }
 };
 
-export {TrickRemover};
+export {ElementRemover};
