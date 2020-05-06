@@ -43,39 +43,55 @@ abstract class AbstractLister
     }
 
     /**
+     * Sets the default parameters
      * @return void
      */
-    abstract protected function queryDefaultParameters():void ;
+    abstract protected function setQueryDefaultParameters():void ;
 
     /**
+     * Sets the parameters from the form
      * @param FormInterface $paginationForm
      * @param int $page
+     * @param string $formName
      * @return void
      */
-    abstract protected function getQueryParametersFromForm(FormInterface $paginationForm, int $page): void ;
+    abstract protected function setQueryParametersFromForm(FormInterface $paginationForm, int $page, string $formName): void ;
 
     /**
+     * Handles the request to set the new query parameters from the submitted form
      * @param Request $request
+     * @param string $className
      * @param FormInterface $paginationForm
      * @param int|null $page
-     * @return array
+     * @return void
      */
-    public function getQueryParameters(Request $request, string $className, FormInterface $paginationForm, int $page = null):array
+    public function setQueryParameters(Request $request, string $className, FormInterface $paginationForm, int $page = null):void
     {
+        //Sets the class name to handle the default parameters
         $this->className = $className;
 
-        $this->queryDefaultParameters();
+        //Sets the default parameters
+        $this->setQueryDefaultParameters();
 
         $paginationForm->handleRequest($request);
 
+        //Checks form validity and sets the new query parameters
         if ($paginationForm->isSubmitted() && $paginationForm->isValid()) {
-            $this->getQueryParametersFromForm($paginationForm, $page);
+            $this->setQueryParametersFromForm($paginationForm, $page, $paginationForm->getName());
         }
+    }
 
+    /**
+     * Gets the queryParameters
+     * @return array
+     */
+    public function getQueryParameters()
+    {
         return $this->queryParameters;
     }
 
     /**
+     * Calls the corresponding method in the respective repository
      * @param string $className
      * @param string $repoList
      * @return Paginator
@@ -88,6 +104,7 @@ abstract class AbstractLister
     }
 
     /**
+     * Counts the number of pages depending on the limit
      * @param Paginator $list
      * @return int
      */

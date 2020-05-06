@@ -14,10 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 /**
- * Class HomeListFormType
+ * Class HomeFilterFormType
  * @package App\Form
  */
-class HomeListFormType extends AbstractType
+class HomeFilterFormType extends AbstractType
 {
     /**
      * {@inheritdoc}

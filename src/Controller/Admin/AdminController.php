@@ -31,7 +31,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function displayTrickListAction(Request $request, int $page = null):Response
+    public function displayTrickListAction(Request $request, AdminLister $lister, int $page = null):Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
 
@@ -39,49 +39,24 @@ class AdminController extends AbstractController
             $page = 1;
         }
 
-        //Default query parameters
-        $queryParameters = [
-            'offset' => 0,
-            AbstractLister::ORDER_FIELD => 'name',
-            AbstractLister::DIRECTION_FIELD => 'DESC',
-            AbstractLister::LIMIT_FIELD => 5,
-            'filter' => 'all'
-            ];
-
+        //Creates the form
         $paginationForm = $this->createForm(PaginationFormType::class, null, [
             'sortFieldList'=>['name','trickGroup', 'author', 'dateAdded', 'dateModified', 'status'],
             'filterFieldList' => ['all']
         ]);
 
-        $paginationForm->handleRequest($request);
-
-        if ($paginationForm->isSubmitted() && $paginationForm->isValid()) {
-
-            //Sets the new parameters for the query
-            $queryParameters[AbstractLister::LIMIT_FIELD] = $paginationForm->get(AbstractLister::LIMIT_FIELD)->getData();
-            $queryParameters[AbstractLister::ORDER_FIELD] = $paginationForm->get(AbstractLister::ORDER_FIELD)->getData();
-            $queryParameters[AbstractLister::DIRECTION_FIELD] = $paginationForm->get(AbstractLister::DIRECTION_FIELD)->getData();
-
-            //Sets the offset
-            if (!is_null($page)) {
-                $queryParameters['offset'] = ($page - 1)*$queryParameters[AbstractLister::LIMIT_FIELD];
-            }
-        }
+        //Sets the parameters for the query
+        $lister->setQueryParameters($request, Trick::class, $paginationForm, $page);
 
         //Gets the trick list
-        $tricks = $this->getDoctrine()
-            ->getRepository(Trick::class)
-            ->getAdminTrickList($queryParameters);
-
-        //Gets the number of pages depending on the limit
-        $pages = round(count($tricks) / (int) $queryParameters[AbstractLister::LIMIT_FIELD]);
+        $tricks = $lister->getList(AdminLister::ADMIN_TRICK_LIST);
 
         return $this->render('admin\trick_list.html.twig', [
             'tricks' => $tricks,
             'paginationForm' => $paginationForm->createView(),
-            'params' => $queryParameters,
+            'params' => $lister->getQueryParameters(),
             'route' => 'admin-tricks',
-            'pages' => $pages,
+            'pages' => $lister->getTotalPages($tricks),
             'currentPage' => $page
         ]);
     }
@@ -128,14 +103,14 @@ class AdminController extends AbstractController
             'filterFieldList' => ['all']
         ]);
 
-        $queryParameters = $lister->getQueryParameters($request, User::class, $paginationForm, $page);
+        $lister->setQueryParameters($request, User::class, $paginationForm, $page);
 
         $users = $lister->getList(AbstractLister::ADMIN_USER_LIST);
 
         return $this->render('admin\users_list.html.twig', [
             'users' => $users,
             'paginationForm' => $paginationForm->createView(),
-            'params' => $queryParameters,
+            'params' => $lister->getQueryParameters(),
             'route' => 'admin-users',
             'pages' => $lister->getTotalPages($users),
             'currentPage' => $page

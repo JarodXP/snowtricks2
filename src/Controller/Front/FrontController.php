@@ -13,11 +13,9 @@ use App\CustomServices\EntityRemover;
 use App\Entity\Comment;
 use App\Entity\Media;
 use App\Entity\Trick;
-use App\Form\SimplePaginationFormType;
 use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
-use App\Repository\CommentRepository;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -45,16 +43,7 @@ class FrontController extends AbstractController
      */
     public function displayFrontTrickListAction(Request $request, HomeTrickLister $lister)
     {
-        //Sets the default value for trick list
-        $responseVars['limit'] = 5;
-        $responseVars['filterId'] = null;
-
-        //Get the tricks list
-        $responseVars = $lister->getTrickList($request, $responseVars);
-
-        //Adds the forms to response variables
-        $responseVars['homeForm'] = $responseVars['homeForm']->createView();
-        $responseVars['limitForm'] = $responseVars['limitForm']->createView();
+        $responseVars = $lister->getTrickListAndParameters($request);
 
         return $this->render('front/home.html.twig', $responseVars);
     }
@@ -90,27 +79,20 @@ class FrontController extends AbstractController
             $manager->flush();
         }
 
-        //Gets comment list
         //Sets the page number if null
         if (is_null($page)) {
             $page = 1;
         }
 
-        $comments = $lister->getCommentList($request, $trick, $page);
+        //Gets the comment list and other variables for the template
+        $templateVars = $lister->getCommentListAndParameters($request, $trick, $page);
 
-        //Creates pagination form
-        $paginationForm = $this->createForm(SimplePaginationFormType::class);
+        //Adds the other variables for the template
+        $templateVars['route'] = 'trick_comments';
+        $templateVars['editMode'] = false;
+        $templateVars['commentForm'] = $commentForm->createView();
 
-        return $this->render('front\trick.html.twig', [
-            'editMode' => false,
-            'comments' => $comments,
-            'commentForm' => $commentForm->createView(),
-            'paginationForm' =>$paginationForm->createView(),
-            'currentPage' => $page,
-            'pages' => round(count($comments))/CommentRepository::LIMIT_DISPLAY,
-            'route' => 'trick_comments',
-            self::TRICK_VAR => $trick,
-        ]);
+        return $this->render('front\trick.html.twig', $templateVars);
     }
 
     /**

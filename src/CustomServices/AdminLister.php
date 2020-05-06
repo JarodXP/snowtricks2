@@ -16,11 +16,7 @@ use Symfony\Component\Form\FormInterface;
  */
 class AdminLister extends AbstractLister
 {
-
-    /**
-     * @return void
-     */
-    protected function queryDefaultParameters():void
+    protected function setQueryDefaultParameters():void
     {
         $this->queryParameters = [
             self::OFFSET_FIELD => 0,
@@ -43,9 +39,10 @@ class AdminLister extends AbstractLister
     /**
      * @param FormInterface $paginationForm
      * @param int $page
+     * @param string $formName
      * @return void
      */
-    protected function getQueryParametersFromForm(FormInterface $paginationForm, int $page):void
+    protected function setQueryParametersFromForm(FormInterface $paginationForm, int $page, string $formName):void
     {
         //Sets the new parameters for the query
         $this->queryParameters[self::LIMIT_FIELD] = $paginationForm->get(self::LIMIT_FIELD)->getData();

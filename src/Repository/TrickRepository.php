@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\CustomServices\AbstractLister;
+use App\CustomServices\HomeTrickLister;
 use App\Entity\Trick;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -28,22 +29,21 @@ class TrickRepository extends ServiceEntityRepository
 
     /**
      * Gets the trick list for Home trick grid
-     * @param int $limit
-     * @param int|null $filterGroupId
+     * @param array $queryParameters
      * @return Paginator
      */
-    public function getHomeTrickList(int $limit, int $filterGroupId = null):Paginator
+    public function getHomeTrickList(array $queryParameters):Paginator
     {
         $queryBuilder = $this->createQueryBuilder('t');
 
         $queryBuilder
             ->select('t')
-            ->setMaxResults($limit)
+            ->setMaxResults($queryParameters[AbstractLister::LIMIT_FIELD])
             ->join('t.trickGroup', 'tg')
             ->orderBy('tg.name');
 
-        if (!is_null($filterGroupId)) {
-            $queryBuilder->where('tg.id = '.$filterGroupId);
+        if (isset($queryParameters[HomeTrickLister::FILTER_ID]) && !is_null($queryParameters[HomeTrickLister::FILTER_ID])) {
+            $queryBuilder->where('tg.id = '.$queryParameters[HomeTrickLister::FILTER_ID]);
         }
 
         return new Paginator($queryBuilder->getQuery());

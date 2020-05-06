@@ -5,14 +5,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Controller\Front\FrontController;
 use App\CustomServices\CommentLister;
 use App\CustomServices\HomeTrickLister;
 use App\CustomServices\EntityRemover;
 use App\Entity\Trick;
 use App\Entity\User;
-use App\Form\SimplePaginationFormType;
-use App\Repository\CommentRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,17 +23,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AjaxController extends AbstractController
 {
-    private CommentLister $lister;
-
-    /**
-     * AjaxController constructor.
-     * @param CommentLister $lister
-     */
-    public function __construct(CommentLister $lister)
-    {
-        $this->lister = $lister;
-    }
-
     /**
      * @Route("/ajax/remove-trick/{trickSlug}", name="ajax_remove_trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
@@ -83,7 +69,7 @@ class AjaxController extends AbstractController
      */
     public function ajaxDisplayHomeList(Request $request, HomeTrickLister $lister)
     {
-        $responseVars = $lister->getTrickList($request);
+        $responseVars = $lister->getTrickListAndParameters($request);
 
         return $this->render('front/_trick_list.html.twig', $responseVars);
     }
@@ -96,21 +82,15 @@ class AjaxController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function ajaxDisplayComments(Trick $trick, int $page, Request $request)
+    public function ajaxDisplayComments(Trick $trick, int $page, Request $request, CommentLister $commentLister)
     {
-        $comments = $this->lister->getCommentList($request, $trick, $page);
+        //Gets the comment list and other variables for the template
+        $templateVars = $commentLister->getCommentListAndParameters($request, $trick, $page);
 
-        //Creates pagination form
-        $paginationForm = $this->createForm(SimplePaginationFormType::class);
+        //Adds the route as variable for the template
+        $templateVars['route'] = 'ajax_trick_comments';
 
-        return $this->render('front\_comments.html.twig', [
-            'comments' => $comments,
-            'paginationForm' => $paginationForm->createView(),
-            'currentPage' => $page,
-            'pages' => round(count($comments))/CommentRepository::LIMIT_DISPLAY,
-            'route' => 'ajax_trick_comments',
-            FrontController::TRICK_VAR => $trick,
-        ]);
+        return $this->render('front\_comments.html.twig', $templateVars);
     }
 
     /**

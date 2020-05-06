@@ -78,6 +78,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     {
         $manager = $this->getEntityManager();
 
+        //Gets the anonymous user
+        $anonymous = $this->findOneBy(['username' => 'Anonymous']);
+
+        //Gets all the tricks from the user to be removed
+        $tricks = $user->getTricks();
+
+        //Transfers the tricks to an anonymous user
+        foreach ($tricks as $trick) {
+            $trick->setAuthor($anonymous);
+            $manager->persist($trick);
+        }
+
+        //Removes the user
         $manager->remove($user);
     }
 }

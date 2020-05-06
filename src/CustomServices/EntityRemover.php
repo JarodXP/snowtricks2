@@ -55,7 +55,13 @@ class EntityRemover
             if ($this->tokenManager->isTokenValid(new CsrfToken($tokenId, $submittedToken))) {
 
                 //Removes entity
-                $this->manager->remove($entity);
+                //If User, calls a special function to handle bound tricks
+                if (get_class($entity) == User::class) {
+                    $this->manager->getRepository(User::class)->remove($entity);
+                } else {
+                    $this->manager->remove($entity);
+                }
+
                 $this->manager->flush();
 
                 return [
