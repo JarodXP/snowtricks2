@@ -317,7 +317,8 @@ class AppFixtures extends Fixture
              his front foot to pop the board while using his back foot to control and guide the board in air to land safely.')
             ->setStatus(true)
             ->setTrickGroup($straightAir)
-            ->setMainImage($nollieMainImage);
+            ->setMainImage($nollieMainImage)
+            ->addMedia($nollieMainImage);
 
         $manager->persist($nollie);
 
@@ -330,7 +331,8 @@ class AppFixtures extends Fixture
              his position on the snowboard reverse his both feet positions.')
             ->setStatus(true)
             ->setTrickGroup($straightAir)
-            ->setMainImage($switchMainImage);
+            ->setMainImage($switchMainImage)
+            ->addMedia($switchMainImage);
 
         $manager->persist($switch);
 
@@ -344,7 +346,8 @@ class AppFixtures extends Fixture
               his/her back hand at that moment. Before landing, he/she has to leave the board.')
             ->setStatus(true)
             ->setTrickGroup($grabs)
-            ->setMainImage($indyMainImage);
+            ->setMainImage($indyMainImage)
+            ->addMedia($indyMainImage);
 
         $manager->persist($indy);
 
@@ -359,7 +362,8 @@ class AppFixtures extends Fixture
             front hand and grab your nose.')
             ->setStatus(true)
             ->setTrickGroup($grabs)
-            ->setMainImage($noseMainImage);
+            ->setMainImage($noseMainImage)
+            ->addMedia($noseMainImage);
 
         $manager->persist($noseGrab);
 
@@ -371,7 +375,8 @@ class AppFixtures extends Fixture
             ->setDescription('Flipping backwards (like a standing backflip) off of a jump.')
             ->setStatus(true)
             ->setTrickGroup($flips)
-            ->setMainImage($backflipMainImage);
+            ->setMainImage($backflipMainImage)
+            ->addMedia($backflipMainImage);
 
         $manager->persist($backflip);
 
@@ -383,7 +388,8 @@ class AppFixtures extends Fixture
             ->setDescription('A forward-flipping backside 540, performed in a halfpipe, quarterpipe, or similar obstacle. The rotation may continue beyond 540° (e.g., McTwist 720). The origin of this trick comes from vert ramp skateboarding, and was first performed on a skateboard by Mike McGill. ')
             ->setStatus(true)
             ->setTrickGroup($flips)
-            ->setMainImage($mctwistMainImage);
+            ->setMainImage($mctwistMainImage)
+            ->addMedia($mctwistMainImage);
 
         $manager->persist($mctwist);
 
@@ -395,7 +401,8 @@ class AppFixtures extends Fixture
             ->setDescription('An invert with a sad grab')
             ->setStatus(true)
             ->setTrickGroup($grabs)
-            ->setMainImage($melonMainImage);
+            ->setMainImage($melonMainImage)
+            ->addMedia($melonMainImage);
 
         $manager->persist($melon);
 
@@ -407,7 +414,8 @@ class AppFixtures extends Fixture
             ->setDescription('The front hand grabs the toe edge either between the toes or in front of the front foot.[1] Variations include the Mute Stiffy, in which a mute grab is performed while straightening both legs, or alternatively, some snowboarders will grab mute and rotate the board frontside 90 degrees.')
             ->setStatus(true)
             ->setTrickGroup($grabs)
-            ->setMainImage($muteMainImage);
+            ->setMainImage($muteMainImage)
+            ->addMedia($muteMainImage);
 
         $manager->persist($mute);
 
@@ -419,7 +427,8 @@ class AppFixtures extends Fixture
             ->setDescription('A slide performed where the rider\'s leading foot passes over the rail on approach, with their snowboard traveling perpendicular and trailing foot directly above the rail or other obstacle (like a tailslide). When performing a frontside bluntslide, the snowboarder is facing uphill. When performing a backside bluntslide, the snowboarder is facing downhill.')
             ->setStatus(true)
             ->setTrickGroup($slides)
-            ->setMainImage($tripodMainImage);
+            ->setMainImage($tripodMainImage)
+            ->addMedia($tripodMainImage);
 
         $manager->persist($tripod);
 

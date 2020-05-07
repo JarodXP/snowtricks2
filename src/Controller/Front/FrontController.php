@@ -231,8 +231,11 @@ class FrontController extends AbstractController
         //Gets the manager
         $manager = $this->getDoctrine()->getManager();
 
-        //Sets the tricks' mainImage to null
-        $trick->setMainImage(null);
+        if ($trick->getMainImage() === $media) {
+
+            //Sets the tricks' mainImage to null
+            $trick->setMainImage(null);
+        }
 
         //Updates manager
         $manager->persist($trick);

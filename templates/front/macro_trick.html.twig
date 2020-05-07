@@ -84,18 +84,23 @@
                 <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
                 Sorry, your browser doesn\'t support embedded videos.
             </video>
-            <div class="block-edit">
-                {{ editBtnsVideo | raw }}
-            </div>
+
+            {% if editMode == true %}
+                <div class="block-edit">
+                    {{ editBtnsVideo | raw }}
+                </div>
+            {% endif %}
         </div>
 
     {% else %}
 
         <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
             <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
-            <div class="block-edit">
-                {{ editBtns | raw }}
-            </div>
+            {% if editMode == true %}
+                <div class="block-edit">
+                    {{ editBtnsVideo | raw }}
+                </div>
+            {% endif %}
         </div>
 
     {% endif %}

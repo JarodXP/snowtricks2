@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller;
 
 use App\CustomServices\Authorization\UserInfoChecker;
@@ -24,6 +26,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
 use Swift_Mailer;
 
+/**
+ * Class SecurityController
+ * @package App\Controller
+ */
 class SecurityController extends AbstractController
 {
     public const USERNAME_FIELD = 'username',
@@ -178,6 +184,9 @@ class SecurityController extends AbstractController
 
     /**
      * @Route("/auth/reset-password/{token}",name="app_reset_password")
+     * @param Request $request
+     * @param string $token
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response
      */
     public function resetPassword(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder): Response
