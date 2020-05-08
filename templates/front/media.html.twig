@@ -25,3 +25,11 @@
 
     </div>
 {% endblock %}
+
+{% block footerScripts %}
+
+    {# Encore scripts #}
+    {{ parent() }}
+    {{ encore_entry_script_tags('edit-trick-media') }}
+
+{% endblock %}

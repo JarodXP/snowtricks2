@@ -18,10 +18,10 @@
         <div id="current-media">
 
         {% if mediaType == 'image' %}
-            <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
+            <img id="thumbnailMedia" src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
 
         {% else %}
-            <video>
+            <video id="thumbnailMedia">
                 <source src="{{ asset('/media/tricks_media/'~media.fileName) }}">
             </video>
 

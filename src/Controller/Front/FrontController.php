@@ -111,7 +111,7 @@ class FrontController extends AbstractController
             $trick = new Trick();
         }
 
-        //Sets the slug maker to allow Trick Entity to transform name into slug
+        //Sets the slug maker to allow Trick Entity to transform name into slug (autowiring doesn't work on entities)
         $trick->setSlugMaker($slugMaker);
 
         //Sets the author

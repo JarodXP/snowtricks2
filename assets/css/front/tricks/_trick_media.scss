@@ -38,7 +38,7 @@
   padding: 5px 0;
   overflow: hidden;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 #media-slider-toggle{
@@ -102,6 +102,10 @@
     border-radius: 5px;
     box-shadow: 5px 5px 5px $dark-primary-color;
   }
+}
+
+#thumbnailMedia{
+  object-fit: cover;
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
