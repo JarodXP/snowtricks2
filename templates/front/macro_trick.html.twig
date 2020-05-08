@@ -114,7 +114,9 @@
 
     {% if editMode == true %}
 
-        {{ form(trickForm) }}
+        {{ form_start(trickForm) }}
+
+        {{ form_widget(trickForm) }}
 
         <div class="jxp-group-btn">
             <button type="submit" class="btn btn-primary" form="trick_form">Save</button>
@@ -126,6 +128,8 @@
             <a href="{{ path('home') }}" class="btn btn-dark">Back</a>
 
         </div>
+
+        {{ form_end(trickForm) }}
 
     {% else %}
 
