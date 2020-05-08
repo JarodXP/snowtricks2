@@ -8,8 +8,7 @@
       <div class="comment-group">
          <div class="avatar-container">
             <div class="jxp-avatar-thumbnail">
-               <img src="{{ asset('/media/avatars/'~comment.user.avatar.fileName) }}"
-                    alt="{{ comment.user.avatar.alt }}">
+               <img src="/media/avatars/{{ avatarFilename(comment.user.avatar) }}" alt="avatar">
             </div>
          </div>
          <div class="comment-container">
