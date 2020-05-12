@@ -119,7 +119,7 @@
         {{ form_widget(trickForm) }}
 
         <div class="jxp-group-btn">
-            <button type="submit" class="btn btn-primary" form="trick_form">Save</button>
+            <button type="submit" class="btn btn-primary">Save</button>
 
             {% if trick.id is not null %}
                 {{ buttons.editTrickBtns(trick.slug, null, 'button')  | raw }}

@@ -14,4 +14,4 @@ hooks:
       runas: root
     - location: scripts/init-project-deploy.sh
       timeout: 300
-      runas: ubuntu
+      runas: root
