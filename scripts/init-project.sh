@@ -1,23 +1,9 @@
 #!/bin/bash
 
-# Install dependencies
-composer install --no-interaction
-yarn install --no-interaction
+##### Initializes the project after pull #########
 
-# Prepare database with Docrtine
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:migrate --no-interaction
+source "$(dirname $0)/init-dependencies.sh"
+source "$(dirname $0)/init-database.sh"
+source "$(dirname $0)/init-assets.sh"
+source "$(dirname $0)/init-medias.sh"
 
-# Clear media directory
-rm -R -d public/media/avatars
-rm -R -d public/media/tricks_media
-
-# Move media samples to media directory
-cp -p -r public/media/sampleFiles/avatars public/media/avatars
-cp -p -r public/media/sampleFiles/tricks_media public/media/tricks_media
-
-#Fixtures
-php bin/console doctrine:fixtures:load --no-interaction
-
-#Encore build
-yarn encore dev
