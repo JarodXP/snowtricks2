@@ -12,7 +12,7 @@
 
             <div id="form-group-avatar" class="form-group">
                 <div class="avatar-container">
-                    <img src="{{ asset('media/avatars/'~avatarFilename(user.avatar)) }}" alt="avatar picture">
+                    <img id="member-avatar-img" src="{{ asset('media/avatars/'~avatarFilename(user.avatar)) }}" alt="avatar picture">
                 </div>
 
                 {{ form_widget(formProfile.avatar) }}
@@ -39,4 +39,13 @@
 
 
     </div>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {# Encore scripts #}
+    {{ parent() }}
+    {{ encore_entry_script_tags('member-profile-page') }}
+
+
 {% endblock %}

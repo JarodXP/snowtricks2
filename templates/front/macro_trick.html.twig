@@ -98,7 +98,7 @@
             <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
             {% if editMode == true %}
                 <div class="block-edit">
-                    {{ editBtnsVideo | raw }}
+                    {{ editBtns | raw }}
                 </div>
             {% endif %}
         </div>
@@ -114,7 +114,9 @@
 
     {% if editMode == true %}
 
-        {{ form(trickForm) }}
+        {{ form_start(trickForm) }}
+
+        {{ form_widget(trickForm) }}
 
         <div class="jxp-group-btn">
             <button type="submit" class="btn btn-primary" form="trick_form">Save</button>
@@ -126,6 +128,8 @@
             <a href="{{ path('home') }}" class="btn btn-dark">Back</a>
 
         </div>
+
+        {{ form_end(trickForm) }}
 
     {% else %}
 

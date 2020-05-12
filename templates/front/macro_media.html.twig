@@ -15,20 +15,23 @@
 {% macro displayCurrentMedia(media,mediaType) %}
 
     {% if media.id is not null %}
-        <div id="current-media">
+        {% set fileName = media.fileName %}
+    {% else %}
+        {% set fileName = 'default_image.jpg' %}
+    {% endif %}
+
+    <div id="current-media">
 
         {% if mediaType == 'image' %}
-            <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
+            <img id="thumbnailMedia" src="{{ asset('/media/tricks_media/'~fileName) }}" alt="Media thumbnail">
 
         {% else %}
-            <video>
-                <source src="{{ asset('/media/tricks_media/'~media.fileName) }}">
+            <video id="thumbnailMedia">
+                <source src="{{ asset('/media/tricks_media/'~fileName) }}">
             </video>
 
         {% endif %}
-        </div>
-
-    {% endif %}
+    </div>
 
 {% endmacro %}
 

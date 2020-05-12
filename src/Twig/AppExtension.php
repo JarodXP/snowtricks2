@@ -44,7 +44,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('editModeModal', [$this,'editModeModal']),
             new TwigFunction('avatarFilename', [$this,'getAvatarFilename']),
             new TwigFunction('tinyMCE', [$this,'tinyMCE']),
-            new TwigFunction('editButtons', [$this, 'editButtons'])
+            new TwigFunction('editButtons', [$this, 'editButtons']),
             ];
     }
 

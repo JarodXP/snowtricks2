@@ -28,6 +28,9 @@ Encore
     .addEntry('trick_page', './assets/js/trick_page.js')
     .addEntry('admin-tricks', './assets/js/admin-tricks.js')
     .addEntry('admin-users', './assets/js/admin-users.js')
+    .addEntry('member-profile-page', './assets/js/member_profile_page.js')
+    .addEntry('edit-trick-media', './assets/js/edit_media_page.js')
+
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
