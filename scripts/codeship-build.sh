@@ -1,7 +1,6 @@
 #!/bin/bash
 
 #Creates a .env.local file
-cd /var/www/snowtricks-test || exit
 
 if [ "$CI_BRANCH" = "master" ]
 then
