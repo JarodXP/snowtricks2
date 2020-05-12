@@ -3,7 +3,7 @@
 ##### Initializes the project after deployment #########
 
 cd /var/www/snowtricks-test || exit
-source "$(dirname $0)/init-database.sh"
+source "/var/www/snowtricks-test/scripts/init-database.sh"
 
 cd /var/www/snowtricks-test || exit
-source "$(dirname $0)/init-medias.sh"
+source "/var/www/snowtricks-test/scripts/init-medias.sh"
