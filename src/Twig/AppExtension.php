@@ -43,7 +43,6 @@ class AppExtension extends AbstractExtension
         return [
             new TwigFunction('editModeModal', [$this,'editModeModal']),
             new TwigFunction('avatarFilename', [$this,'getAvatarFilename']),
-            new TwigFunction('tinyMCE', [$this,'tinyMCE']),
             new TwigFunction('editButtons', [$this, 'editButtons']),
             ];
     }
@@ -88,21 +87,6 @@ class AppExtension extends AbstractExtension
         }
 
         return $avatar->getFileName();
-    }
-
-    /**
-     * Adds the TinyMCE script
-     * @return string
-     */
-    public function tinyMCE():string
-    {
-        return
-            '<script src="https://cdn.tiny.cloud/1/5wssjxvguotys7da1sjed9fyyrjavpfxmi2v8emgh1b9tx3i/tinymce/5/tinymce.min.js"'.
-            ' referrerpolicy="origin"></script>'.
-            '<script type="text/javascript">'.
-            'tinymce.init({
-                selector: \'.tiny-area\'
-            });</script>';
     }
 
     /**
