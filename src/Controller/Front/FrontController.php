@@ -84,6 +84,9 @@ class FrontController extends AbstractController
             $page = 1;
         }
 
+        //Creates a new empty form
+        $commentForm = $this->createForm(CommentFormType::class);
+
         //Gets the comment list and other variables for the template
         $templateVars = $lister->getCommentListAndParameters($request, $trick, $page);
 
