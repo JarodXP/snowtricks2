@@ -4,6 +4,6 @@
 
 #Tricks media files
 /tricks_media/*
-!/tricks_media/default-image.jpg
+!/tricks_media/default_image.jpg
 
 
