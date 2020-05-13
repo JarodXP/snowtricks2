@@ -118,9 +118,7 @@ class FrontController extends AbstractController
         $trick->setAuthor($this->getUser());
 
         //Creates form and applies updates to the entity
-        $trickForm = $this->createForm(TrickFormType::class, $trick, [
-            'attr'=> ['id'=>'trick_form']
-        ]);
+        $trickForm = $this->createForm(TrickFormType::class, $trick);
 
         $trickForm->handleRequest($request);
 

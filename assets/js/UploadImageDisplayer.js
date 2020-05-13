@@ -23,16 +23,26 @@ const UploadImageDisplayer = {
 
     setFileSelectedHandler(fileNameOnly){
 
+        //Sets the objects to send as parameters to the closures
+        const fileInput = this.fileInput;
+        const fileLabel = this.fileLabel;
+        const imageElement = this.imageElement;
+
+        //Sets the right event listener depending on the fileNameOnly parameter
         if(fileNameOnly){
-            this.fileInput.on('change', this.displayFileName);
+            this.fileInput.on('change', function (){
+                UploadImageDisplayer.displayFileName(fileInput, fileLabel)
+            });
         }else {
-            this.fileInput.on('change', this.displayImageAndName);
+            this.fileInput.on('change', function (){
+                UploadImageDisplayer.displayImageAndName(fileInput, fileLabel, imageElement)
+            });
         }
     },
 
-    displayImageAndName(){
-        if(UploadImageDisplayer.fileInput.prop('files') && UploadImageDisplayer.fileInput.prop('files')[0]){
-            const uploadedFile = UploadImageDisplayer.fileInput.prop('files')[0];
+    displayImageAndName(fileInput, fileLabel, imageElement){
+        if(fileInput.prop('files') && fileInput.prop('files')[0]){
+            const uploadedFile = fileInput.prop('files')[0];
 
             //Uses FileReader to read the image
             const reader = new FileReader();
@@ -41,10 +51,10 @@ const UploadImageDisplayer = {
             reader.onload = function (e) {
 
                 //Sets the image element src attribute
-                UploadImageDisplayer.imageElement.attr('src', e.target.result);
+                imageElement.attr('src', e.target.result);
 
                 //Sets the label above input element
-                UploadImageDisplayer.fileLabel.text(uploadedFile.name);
+                fileLabel.text(uploadedFile.name);
             };
 
             //Reader gets the file and returns a url
@@ -53,13 +63,13 @@ const UploadImageDisplayer = {
     },
 
     //Sets only the fileName on the label
-    displayFileName(){
+    displayFileName(fileInput, fileLabel){
 
-        if(UploadImageDisplayer.fileInput.prop('files') && UploadImageDisplayer.fileInput.prop('files')[0]){
-            const uploadedFile = UploadImageDisplayer.fileInput.prop('files')[0];
+        if(fileInput.prop('files') && fileInput.prop('files')[0]){
+            const uploadedFile = fileInput.prop('files')[0];
 
             //Sets the label above input element
-            UploadImageDisplayer.fileLabel.text(uploadedFile.name);
+            fileLabel.text(uploadedFile.name);
         }
     }
 };

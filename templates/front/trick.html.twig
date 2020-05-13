@@ -138,9 +138,4 @@
     {{ parent() }}
     {{ encore_entry_script_tags('trick_page') }}
 
-    {% if editMode == true %}
-        {# TinyMCE #}
-        {{ tinyMCE() | raw }}
-    {% endif %}
-
 {% endblock %}
