@@ -1,4 +1,4 @@
-.flash{
+div[class^="flash"]{
   position: fixed;
   width: 100%;
   height: 30px;
@@ -9,11 +9,7 @@
   box-shadow: 0 -5px 10px $dark-primary-color;
 }
 
-.flash-error,.flash-notice,.flash-warning{
-  @extend .flash
-}
-
-.flash-error{
+.flash-error, .flash-danger{
   background: $flash-error-gradient;
 }
 
@@ -26,7 +22,7 @@
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
-  .flash{
+  div[class^="flash"]{
     top:$desktop-nav-height;
   }
 }
