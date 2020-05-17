@@ -68,14 +68,16 @@
 {# Displays the buton or link to remove an element #}
 {% macro removeBtn(removePath, targetId, dataTarget, removeBtnType, csrfToken) %}
 
-    <form name="remove-form-{{ targetId }}" action="{{ removePath }}" method="post">
-        <input type="hidden" name="remove_token" value="{{ csrf_token(csrfToken) }}">
+
 
         {% if removeBtnType == 'icon' %}
-            <button {{ dataTarget }}="{{ targetId }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
+            <form name="remove-form-{{ targetId }}" action="{{ removePath }}" method="post">
+                <input type="hidden" name="remove_token" value="{{ csrf_token(csrfToken) }}">
+                <button {{ dataTarget }}="{{ targetId }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
+            </form>
         {% else %}
-            <button {{ dataTarget }}="{{ targetId }}" type="submit" class="btn btn-danger">Remove</button>
+            <input type="hidden" name="remove_token" value="{{ csrf_token(csrfToken) }}">
+            <button {{ dataTarget }}="{{ targetId }}" type="submit" formaction="{{ removePath }}" class="btn btn-danger">Remove</button>
         {% endif %}
 
-    </form>
 {% endmacro %}
