@@ -22,7 +22,12 @@ const ElementRemover = {
         delegate.on('click', 'form[name^="remove-form"]',function (e){
             e.preventDefault();
             e.stopPropagation();
-            $(this).submit()
+
+            let confirmation = confirm('You are about to remove this element. Do you want to continue?');
+
+            if (confirmation){
+                $(this).submit();
+            }
         });
 
         delegate.on('submit', 'form[name^="remove-form"]',function (e){
