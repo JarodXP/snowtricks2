@@ -11,8 +11,10 @@ use App\CustomServices\SlugMaker;
 use App\CustomServices\TrickMediaHandler;
 use App\CustomServices\EntityRemover;
 use App\Entity\Comment;
+use App\Entity\EmbedMedia;
 use App\Entity\Media;
 use App\Entity\Trick;
+use App\Form\EmbedMediaFormType;
 use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
@@ -33,7 +35,7 @@ class FrontController extends AbstractController
 {
     public const TRICK_VAR = 'trick';
     public const TRICK_SLUG_VAR = 'trickSlug';
-    public const EDIT_TRICK_VAR = 'edit-trick';
+    public const EDIT_TRICK_ROUTE = 'edit-trick';
 
     /**
      * @Route("/",name="home")
@@ -132,7 +134,7 @@ class FrontController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
+            return $this->redirectToRoute(self::EDIT_TRICK_ROUTE, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
         }
 
         //Creates the comment form to be displayed
@@ -207,12 +209,57 @@ class FrontController extends AbstractController
             $manager->persist($trick);
             $manager->flush();
 
-            return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
+            //Redirects to corresponding trick page
+            return $this->redirectToRoute(self::EDIT_TRICK_ROUTE, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
         }
 
         return $this->render('front/media.html.twig', [
             'media' => $media,
             'mediaType' => $mediaType,
+            self::TRICK_VAR => $trick,
+            'trickMediaForm' => $mediaForm->createView()
+        ]);
+    }
+
+    /**
+     * @Route("media/edit-embed-media/{trickSlug}/{mediaId}", name="embed_media")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @ParamConverter("$embedMedia", options={"mapping": {"mediaId": "id"}})
+     * @param Request $request
+     * @param Trick $trick
+     * @param EmbedMedia $embedMedia
+     * @return RedirectResponse|Response
+     * @throws Exception
+     */
+    public function embedMediaAction(Request $request, Trick $trick, EmbedMedia $embedMedia = null)
+    {
+        //Instantiates a new Media entity if no media was found
+        if (is_null($embedMedia)) {
+            $embedMedia = new EmbedMedia();
+        }
+
+        //Gives the form data to the media Entity
+        $mediaForm = $this->createForm(EmbedMediaFormType::class, $embedMedia);
+
+        $mediaForm->handleRequest($request);
+
+        if ($mediaForm->isSubmitted() && $mediaForm->isValid()) {
+
+                //Binds the media to the trick
+            $embedMedia->setTrick($trick);
+
+            //Registers in database
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($embedMedia);
+            $manager->flush();
+
+            //Redirects to corresponding trick page
+            return $this->redirectToRoute(self::EDIT_TRICK_ROUTE, [self::TRICK_SLUG_VAR => $trick->getSlug()]);
+        }
+
+        return $this->render('front/media.html.twig', [
+            'media' => $embedMedia,
+            'mediaType' => 'embed',
             self::TRICK_VAR => $trick,
             'trickMediaForm' => $mediaForm->createView()
         ]);
@@ -246,7 +293,18 @@ class FrontController extends AbstractController
         $manager->flush();
         $this->addFlash('notice', 'Your media has been removed');
 
-        return $this->redirectToRoute(self::EDIT_TRICK_VAR, [self::TRICK_SLUG_VAR=>$trick->getSlug()]);
+        return $this->redirectToRoute(self::EDIT_TRICK_ROUTE, [self::TRICK_SLUG_VAR=>$trick->getSlug()]);
+    }
+
+    /**
+     * @Route("media/remove-embed-media/{trickSlug}/{mediaId}", name="remove_embed_media")
+     * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
+     * @ParamConverter("embedMedia", options={"mapping": {"mediaId": "id"}})
+     * @param EmbedMedia $embedMedia
+     * @param Trick $trick
+     */
+    public function removeEmbedMediaAction(EmbedMedia $embedMedia, Trick $trick)
+    {
     }
 
     /**

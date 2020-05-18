@@ -42,6 +42,18 @@
 
 {% endmacro %}
 
+{# Displays the buttons or links to edit and remove an EmbedMedia #}
+{% macro editEmbedMediaBtns(mediaId, mediaType,trickSlug, editBtnType, removeBtnType) %}
+    {% set editPath = path('embed_media', {'mediaId': mediaId, 'trickSlug': trickSlug}) %}
+    {% set removePath = path('remove_embed_media', {'mediaId': mediaId, 'trickSlug': trickSlug}) %}
+    {% set targetId = mediaId %}
+    {% set csrfToken = 'delete-embed-media' %}
+    {% set dataTarget = 'data-media-id' %}
+
+    {{ _self.buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) }}
+
+{% endmacro %}
+
 {% macro buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) %}
 
     {% if editBtnType is not null %}
@@ -67,8 +79,6 @@
 
 {# Displays the buton or link to remove an element #}
 {% macro removeBtn(removePath, targetId, dataTarget, removeBtnType, csrfToken) %}
-
-
 
         {% if removeBtnType == 'icon' %}
             <form name="remove-form-{{ targetId }}" action="{{ removePath }}" method="post">

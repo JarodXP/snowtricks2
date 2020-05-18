@@ -70,40 +70,59 @@
         {% set modalAttributes = 'data-toggle="modal" data-target="#carouselLightBox"' %}
         {% set editBtns = '' %}
         {% set editBtnsVideo = '' %}
+        {% set editBtnsEmbedMedia = '' %}
+
     {% else %}
         {% set modalAttributes = '' %}
         {% set editBtns = buttons.editTrickMediaBtns(media.id, 'image', trick.slug, 'icon', 'icon') %}
         {% set editBtnsVideo = buttons.editTrickMediaBtns(media.id, 'video', trick.slug, 'icon', 'icon') %}
+        {% set editBtnsEmbedMedia = buttons.editEmbedMediaBtns(media.id, 'embedMedia', trick.slug, 'icon', 'icon') %}
     {% endif %}
 
-    {% if (media.mimeType | slice(0,5)) == 'video' %}
+    {% if (media.mimeType is defined) %}
+        {% if (media.mimeType | slice(0,5)) == 'video' %}
 
-        <div class="media-slider-thumbnail">
+            <div class="media-slider-thumbnail">
 
-            <video {{ modalAttributes | raw }}>
-                <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
-                Sorry, your browser doesn\'t support embedded videos.
-            </video>
+                <video {{ modalAttributes | raw }}>
+                    <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
+                    Sorry, your browser doesn\'t support embedded videos.
+                </video>
 
-            {% if editMode == true %}
-                <div class="block-edit">
-                    {{ editBtnsVideo | raw }}
-                </div>
-            {% endif %}
-        </div>
+                {% if editMode == true %}
+                    <div class="block-edit">
+                        {{ editBtnsVideo | raw }}
+                    </div>
+                {% endif %}
+            </div>
 
+        {% else %}
+
+            <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
+                <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
+                {% if editMode == true %}
+                    <div class="block-edit">
+                        {{ editBtns | raw }}
+                    </div>
+                {% endif %}
+            </div>
+
+        {% endif %}
     {% else %}
+        <div class="media-slider-thumbnail embed-thumbnail" {{ modalAttributes | raw }}>
 
-        <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
-            <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
+            {{ media.htmlCode | raw }}
+
             {% if editMode == true %}
                 <div class="block-edit">
-                    {{ editBtns | raw }}
+                    {{ editBtnsEmbedMedia | raw }}
                 </div>
             {% endif %}
         </div>
 
+
     {% endif %}
+
 
 {% endmacro %}
 

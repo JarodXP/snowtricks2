@@ -13,6 +13,7 @@ const MediaSlider = {
         this.setVisibilityListeners();
         this.setArrowsListeners();
         this.setCarouselListener();
+        this.disableYoutubeBtn();
     },
 
     //Event listeners for media section visibility
@@ -35,6 +36,27 @@ const MediaSlider = {
 
         thumbnails.on('click',function () {
             MediaSlider.setCarouselActive(thumbnails.index($(this)));
+        });
+    },
+
+    //Prevents youtube default action
+    disableYoutubeBtn(){
+
+        $(window).on('load', function () {
+            let thumbnail = $('.embed-thumbnail');
+            let antiClick = $('<div></div>').addClass('anti-click');
+
+            thumbnail.css({'position':'relative'});
+            thumbnail.prepend(antiClick);
+
+            antiClick.innerWidth(thumbnail.find('iframe').innerWidth());
+            antiClick.innerHeight(thumbnail.find('iframe').innerHeight());
+            antiClick.css({
+                'position': 'absolute',
+                'top':'0',
+                'left':'0',
+                'z-index':'99'
+            });
         });
     },
 
