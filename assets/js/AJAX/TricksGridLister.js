@@ -22,9 +22,8 @@ const TrickGridLister = {
     },
 
     makeRequest(form){
-        //Sets the values of the filter and limit
-        this.trickGroup = $('#home_list_form_trickGroup').val();
-        this.limit = $('#home_list_form_limit').val();
+
+        console.log(form.serialize());
 
         //Sets the ajax object
         $.ajax({
@@ -34,7 +33,6 @@ const TrickGridLister = {
             success: function (data) {
                 TrickGridLister.updateList(data);
                 TrickGridLister.resetLoadBtns(form);
-                TrickGridLister.updateFormFields(form);
             }
         });
     },
@@ -44,22 +42,9 @@ const TrickGridLister = {
         $('#trick-list').replaceWith(data);
     },
 
-    //Updates the filter and limit values
-    updateFormFields(form){
-        $('#home_limit_form_trickGroup').attr('value', this.trickGroup);
-
-        if(form.attr('name') === 'home_limit_form'){
-            this.limit = parseInt(this.limit) + 5;
-        }
-
-        $('#home_limit_form_limit').attr('value', this.limit);
-        $('#home_list_form_limit').attr('value', this.limit);
-    },
-
     //Stops the spinner in the load buttons
     resetLoadBtns(form){
-        form.find('.modify-list').toggleClass('disabled');
-        form.find('.modify-list>span').toggleClass('collapse');
+        form.find('.load-btn').trigger('click');
     },
 };
 
