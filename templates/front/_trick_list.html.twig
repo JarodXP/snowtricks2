@@ -2,6 +2,7 @@
 {% import 'macro_edit_btns.html.twig' as buttons %}
 
 {% block trickList %}
+
     <div id="trick-list">
 
         <div id="list-options">
@@ -9,7 +10,7 @@
 
             {{ form_widget(filterForm.trickGroup) }}
 
-            {{ form_row(filterForm.limit, {'attr':{'value':limit}}) }}
+            {{ form_row(filterForm.limit, {'value':limit}) }}
 
             <button class="btn btn-primary load-btn modify-list" data-group="filter" type="submit">
                 <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>
@@ -53,7 +54,7 @@
 
         {{ form_row(limitForm.trickGroupId, {'attr':{'value':filterId}}) }}
 
-        {{ form_row(limitForm.limit, {'attr':{'value':limit}}) }}
+        {{ form_row(limitForm.limit, {'value':limit}) }}
 
         <button class="btn btn-secondary load-btn modify-list" data-group="limit" type="submit">
             <span class="spinner-border spinner-border-sm collapse" role="status" aria-hidden="true"></span>

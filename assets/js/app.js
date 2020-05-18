@@ -56,15 +56,3 @@ const connectionBlocks = document.getElementsByClassName('connection-block');
 for(let connection of connectionBlocks){
     connection.addEventListener("click",navElement.toggleConnectionSubMenu);
 }
-
-//Event listener for load buttons
-const loadBtns = document.getElementsByClassName('load-btn');
-
-for(let button of loadBtns){
-    button.addEventListener('click',function () {
-        let spinner = button.children[0];
-
-        button.classList.toggle('disabled');
-        spinner.classList.toggle('collapse');
-    })
-}

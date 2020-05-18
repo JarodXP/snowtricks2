@@ -102,8 +102,6 @@ class HomeTrickLister extends AbstractLister
 
         //Merges the default parameters and the new parameters
         $this->queryParameters = array_merge($this->queryParameters, $newParameters);
-
-        dump($this->queryParameters);
     }
 
     /**
@@ -113,22 +111,36 @@ class HomeTrickLister extends AbstractLister
      */
     public function getTrickListAndParameters(Request $request)
     {
-        //Creates the forms for limit and filter (either HomeForm or Limit is submitted)
-        $filterForm = $this->formFactory->create(HomeFilterFormType::class);
-        $limitForm = $this->formFactory->create(HomeLimitFormType::class);
+        //Creates the forms for limit and filter
+        $forms = [
+            'filterForm' => $this->formFactory->create(HomeFilterFormType::class),
+            'limitForm' => $this->formFactory->create(HomeLimitFormType::class)
+        ];
 
-        //Sets the query parameters for filterForm
-        $this->setQueryParameters($request, Trick::class, $filterForm);
-        $this->setQueryParameters($request, Trick::class, $limitForm);
+        //Sets the default parameters
+        $this->className = Trick::class;
+        $this->setQueryDefaultParameters();
 
+        //Sets the query parameters depending on either FilterForm or LimitForm is submitted
+        foreach ($forms as $form) {
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+
+                //Sets the query parameters corresponding to the form
+                $this->setQueryParametersFromForm($form, null, $form->getName());
+            }
+        }
+
+        //Binds the query parameters to the responseVars array
         $responseVars = $this->getQueryParameters();
 
         //Get the tricks list
         $responseVars['tricks'] = $this->getGrantedList();
 
         //Adds the forms to response variables
-        $responseVars['filterForm'] = $filterForm->createView();
-        $responseVars['limitForm'] = $limitForm->createView();
+        $responseVars['filterForm'] = $forms['filterForm']->createView();
+        $responseVars['limitForm'] = $forms['limitForm']->createView();
 
         return $responseVars;
     }
