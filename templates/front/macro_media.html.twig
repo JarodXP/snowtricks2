@@ -19,26 +19,22 @@
 {# Display the current media depending on the type #}
 {% macro displayCurrentMedia(media,mediaType) %}
 
-    {% if media.id is not null and media.fileName is defined %}
-        {% set fileName = media.fileName %}
-    {% elseif media.id is null and media.fileName is defined %}
-        {% set fileName = 'default_image.jpg' %}
+    {% if media.id is not null and mediaType == 'image' %}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/' ~ media.fileName) ~ '" alt="Media thumbnail">' %}
+    {% elseif media.id is null and mediaType == 'image' %}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/default_image.jpg') ~ '" alt="Media thumbnail">' %}
+    {% elseif media.id is not null and mediaType == 'video'%}
+        {% set thumbnail = '<video id="thumbnailMedia"><source src="' ~ asset('/media/tricks_media/' ~ fileName) ~ '"></video>' %}
+    {% elseif media.id is null and mediaType == 'video'%}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/default-video.png')~'" alt="Media thumbnail">' %}
+    {% elseif media.id is not null and mediaType == 'embed'%}
+        {% set thumbnail = '<div id="thumbnailMedia">' ~ media.htmlCode | raw ~'</div>' %}
+    {% elseif media.id is null and mediaType == 'embed'%}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/default-video.png') ~ '" alt="Media thumbnail">' %}
     {% endif %}
 
     <div id="current-media">
-
-        {% if mediaType == 'image' %}
-            <img id="thumbnailMedia" src="{{ asset('/media/tricks_media/'~fileName) }}" alt="Media thumbnail">
-
-        {% elseif mediaType == 'video' %}
-            <video id="thumbnailMedia">
-                <source src="{{ asset('/media/tricks_media/'~fileName) }}">
-            </video>
-        {% else %}
-            <div id="thumbnailMedia">
-                {{ media.htmlCode | raw }}
-            </div>
-        {% endif %}
+        {{ thumbnail | raw }}
     </div>
 
 {% endmacro %}

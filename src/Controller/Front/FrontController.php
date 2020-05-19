@@ -130,6 +130,7 @@ class FrontController extends AbstractController
         if ($trickForm->isSubmitted() && $trickForm->isValid()) {
 
             //Updates the trick in database
+            $trick->setMainImageIfNull();
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($trick);
             $manager->flush();
@@ -224,7 +225,7 @@ class FrontController extends AbstractController
     /**
      * @Route("media/edit-embed-media/{trickSlug}/{mediaId}", name="embed_media")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
-     * @ParamConverter("$embedMedia", options={"mapping": {"mediaId": "id"}})
+     * @ParamConverter("embedMedia", options={"mapping": {"mediaId": "id"}})
      * @param Request $request
      * @param Trick $trick
      * @param EmbedMedia $embedMedia
