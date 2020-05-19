@@ -22,7 +22,11 @@
     {% if media.id is not null and media.fileName is defined %}
         {% set fileName = media.fileName %}
     {% elseif media.id is null and media.fileName is defined %}
-        {% set fileName = 'default_image.jpg' %}
+        {% if mediaType == 'image' %}
+            {% set fileName = 'default_image.jpg' %}
+        {% else %}
+            {% set fileName = 'default-video.png' %}
+        {% endif %}
     {% endif %}
 
     <div id="current-media">

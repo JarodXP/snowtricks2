@@ -6,7 +6,7 @@ const UploadImageDisplayer = {
     fileLabel: '',
     imageElement: '',
 
-    initialize(fileInputId, mediaId = null){
+    initialize(fileInputId, mediaId = null, embed = null){
 
         //Sets the element to be used in the callback function
         this.fileInput =  $(fileInputId);
@@ -15,13 +15,13 @@ const UploadImageDisplayer = {
         //Checks if imageId is null before setting the element
         if(mediaId){
             this.imageElement = $(mediaId);
-            this.setFileSelectedHandler(false);
+            this.setFileSelectedHandler(false, embed);
         }else {
             this.setFileSelectedHandler(true);
         }
     },
 
-    setFileSelectedHandler(fileNameOnly){
+    setFileSelectedHandler(fileNameOnly, embed = null){
 
         //Sets the objects to send as parameters to the closures
         const fileInput = this.fileInput;
@@ -33,9 +33,13 @@ const UploadImageDisplayer = {
             this.fileInput.on('change', function (){
                 UploadImageDisplayer.displayFileName(fileInput, fileLabel)
             });
-        }else {
+        }else if(embed == null) {
             this.fileInput.on('change', function (){
                 UploadImageDisplayer.displayImageAndName(fileInput, fileLabel, imageElement)
+            });
+        }else {
+            this.fileInput.on('change', function (){
+                UploadImageDisplayer.displayEmbed(fileInput, imageElement)
             });
         }
     },
@@ -71,6 +75,12 @@ const UploadImageDisplayer = {
             //Sets the label above input element
             fileLabel.text(uploadedFile.name);
         }
+    },
+
+    //Copies the html code pasted by the user into the image element
+    displayEmbed(fileInput, imageElement){
+        let htmlCode = fileInput.val();
+        imageElement.html(htmlCode);
     }
 };
 
