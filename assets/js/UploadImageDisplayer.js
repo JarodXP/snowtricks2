@@ -6,7 +6,7 @@ const UploadImageDisplayer = {
     fileLabel: '',
     imageElement: '',
 
-    initialize(fileInputId, mediaId = null, embed = null){
+    initialize(fileInputId, mediaId = null, mediaType){
 
         //Sets the element to be used in the callback function
         this.fileInput =  $(fileInputId);
@@ -15,13 +15,13 @@ const UploadImageDisplayer = {
         //Checks if imageId is null before setting the element
         if(mediaId){
             this.imageElement = $(mediaId);
-            this.setFileSelectedHandler(false, embed);
+            this.setFileSelectedHandler(false, mediaType);
         }else {
             this.setFileSelectedHandler(true);
         }
     },
 
-    setFileSelectedHandler(fileNameOnly, embed = null){
+    setFileSelectedHandler(fileNameOnly, mediaType = null){
 
         //Sets the objects to send as parameters to the closures
         const fileInput = this.fileInput;
@@ -33,9 +33,13 @@ const UploadImageDisplayer = {
             this.fileInput.on('change', function (){
                 UploadImageDisplayer.displayFileName(fileInput, fileLabel)
             });
-        }else if(embed == null) {
+        }else if(mediaType === 'image') {
             this.fileInput.on('change', function (){
                 UploadImageDisplayer.displayImageAndName(fileInput, fileLabel, imageElement)
+            });
+        }else if(mediaType === 'video') {
+            this.fileInput.on('change', function (){
+                UploadImageDisplayer.displayVideo(fileInput, fileLabel, imageElement)
             });
         }else {
             this.fileInput.on('change', function (){
@@ -77,8 +81,25 @@ const UploadImageDisplayer = {
         }
     },
 
+    displayVideo(fileInput, fileLabel, imageElement){
+        //replaces the default image by the video tag to support the video file
+        if(imageElement.prop('tagName').toLowerCase() !== 'video'){
+            let parent = imageElement.parent();
+            imageElement.replaceWith('<video id="thumbnailMedia"><source src=""></video>');
+            imageElement = parent.find('video');
+        }
+
+        this.displayImageAndName(fileInput, fileLabel, imageElement);
+    },
+
     //Copies the html code pasted by the user into the image element
     displayEmbed(fileInput, imageElement){
+        //replaces the default image by the duv tag to support the embedded iframe
+        if(imageElement.prop('tagName').toLowerCase() !== 'div'){
+            let parent = imageElement.parent();
+            imageElement.replaceWith('<div id="thumbnailMedia"></div>');
+            imageElement = parent.find('div');
+        }
         let htmlCode = fileInput.val();
         imageElement.html(htmlCode);
     }

@@ -224,7 +224,7 @@ class FrontController extends AbstractController
     /**
      * @Route("media/edit-embed-media/{trickSlug}/{mediaId}", name="embed_media")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}})
-     * @ParamConverter("$embedMedia", options={"mapping": {"mediaId": "id"}})
+     * @ParamConverter("embedMedia", options={"mapping": {"mediaId": "id"}})
      * @param Request $request
      * @param Trick $trick
      * @param EmbedMedia $embedMedia
