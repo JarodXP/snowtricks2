@@ -402,4 +402,32 @@ class Trick implements Removable
 
         return $this;
     }
+
+    /**
+     * If the Main Image is null, sets the first image media as Main Image
+     */
+    public function setMainImageIfNull():void
+    {
+        //Checks if Main image is null
+        if (is_null($this->mainImage)) {
+
+            //Gets the medias
+            $medias = $this->getMedias();
+
+            $images = [];
+
+            //Stores in the image array only the media cotaining image in the MIME type
+            foreach ($medias as $media) {
+
+                if (strpos($media->getMimeType(), 'image') !== false) {
+                    $images[] = $media;
+                }
+            }
+
+            //Sets the Main Image
+            if (!empty($images)) {
+                $this->setMainImage($images[0]);
+            }
+        }
+    }
 }

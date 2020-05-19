@@ -130,6 +130,7 @@ class FrontController extends AbstractController
         if ($trickForm->isSubmitted() && $trickForm->isValid()) {
 
             //Updates the trick in database
+            $trick->setMainImageIfNull();
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($trick);
             $manager->flush();
