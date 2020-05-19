@@ -20,6 +20,7 @@ const MediaSlider = {
     setVisibilityListeners(){
         $(window).on('resize', MediaSlider.displayMediaBarByViewport.bind(MediaSlider));
         $(document).ready(MediaSlider.displayMediaBarByViewport.bind(MediaSlider));
+        $(document).ready(MediaSlider.setHorizontalAlignment());
         $(document).ready(MediaSlider.displayArrows.bind(MediaSlider));
         MediaSlider.toggleBtn.on('click',MediaSlider.displayMediaBarByToggleBtn.bind(MediaSlider))
     },
@@ -30,8 +31,8 @@ const MediaSlider = {
         this.rightArrow.on('click', this.moveSliderLeft.bind(this));
     },
 
+    //Changes the "active" class in the Carousel to match the thumbnail that is clicked
     setCarouselListener() {
-
         const thumbnails = $('.media-slider-thumbnail');
 
         thumbnails.on('click',function () {
@@ -39,7 +40,7 @@ const MediaSlider = {
         });
     },
 
-    //Prevents youtube default action
+    //Creates a transparent div above the media thumbnail to prevent iframe default event on click
     disableYoutubeBtn(){
 
         $(window).on('load', function () {
@@ -60,6 +61,15 @@ const MediaSlider = {
         });
     },
 
+    //Sets the horizontal alignment of the media bar depending on the number of thumbnails.
+    setHorizontalAlignment(){
+        let overflow = this.getLeftOverflowElements();
+
+        if(overflow.length > 0){
+            this.sliderBar.css({'justify-content':'flex-start'});
+        }
+    },
+
     //Define Carousel's active image
     setCarouselActive(thumbnailIndex){
         //gets the carousel image collection
@@ -78,7 +88,7 @@ const MediaSlider = {
 
     //Displays media section depending on the window size
     displayMediaBarByViewport() {
-        if ($('body').outerWidth < 576) {
+        if ($('body').outerWidth() < 576) {
             this.mediaSection.addClass('hidden');
 
             //checks if the edit mode "addMediaBlock" exists before
@@ -105,6 +115,7 @@ const MediaSlider = {
             this.addMediaBlock.toggleClass('hidden');
         }
 
+        //Toggles the button for display / hide the mediabar
         if (this.mediaSection.hasClass('hidden')) {
             this.toggleBtn.children().first().text('Voir les medias');
         } else {
