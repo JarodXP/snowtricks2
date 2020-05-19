@@ -88,7 +88,7 @@ const MediaSlider = {
 
     //Displays media section depending on the window size
     displayMediaBarByViewport() {
-        if ($('body').outerWidth < 576) {
+        if ($('body').outerWidth() < 576) {
             this.mediaSection.addClass('hidden');
 
             //checks if the edit mode "addMediaBlock" exists before
