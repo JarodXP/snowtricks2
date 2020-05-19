@@ -10,6 +10,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Regex;
 
 /**
  * Class TrickMediaFormType
@@ -24,7 +26,14 @@ class EmbedMediaFormType extends AbstractType
     {
         $builder
             ->add('htmlCode', TextareaType::class, [
-                'label' => 'HTML Code'
+                'label' => 'HTML Code',
+                'constraints' => [
+                    new Regex([
+                        'pattern' => '~^<iframe [^<>]*><\/iframe>$~',
+                        'htmlPattern' => '^<iframe [^<>]*><\/iframe>$'
+                              ]),
+                    new NotBlank()
+                ]
                 ])
             ->add('mediaName', TextType::class, [
                 'label' => 'Video title',
