@@ -67,6 +67,14 @@
   }
 }
 
+.carousel-item {
+  text-align: center;
+
+  & iframe{
+    max-width: 100%;
+  }
+}
+
 .carousel-control-prev-icon, .carousel-control-next-icon{
   width: 30px;
   height: 30px;
@@ -84,17 +92,17 @@
 #add-media{
   width: 100%;
   display: flex;
-  margin-bottom:1.3rem;
+  flex-direction: column;
   justify-content: center;
 
   &>a{
-    margin: 0 auto;
+    margin: 10px auto;
   }
 }
 
 #current-media{
 
-  &>img, &>video{
+  &>#thumbnailMedia, & iframe{
     display: block;
     margin: auto;
     width: 120px;
@@ -123,8 +131,15 @@
     left: -25% !important;
   }
 
-  #add-media {
-    margin-top: 1.3rem;
+  #add-media{
+    margin: 1.3rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    &>a{
+      margin: 0 auto;
+    }
   }
 
 }

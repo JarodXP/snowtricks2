@@ -7,6 +7,11 @@
         {% set action = 'Edit' %}
     {% endif %}
 
+    {% if mediaType == 'embed' %}
+        {% set action = 'Embed' %}
+        {% set mediaType = 'video' %}
+    {% endif %}
+
     {{ action ~ ' ' ~ mediaType }}
 
 {% endmacro %}
@@ -14,9 +19,9 @@
 {# Display the current media depending on the type #}
 {% macro displayCurrentMedia(media,mediaType) %}
 
-    {% if media.id is not null %}
+    {% if media.id is not null and media.fileName is defined %}
         {% set fileName = media.fileName %}
-    {% else %}
+    {% elseif media.id is null and media.fileName is defined %}
         {% set fileName = 'default_image.jpg' %}
     {% endif %}
 
@@ -25,11 +30,14 @@
         {% if mediaType == 'image' %}
             <img id="thumbnailMedia" src="{{ asset('/media/tricks_media/'~fileName) }}" alt="Media thumbnail">
 
-        {% else %}
+        {% elseif mediaType == 'video' %}
             <video id="thumbnailMedia">
                 <source src="{{ asset('/media/tricks_media/'~fileName) }}">
             </video>
-
+        {% else %}
+            <div id="thumbnailMedia">
+                {{ media.htmlCode | raw }}
+            </div>
         {% endif %}
     </div>
 
@@ -48,8 +56,11 @@
         {{ form_row(mediaForm.image, required) }}
         {{ form_row(mediaForm.alt) }}
         {{ form_row(mediaForm.mainImage) }}
-    {% else %}
+    {% elseif mediaType == 'video' %}
         {{ form_row(mediaForm.video, required) }}
+    {% else %}
+        {{ form_row(mediaForm.htmlCode) }}
+        {{ form_row(mediaForm.mediaName) }}
     {% endif %}
 
 {% endmacro %}

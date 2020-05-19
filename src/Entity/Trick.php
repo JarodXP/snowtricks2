@@ -86,6 +86,11 @@ class Trick implements Removable
 
     private ?SlugMaker $slugMaker = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity=EmbedMedia::class, mappedBy="trick", orphanRemoval=true)
+     */
+    private ?Collection $embedMedias;
+
 
     /**
      * Trick constructor.
@@ -94,6 +99,7 @@ class Trick implements Removable
     public function __construct()
     {
         $this->medias = new ArrayCollection();
+        $this->embedMedias = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->dateAdded = new DateTime("now");
     }
@@ -356,5 +362,44 @@ class Trick implements Removable
     public function setSlugMaker(SlugMaker $slugMaker)
     {
         $this->slugMaker = $slugMaker;
+    }
+
+    /**
+     * @return Collection|EmbedMedia[]
+     */
+    public function getEmbedMedias(): Collection
+    {
+        return $this->embedMedias;
+    }
+
+    /**
+     * @param EmbedMedia $embedMedia
+     * @return $this
+     */
+    public function addEmbedMedia(EmbedMedia $embedMedia): self
+    {
+        if (!$this->embedMedias->contains($embedMedia)) {
+            $this->embedMedias[] = $embedMedia;
+            $embedMedia->setTrick($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param EmbedMedia $embedMedia
+     * @return $this
+     */
+    public function removeEmbedMedia(EmbedMedia $embedMedia): self
+    {
+        if ($this->embedMedias->contains($embedMedia)) {
+            $this->embedMedias->removeElement($embedMedia);
+            // set the owning side to null (unless already changed)
+            if ($embedMedia->getTrick() === $this) {
+                $embedMedia->setTrick(null);
+            }
+        }
+
+        return $this;
     }
 }
