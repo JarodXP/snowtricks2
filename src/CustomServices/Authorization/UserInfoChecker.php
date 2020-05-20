@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\CustomServices\Authorization;
 
@@ -11,12 +13,23 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\RouterInterface;
 
+/**
+ * Class UserInfoChecker
+ * Checks users information before requesting a change
+ * @package App\CustomServices\Authorization
+ */
 class UserInfoChecker
 {
     private SessionInterface $session;
     private RouterInterface $router;
     private EntityManagerInterface $manager;
 
+    /**
+     * UserInfoChecker constructor.
+     * @param SessionInterface $session
+     * @param RouterInterface $router
+     * @param EntityManagerInterface $manager
+     */
     public function __construct(SessionInterface $session, RouterInterface $router, EntityManagerInterface $manager)
     {
         $this->session = $session;

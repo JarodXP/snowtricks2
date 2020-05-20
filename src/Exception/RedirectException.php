@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 
 namespace App\Exception;
 
@@ -8,6 +10,11 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
+/**
+ * Class RedirectException
+ * Creates a specific exception in order to execute redirections from a service
+ * @package App\Exception
+ */
 class RedirectException extends Exception
 {
     /**
@@ -33,8 +40,7 @@ class RedirectException extends Exception
         string $message = "",
         int $code = 0,
         Throwable $previous = null
-    )
-    {
+    ) {
         parent::__construct($message, $code, $previous);
         $this->url = $url;
         $this->codeHttp = $codeHttp;
