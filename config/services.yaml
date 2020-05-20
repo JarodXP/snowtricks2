@@ -36,8 +36,3 @@ services:
     App\CustomServices\TrickMediaHandler:
         arguments:
             $mediaDir: '%trick_media_directory%'
-
-    #Listener for redirection exceptions
-    App\EventListener\RedirectExceptionListener:
-        tags:
-            - { event: kernel.exception, name: kernel.event_listener }

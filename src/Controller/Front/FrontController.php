@@ -19,7 +19,6 @@ use App\Form\TrickForm\CommentFormType;
 use App\Form\TrickForm\TrickFormType;
 use App\Form\TrickForm\TrickMediaFormType;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -103,7 +102,6 @@ class FrontController extends AbstractController
     /**
      * @Route("/tricks/edit/{trickSlug}", name="edit-trick")
      * @ParamConverter("trick", options={"mapping": {"trickSlug": "slug"}, "strip_null": true})
-     * @IsGranted({"ROLE_USER"})
      * @param Trick $trick
      * @param Request $request
      * @param SlugMaker $slugMaker
@@ -112,6 +110,8 @@ class FrontController extends AbstractController
      */
     public function editTrickAction(?Trick $trick, Request $request, SlugMaker $slugMaker)
     {
+        $this->denyAccessUnlessGranted('edit', $trick);
+
         if (is_null($trick)) {
             $trick = new Trick();
         }
