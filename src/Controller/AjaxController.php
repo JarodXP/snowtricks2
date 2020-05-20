@@ -8,10 +8,9 @@ namespace App\Controller;
 use App\CustomServices\CommentLister;
 use App\CustomServices\HomeTrickLister;
 use App\CustomServices\EntityRemover;
-use App\Entity\Comment;
+use App\Entity\LegalPage;
 use App\Entity\Trick;
 use App\Entity\User;
-use App\Form\TrickForm\CommentFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,6 +31,7 @@ class AjaxController extends AbstractController
      * @param EntityRemover $remover
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function ajaxRemoveTrick(Trick $trick, EntityRemover $remover, Request $request):Response
     {
@@ -51,6 +51,7 @@ class AjaxController extends AbstractController
      * @param EntityRemover $remover
      * @param Request $request
      * @return Response
+     * @throws \Exception
      */
     public function ajaxRemoveUser(User $user, EntityRemover $remover, Request $request):Response
     {
@@ -59,6 +60,26 @@ class AjaxController extends AbstractController
 
         //Removes the user and gets the http message and status code
         $removeResponse = $remover->removeEntity($request, $user, 'delete-user');
+
+        return new Response($removeResponse['message'], $removeResponse['httpCode']);
+    }
+
+    /**
+     * @Route("/ajax/remove-legal/{slug}", name="ajax_remove_legal")
+     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
+     * @param LegalPage $page
+     * @param EntityRemover $remover
+     * @param Request $request
+     * @return Response
+     * @throws \Exception
+     */
+    public function ajaxRemoveLegal(LegalPage $page, EntityRemover $remover, Request $request):Response
+    {
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        //Removes the user and gets the http message and status code
+        $removeResponse = $remover->removeEntity($request, $page, 'delete-legal-page');
 
         return new Response($removeResponse['message'], $removeResponse['httpCode']);
     }

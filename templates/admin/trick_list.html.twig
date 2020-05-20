@@ -35,7 +35,7 @@
                             <form id="status-form">
                                 <label class="jxp-admin-toggle">
                                     <input id="publish-{{ trick.slug }}" class="status-toggler" type="checkbox" data-slug="{{ trick.slug }}"
-                                    {% if trick.status == 1 %} checked {% endif %}>
+                                            {% if trick.status == 1 %} checked {% endif %}>
                                     <span class="jxp-toggle-slider"></span>
                                 </label>
                                 <input type="hidden" name="token" value="{{ csrf_token('change-status') }}"/>

@@ -12,6 +12,7 @@ use App\CustomServices\TrickMediaHandler;
 use App\CustomServices\EntityRemover;
 use App\Entity\Comment;
 use App\Entity\EmbedMedia;
+use App\Entity\LegalPage;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Form\EmbedMediaFormType;
@@ -332,10 +333,18 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/privacy",name="privacy")
+     * @Route("/legal/{slug}", name="legal_page")
+     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
+     * @param LegalPage $page
+     * @return Response
      */
-    public function privacyAction()
+    public function displayLegalPageAction(LegalPage $page)
     {
-        return $this->render('front\privacy.html.twig');
+        return $this->render(
+            'front/legal_page.html.twig',
+            [
+                'page' => $page
+            ]
+        );
     }
 }

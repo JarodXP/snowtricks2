@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\CustomServices;
 
+use App\Entity\LegalPage;
 use App\Entity\Trick;
 use App\Entity\User;
 use Symfony\Component\Form\FormInterface;
@@ -26,6 +27,7 @@ class AdminLister extends AbstractLister
         ];
 
         switch ($this->className) {
+            case LegalPage::class:
             case Trick::class:
                 $this->queryParameters[self::ORDER_FIELD] = 'name';
                 break;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace App\CustomServices;
 
+use App\Entity\LegalPage;
 use App\Entity\Trick;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -96,6 +97,8 @@ class EntityRemover
     private function getEntityName(Removable $entity):string
     {
         switch (get_class($entity)) {
+            case LegalPage::class:
+
             case Trick::class: return $entity->getName();
             break;
 

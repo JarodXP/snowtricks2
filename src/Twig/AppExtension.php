@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace App\Twig;
 
 use App\Entity\Media;
+use App\Repository\LegalPageRepository;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -17,6 +18,17 @@ use Twig\TwigFunction;
  */
 class AppExtension extends AbstractExtension
 {
+    protected LegalPageRepository $legalPageRepository;
+
+    /**
+     * AppExtension constructor.
+     * @param LegalPageRepository $legalPageRepository
+     */
+    public function __construct(LegalPageRepository $legalPageRepository)
+    {
+        $this->legalPageRepository = $legalPageRepository;
+    }
+
     /**
      * Returns a list of filters to add to the existing list.
      *
@@ -44,6 +56,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('editModeModal', [$this,'editModeModal']),
             new TwigFunction('avatarFilename', [$this,'getAvatarFilename']),
             new TwigFunction('editButtons', [$this, 'editButtons']),
+            new TwigFunction('legalPages', [$this, 'getLegalPages'])
             ];
     }
 
@@ -114,5 +127,14 @@ class AppExtension extends AbstractExtension
         //Returns the whole block
         return
             '<div class="block-edit">'.$editLink.$removeLink.'</div>';
+    }
+
+    /**
+     * Returns all the legal pages available
+     * @return array|null
+     */
+    public function getLegalPages():? array
+    {
+        return $this->legalPageRepository->findAll();
     }
 }

@@ -6,6 +6,7 @@ namespace App\DataFixtures;
 
 use App\CustomServices\SlugMaker;
 use App\Entity\Comment;
+use App\Entity\LegalPage;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Entity\TrickGroup;
@@ -471,6 +472,33 @@ class AppFixtures extends Fixture
                 $manager->persist($comment);
             }
         }
+
+        /////////////// LEGAL PAGES //////////////////////
+
+        $privacy = new LegalPage();
+        $privacy->setSlugMaker($this->slugMaker)
+            ->setName('Privacy')
+            ->setContent(
+                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla non lectus molestie elementum. Mauris hendrerit felis id nulla ultricies pharetra. Donec et placerat ligula. Cras at dui ac est maximus malesuada at non ipsum. Morbi eu tincidunt turpis. Sed in laoreet sapien. Etiam vulputate consequat dolor, ut faucibus ligula consequat vitae. Phasellus ac ligula imperdiet, faucibus lorem et, finibus lacus. Morbi ut sapien fermentum, molestie arcu quis, sagittis massa. Donec eget volutpat quam. Vestibulum ut cursus turpis. Sed a justo gravida, consectetur enim vitae, scelerisque orci. </p>
+                 <p>Suspendisse et risus ultrices, consequat ipsum vitae, elementum purus. Nunc pharetra vulputate diam. Proin quam arcu, aliquam ac semper eu, malesuada id velit. Nulla vel cursus purus. Sed in posuere urna. Vivamus ullamcorper nunc a eros rutrum, a semper lorem malesuada. Aliquam ullamcorper dictum turpis, et semper erat. Fusce tincidunt ante enim, efficitur ullamcorper risus mattis sit amet. </p>
+                 <p>Donec sit amet ligula orci. Praesent non feugiat turpis. Etiam a fermentum orci, non tincidunt ex. Pellentesque eget tempus lorem, ac luctus orci. Suspendisse auctor quis elit sit amet congue. Morbi eu arcu et libero fringilla lacinia. Nullam mollis nibh sed erat consectetur, malesuada consequat velit elementum. Maecenas eget sapien in augue auctor hendrerit. Mauris ultricies dui augue, in dictum turpis placerat nec. Sed pretium aliquet lorem quis porta. Praesent facilisis, tellus eget congue mattis, felis diam bibendum magna, ut bibendum odio mauris ut enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris faucibus lacinia luctus. </p>
+                 <p>Vestibulum congue maximus convallis. Mauris ultricies vestibulum sem, in tempor lacus fermentum sed. Etiam volutpat leo ut dapibus imperdiet. Nunc facilisis bibendum lacus, eu vehicula erat vestibulum at. Nulla nisi massa, gravida at augue quis, feugiat porta risus. Duis nec nibh vitae ipsum dignissim maximus eu ac lectus. Nunc tincidunt pretium ipsum, placerat semper odio fermentum sit amet. Aliquam semper neque et metus sagittis, vel porta enim laoreet. Nullam molestie id risus ut iaculis. Ut in arcu a turpis ornare mollis in a sem. </p>
+                 <p>Fusce tincidunt eget leo iaculis bibendum. Morbi risus lacus, consectetur bibendum consequat ut, dapibus vel lorem. Proin non augue vitae dolor facilisis aliquet. Proin rhoncus sem eget est accumsan, quis auctor elit finibus. Proin et leo at quam sagittis ornare. Nunc vitae sapien consequat, vulputate lectus vitae, vestibulum massa. Suspendisse quis orci mi. </p>'
+            );
+        $manager->persist($privacy);
+
+        $copyright = new LegalPage();
+        $copyright
+            ->setSlugMaker($this->slugMaker)
+            ->setName('Copyright')
+            ->setContent(
+                '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse fringilla non lectus molestie elementum. Mauris hendrerit felis id nulla ultricies pharetra. Donec et placerat ligula. Cras at dui ac est maximus malesuada at non ipsum. Morbi eu tincidunt turpis. Sed in laoreet sapien. Etiam vulputate consequat dolor, ut faucibus ligula consequat vitae. Phasellus ac ligula imperdiet, faucibus lorem et, finibus lacus. Morbi ut sapien fermentum, molestie arcu quis, sagittis massa. Donec eget volutpat quam. Vestibulum ut cursus turpis. Sed a justo gravida, consectetur enim vitae, scelerisque orci. </p>
+                 <p>Suspendisse et risus ultrices, consequat ipsum vitae, elementum purus. Nunc pharetra vulputate diam. Proin quam arcu, aliquam ac semper eu, malesuada id velit. Nulla vel cursus purus. Sed in posuere urna. Vivamus ullamcorper nunc a eros rutrum, a semper lorem malesuada. Aliquam ullamcorper dictum turpis, et semper erat. Fusce tincidunt ante enim, efficitur ullamcorper risus mattis sit amet. </p>
+                 <p>Donec sit amet ligula orci. Praesent non feugiat turpis. Etiam a fermentum orci, non tincidunt ex. Pellentesque eget tempus lorem, ac luctus orci. Suspendisse auctor quis elit sit amet congue. Morbi eu arcu et libero fringilla lacinia. Nullam mollis nibh sed erat consectetur, malesuada consequat velit elementum. Maecenas eget sapien in augue auctor hendrerit. Mauris ultricies dui augue, in dictum turpis placerat nec. Sed pretium aliquet lorem quis porta. Praesent facilisis, tellus eget congue mattis, felis diam bibendum magna, ut bibendum odio mauris ut enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris faucibus lacinia luctus. </p>
+                 <p>Vestibulum congue maximus convallis. Mauris ultricies vestibulum sem, in tempor lacus fermentum sed. Etiam volutpat leo ut dapibus imperdiet. Nunc facilisis bibendum lacus, eu vehicula erat vestibulum at. Nulla nisi massa, gravida at augue quis, feugiat porta risus. Duis nec nibh vitae ipsum dignissim maximus eu ac lectus. Nunc tincidunt pretium ipsum, placerat semper odio fermentum sit amet. Aliquam semper neque et metus sagittis, vel porta enim laoreet. Nullam molestie id risus ut iaculis. Ut in arcu a turpis ornare mollis in a sem. </p>
+                 <p>Fusce tincidunt eget leo iaculis bibendum. Morbi risus lacus, consectetur bibendum consequat ut, dapibus vel lorem. Proin non augue vitae dolor facilisis aliquet. Proin rhoncus sem eget est accumsan, quis auctor elit finibus. Proin et leo at quam sagittis ornare. Nunc vitae sapien consequat, vulputate lectus vitae, vestibulum massa. Suspendisse quis orci mi. </p>'
+            );
+        $manager->persist($copyright);
 
         $manager->flush();
     }

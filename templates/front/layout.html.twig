@@ -43,8 +43,11 @@
     </div>
 
     <footer>
-        <p>Copyright</p>
-        <p><a>Confidentialité</a></p>
+        {% set pages = legalPages() %}
+
+        {% for page in pages %}
+            <p><a href="{{ path('legal_page',{'slug':page.slug}) }}">{{ page.name }}</a></p>
+        {% endfor %}
     </footer>
 
 {% endblock %}
