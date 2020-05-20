@@ -58,7 +58,7 @@ class KernelExceptionSubscriber implements EventSubscriberInterface
         } elseif ($exception instanceof RedirectException) {
             $event->setResponse($exception->getResponse());
         } elseif ($exception instanceof NotFoundHttpException) {
-            $this->session->getFlashBag()->add('error', 'The requested page doesn\'t exists');
+            $this->session->getFlashBag()->add('error', 'The requested page doesn\'t exist');
             $event->setResponse(new RedirectResponse($this->router->generate('home')));
         }
     }

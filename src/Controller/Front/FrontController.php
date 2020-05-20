@@ -12,6 +12,7 @@ use App\CustomServices\TrickMediaHandler;
 use App\CustomServices\EntityRemover;
 use App\Entity\Comment;
 use App\Entity\EmbedMedia;
+use App\Entity\LegalPage;
 use App\Entity\Media;
 use App\Entity\Trick;
 use App\Form\EmbedMediaFormType;
@@ -110,10 +111,12 @@ class FrontController extends AbstractController
      */
     public function editTrickAction(?Trick $trick, Request $request, SlugMaker $slugMaker)
     {
-        $this->denyAccessUnlessGranted('edit', $trick);
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         if (is_null($trick)) {
             $trick = new Trick();
+        } else {
+            $this->denyAccessUnlessGranted('edit', $trick);
         }
 
         //Sets the slug maker to allow Trick Entity to transform name into slug (autowiring doesn't work on entities)
@@ -330,10 +333,18 @@ class FrontController extends AbstractController
     }
 
     /**
-     * @Route("/privacy",name="privacy")
+     * @Route("/legal/{slug}", name="legal_page")
+     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
+     * @param LegalPage $page
+     * @return Response
      */
-    public function privacyAction()
+    public function displayLegalPageAction(LegalPage $page)
     {
-        return $this->render('front\privacy.html.twig');
+        return $this->render(
+            'front/legal_page.html.twig',
+            [
+                'page' => $page
+            ]
+        );
     }
 }

@@ -24,6 +24,7 @@ abstract class AbstractLister
 
     public const ADMIN_TRICK_LIST = 'getAdminTrickList';
     public const ADMIN_USER_LIST = 'getAdminUserList';
+    public const ADMIN_LEGAL_LIST = 'getAdminLegalList';
     public const ADMIN_COMMENT_LIST = 'getAdminCommentList';
 
 

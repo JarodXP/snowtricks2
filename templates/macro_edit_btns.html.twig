@@ -54,6 +54,18 @@
 
 {% endmacro %}
 
+{# Displays the buttons or links to edit and remove a Legal Page #}
+{% macro editLegalBtns(slug, editBtnType, removeBtnType) %}
+    {% set editPath = path('admin_legal_page', {'slug': slug}) %}
+    {% set removePath = path('remove_legal_page', {'slug': slug}) %}
+    {% set targetId = slug %}
+    {% set csrfToken = 'delete-legal-page' %}
+    {% set dataTarget = 'data-legal-slug' %}
+
+    {{ _self.buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) }}
+
+{% endmacro %}
+
 {% macro buttonBlock(editPath, editBtnType,removePath, targetId, dataTarget, removeBtnType, csrfToken) %}
 
     {% if editBtnType is not null %}
@@ -85,9 +97,10 @@
                 <input type="hidden" name="remove_token" value="{{ csrf_token(csrfToken) }}">
                 <button {{ dataTarget }}="{{ targetId }}" type="submit" class="remove-btn"><i class="far fa-trash-alt mx-2"></i></button>
             </form>
-        {% else %}
+        {% elseif removeBtnType == 'button' %}
             <input type="hidden" name="remove_token" value="{{ csrf_token(csrfToken) }}">
             <button {{ dataTarget }}="{{ targetId }}" type="submit" formaction="{{ removePath }}" class="btn btn-danger">Remove</button>
+        {% else %}
         {% endif %}
 
 {% endmacro %}

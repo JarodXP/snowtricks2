@@ -1,0 +1,46 @@
+{% extends 'admin/layout.html.twig' %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
+
+{% block title %}Admin Legal Pages{% endblock %}
+
+{% block mainContent %}
+    <div id="admin-list" class="admin-content">
+        <h1>List of Legal Pages</h1>
+        <p><a  class="btn btn-primary" href="{{ path('admin_legal_page',{'slug':'new'}) }}">Create Legal Page</a></p>
+        <div class="table-wrapper">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Page Name</th>
+                    <th>Remove</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for legalPage in legalPages %}
+
+                    <tr>
+                        <td><a href="/tricks/{{ legalPage.slug }}">{{ legalPage.name }}</a></td>
+                        <td class="remove-icon">
+                            {{ buttons.editLegalBtns(legalPage.slug, 'icon', 'icon')  | raw }}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin/_admin_pagination.html.twig' %}
+
+    </div>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+    {# Encore JS #}
+    {{ encore_entry_script_tags('admin-legal') }}
+
+{% endblock %}

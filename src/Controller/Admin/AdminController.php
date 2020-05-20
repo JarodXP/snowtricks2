@@ -8,8 +8,11 @@ namespace App\Controller\Admin;
 use App\CustomServices\AdminLister;
 use App\CustomServices\AbstractLister;
 use App\CustomServices\EntityRemover;
+use App\CustomServices\SlugMaker;
+use App\Entity\LegalPage;
 use App\Entity\Trick;
 use App\Entity\User;
+use App\Form\LegalPagesType;
 use App\Form\PaginationFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -137,5 +140,105 @@ class AdminController extends AbstractController
         $this->addFlash($removeResponse['flashType'], $removeResponse['message']);
 
         return $this->redirectToRoute('admin-users');
+    }
+
+    /**
+     * @Route("/admin/legal-pages/{page}",name="admin_legal_list")
+     * @param Request $request
+     * @param AdminLister $lister
+     * @param int $page
+     * @return Response
+     */
+    public function displayLegalListAction(Request $request, AdminLister $lister, int $page = null):Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN', 'Access Denied!!');
+
+        if (is_null($page)) {
+            $page = 1;
+        }
+
+        $paginationForm = $this->createForm(PaginationFormType::class, null, [
+            'sortFieldList'=>['name'],
+            'filterFieldList' => ['all']
+        ]);
+
+        $lister->setQueryParameters($request, LegalPage::class, $paginationForm, $page);
+
+        $legalPages = $lister->getList(AbstractLister::ADMIN_LEGAL_LIST);
+
+        return $this->render('admin\legal_list.html.twig', [
+            'legalPages' => $legalPages,
+            'paginationForm' => $paginationForm->createView(),
+            'params' => $lister->getQueryParameters(),
+            'route' => 'admin_legal_list',
+            'pages' => $lister->getTotalPages($legalPages),
+            'currentPage' => $page
+        ]);
+    }
+
+    /**
+     * @Route("/admin/legal/edit/{slug}",name="admin_legal_page")
+     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
+     * @param LegalPage $page
+     * @param Request $request
+     * @return RedirectResponse|Response
+     */
+    public function editLegalPageAction(Request $request, SlugMaker $slugMaker, LegalPage $page = null)
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        if (is_null($page)) {
+            $page = new LegalPage();
+        }
+
+        //Sets the slug maker to allow LegalPage Entity to transform name into slug (autowiring doesn't work on entities)
+        $page->setSlugMaker($slugMaker);
+
+        $pageForm = $this->createForm(LegalPagesType::class, $page);
+
+        $pageForm->handleRequest($request);
+
+        if ($pageForm->isSubmitted() && $pageForm->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+
+            $manager->persist($page);
+            $manager->flush();
+
+            $this->addFlash('notice', 'The page has been saved');
+
+            return $this->redirectToRoute('admin_legal_page', [
+                'slug' => $page->getSlug()
+            ]);
+        }
+
+        return $this->render(
+            'admin/legal_page.html.twig',
+            [
+                'page' => $page,
+                'legalPageForm' => $pageForm->createView()
+            ]
+        );
+    }
+
+    /**
+     * @Route("/admin/legal/remove/{slug}", name="remove_legal_page")
+     * @ParamConverter("page", options={"mapping": {"slug": "slug"}})
+     * @param Request $request
+     * @param EntityRemover $remover
+     * @param LegalPage $page
+     * @return RedirectResponse
+     */
+    public function removeLegalPageAction(Request $request, EntityRemover $remover, LegalPage $page)
+    {
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        //Removes the page
+        $removeResponse = $remover->removeEntity($request, $page, 'delete-legal-page');
+
+        //Adds a flash message
+        $this->addFlash($removeResponse['flashType'], $removeResponse['message']);
+
+        return $this->redirectToRoute('admin_legal_list');
     }
 }
