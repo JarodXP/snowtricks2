@@ -65,4 +65,8 @@
 
     </div>
 
+    {% if tricks|length > 15 %}
+        <p class="scroll-arrow"><a href="{{ path('home')~'#trick-list' }}"><i class="fas fa-arrow-circle-up jxp-clickable"></i></a></p>
+    {% endif %}
+
 {% endblock %}

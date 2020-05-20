@@ -37,7 +37,7 @@ class CommentLister extends AbstractLister
      */
     protected function setQueryDefaultParameters(): void
     {
-        $this->queryParameters[self::LIMIT_FIELD] = 5;
+        $this->queryParameters[self::LIMIT_FIELD] = 10;
         $this->queryParameters[self::OFFSET_FIELD] = 0;
     }
 

@@ -71,7 +71,7 @@ class HomeTrickLister extends AbstractLister
     {
         //Sets the default value for trick list
         $this->queryParameters = [
-            self::LIMIT_FIELD => 5,
+            self::LIMIT_FIELD => 10,
             self::FILTER_ID => null
         ];
     }

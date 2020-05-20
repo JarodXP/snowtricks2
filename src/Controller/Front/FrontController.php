@@ -110,10 +110,12 @@ class FrontController extends AbstractController
      */
     public function editTrickAction(?Trick $trick, Request $request, SlugMaker $slugMaker)
     {
-        $this->denyAccessUnlessGranted('edit', $trick);
+        $this->denyAccessUnlessGranted('ROLE_USER');
 
         if (is_null($trick)) {
             $trick = new Trick();
+        } else {
+            $this->denyAccessUnlessGranted('edit', $trick);
         }
 
         //Sets the slug maker to allow Trick Entity to transform name into slug (autowiring doesn't work on entities)
