@@ -111,7 +111,7 @@ class FrontController extends AbstractController
      */
     public function editTrickAction(?Trick $trick, Request $request, SlugMaker $slugMaker)
     {
-        $this->denyAccessUnlessGranted('ROLE_USER');
+        $this->denyAccessUnlessGranted('ROLE_ACTIVATED_USER');
 
         if (is_null($trick)) {
             $trick = new Trick();
@@ -280,6 +280,8 @@ class FrontController extends AbstractController
      */
     public function removeTrickMediaAction(Media $media, Trick $trick, TrickMediaHandler $mediaHandler)
     {
+        $this->denyAccessUnlessGranted('edit', $trick);
+
         //Gets the manager
         $manager = $this->getDoctrine()->getManager();
 
@@ -309,6 +311,13 @@ class FrontController extends AbstractController
      */
     public function removeEmbedMediaAction(EmbedMedia $embedMedia, Trick $trick)
     {
+        $this->denyAccessUnlessGranted('edit', $trick);
+
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->remove($embedMedia);
+
+        $manager->flush();
     }
 
     /**
