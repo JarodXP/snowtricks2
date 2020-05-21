@@ -84,6 +84,11 @@ class User implements UserInterface, Removable
      */
     private DateTimeInterface $dateAdded;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $activated = false;
+
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
@@ -393,6 +398,25 @@ class User implements UserInterface, Removable
     public function setDateAdded(DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActivated(): ?bool
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param bool $activated
+     * @return $this
+     */
+    public function setActivated(bool $activated): self
+    {
+        $this->activated = $activated;
 
         return $this;
     }
