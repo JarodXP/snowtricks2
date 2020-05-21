@@ -27,7 +27,7 @@
                     <tr>
                         <td><a href="/tricks/{{ trick.slug }}">{{ trick.name }}</a></td>
                         <td>{{ trick.trickGroup.name }}</td>
-                        <td>{{ trick.author.username }}</td>
+                        <td><a href="/member/edit/{{ trick.author.username }}">{{ trick.author.username }}</a></td>
                         <td>{{ trick.dateAdded | date('Y-m-d') }}</td>
                         <td>{{ trick.dateModified | date('Y-m-d') }}</td>
                         <td class="status-cell">{{ trick.status }}</td>

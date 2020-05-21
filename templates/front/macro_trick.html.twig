@@ -33,7 +33,7 @@
 
 {% endmacro %}
 
-{# if edit mode, adds the buttons edit and remove on the main image  #}
+{# if edit mode, adds the buttons edit and remove on the header main image  #}
 {% macro displayHeader(editMode, trick) %}
 
     {% import 'macro_edit_btns.html.twig' as buttons %}
@@ -48,6 +48,12 @@
 
             <div class="block-edit">
                 {{ editBtns | raw }}
+            </div>
+
+        {% elseif(trick.id is not null and is_granted('edit', trick)) %}
+
+            <div class="block-edit">
+                {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon') | raw }}
             </div>
 
         {% endif %}
@@ -170,11 +176,11 @@
 
 {% endmacro %}
 
-{# Displays te comment section if edit mode is false #}
+{# Displays the comment section if edit mode is false #}
 {% macro displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) %}
     <div class="divider"></div>
 
-    {% if is_granted('ROLE_USER') %}
+    {% if is_granted('ROLE_ACTIVATED_USER') %}
 
         {{ form_start(commentForm) }}
         {{ form_widget(commentForm) }}
