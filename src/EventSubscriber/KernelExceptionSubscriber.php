@@ -7,11 +7,8 @@ namespace App\EventSubscriber;
 
 use App\Exception\RedirectException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -52,14 +49,8 @@ class KernelExceptionSubscriber implements EventSubscriberInterface
     {
         $exception = $event->getThrowable();
 
-        if ($exception instanceof AccessDeniedHttpException) {
-            $this->session->getFlashBag()->add('error', 'Access denied');
-            $event->setResponse(new RedirectResponse($this->router->generate('app_login')));
-        } elseif ($exception instanceof RedirectException) {
+        if ($exception instanceof RedirectException) {
             $event->setResponse($exception->getResponse());
-        } elseif ($exception instanceof NotFoundHttpException) {
-            $this->session->getFlashBag()->add('error', 'The requested page doesn\'t exist');
-            $event->setResponse(new RedirectResponse($this->router->generate('home')));
         }
     }
 }

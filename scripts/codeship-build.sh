@@ -5,7 +5,7 @@ if [ "$CI_BRANCH" = "master" ]
 then
   environment='prod'
 else
-  environment='dev'
+  environment='prod'
 fi
 
 #Sets the env vars in the .env.local from the CodeShip env vars

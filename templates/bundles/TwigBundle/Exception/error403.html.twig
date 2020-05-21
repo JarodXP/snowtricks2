@@ -1,0 +1,19 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}Unknown Page{% endblock %}
+
+{% block mainContent %}
+
+    <div class="error-page form-card">
+        <h1>Hey! You're off-track! (403)</h1>
+
+        <h2>Sorry dude, you're not allowed to ride here!</h2>
+
+        <div class="error-image">
+            <img src="{{ asset('/media/403-image.jpg') }}">
+        </div>
+    </div>
+
+
+
+{% endblock %}
