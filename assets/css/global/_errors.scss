@@ -1,0 +1,14 @@
+.error-page h2{
+  text-align: center;
+  margin-bottom: 20px;
+}
+.error-image{
+  width: 80%;
+  margin: auto;
+  text-align: center;
+
+  &>img{
+    object-fit: cover;
+    width: inherit;
+  }
+}

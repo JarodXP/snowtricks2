@@ -1,0 +1,19 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}Unknown Page{% endblock %}
+
+{% block mainContent %}
+
+    <div class="error-page form-card">
+        <h1>Wrong route! (404)</h1>
+
+        <h2>Sorry dude, you missed the right path!</br>This page doesn't exist.</h2>
+
+        <div class="error-image">
+            <img src="{{ asset('/media/404-image.jpg') }}">
+        </div>
+    </div>
+
+
+
+{% endblock %}
