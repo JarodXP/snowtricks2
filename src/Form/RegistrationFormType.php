@@ -10,10 +10,8 @@ use App\Form\CustomType\CustomEmailType;
 use App\Form\CustomType\PasswordRepeatedType;
 use App\Form\CustomType\UsernameType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
@@ -37,14 +35,6 @@ class RegistrationFormType extends AbstractType
                 'constraints' => [
                     new NotBlank()
                 ]
-            ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You must agree to our terms.',
-                    ]),
-                ],
             ])
             ->add('passwordGroup', PasswordRepeatedType::class, [
                 'constraints' => [

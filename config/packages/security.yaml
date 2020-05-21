@@ -35,4 +35,8 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
-         - { path: ^/profile, roles: [IS_AUTHENTICATED_FULLY, ROLE_ADMIN] }
+         - { path: ^/member, roles: ROLE_ACTIVATED_USER }
+    role_hierarchy:
+        ROLE_ADMIN:       [ROLE_USER, ROLE_ACTIVATED_USER]
+        ROLE_ACTIVATED_USER: [ROLE_USER]
+

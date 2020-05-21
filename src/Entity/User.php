@@ -31,7 +31,7 @@ class User implements UserInterface, Removable
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -83,6 +83,11 @@ class User implements UserInterface, Removable
      * @ORM\Column(type="datetime", nullable=true)
      */
     private DateTimeInterface $dateAdded;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $activated = false;
 
     public function __construct()
     {
@@ -393,6 +398,25 @@ class User implements UserInterface, Removable
     public function setDateAdded(DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActivated(): ?bool
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param bool $activated
+     * @return $this
+     */
+    public function setActivated(bool $activated): self
+    {
+        $this->activated = $activated;
 
         return $this;
     }
