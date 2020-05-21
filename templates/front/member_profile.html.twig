@@ -28,12 +28,16 @@
 
             {{ form_row(formProfile.lastName) }}
 
+            {{ form_end(formProfile) }}
+
             <div class="jxp-group-btn">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary" form="profile-form">Save</button>
+                <form action="{{ path('remove-account',{'username':user.username}) }}" method="post">
+                    <input type="hidden" name="remove_token" value="{{ csrf_token('delete-user') }}">
+                    <button class="btn btn-danger" >Remove account</button>
+                </form>
                 <a class="btn btn-dark" href="{{ path('home') }}">Back Home</a>
             </div>
-
-            {{ form_end(formProfile) }}
         </div>
 
 

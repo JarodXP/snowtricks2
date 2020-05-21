@@ -6,11 +6,13 @@ declare(strict_types=1);
 namespace App\Controller\Front;
 
 use App\CustomServices\AvatarUploader;
+use App\CustomServices\EntityRemover;
 use App\Entity\Media;
 use App\Entity\User;
 use App\Form\UserProfileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -23,14 +25,17 @@ use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 class MemberController extends AbstractController
 {
     /**
-     * @Route("/member/{username}", name="member-profile")
+     * @Route("/member/edit/{username}", name="member-profile")
      * @param Request $request
+     * @param User $user
      * @param AvatarUploader $uploader
      * @param TokenGeneratorInterface $tokenGenerator
      * @return Response
      */
     public function profileFormAction(Request $request, User $user, AvatarUploader $uploader, TokenGeneratorInterface $tokenGenerator)
     {
+        $this->denyAccessUnlessGranted('edit', $user);
+
         $manager = $this->getDoctrine()->getManager();
 
         //Creates a new token for password resetting
@@ -38,7 +43,9 @@ class MemberController extends AbstractController
         $user->setResetToken($token);
 
         //Creates the form & handles request
-        $formProfile = $this->createForm(UserProfileType::class, $user);
+        $formProfile = $this->createForm(UserProfileType::class, $user, [
+            'attr' => ['id' => 'profile-form']
+        ]);
 
         $formProfile->handleRequest($request);
 
@@ -64,7 +71,6 @@ class MemberController extends AbstractController
 
                     //Registers the new avatar
                     $manager->persist($newAvatar);
-
                 } catch (FileException $e) {
                     $this->addFlash('danger', $e->getMessage());
                 }
@@ -98,10 +104,23 @@ class MemberController extends AbstractController
     }
 
     /**
-     * @Route("/member/remove-account", name="remove-account")
+     * @Route("/member/remove-account/{username}", name="remove-account")
+     * @param Request $request
+     * @param User $user
+     * @param EntityRemover $remover
+     * @return RedirectResponse
      */
-    public function removeAccountAction()
+    public function removeAccountAction(Request $request, User $user, EntityRemover $remover)
     {
-        $this->redirectToRoute('home');
+        //Uses Security voter to grant access
+        $this->denyAccessUnlessGranted('edit', $user);
+
+        //Removes the user
+        $removeResponse = $remover->removeEntity($request, $user, 'delete-user');
+
+        //Adds a flash message
+        $this->addFlash($removeResponse['flashType'], $removeResponse['message']);
+
+        return $this->redirectToRoute('home');
     }
 }

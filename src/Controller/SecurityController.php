@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use App\Entity\User;
-use Swift_Mailer;
 
 /**
  * Class SecurityController
@@ -130,6 +129,14 @@ class SecurityController extends AbstractController
         //Activates the account in database
         $user->setActivated(true);
 
+        //Sets the activated role
+        $user->setRoles(['ROLE_ACTIVATED_USER']);
+
+        //Registers in database
+        $manager = $this->getDoctrine()->getManager();
+        $manager->persist($user);
+        $manager->flush();
+
         //Notifies the user
         $this->addFlash('notice', 'Congratulations! You are now part of the Snowtricks team!');
 
@@ -140,7 +147,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/auth/forgot-password", name="app_forgotten_password")
      * @param Request $request
-     * @param Swift_Mailer $mailer
+     * @param PreconfiguredMailer $customMailer
      * @param TokenGeneratorInterface $tokenGenerator
      * @param UserInfoChecker $infoChecker
      * @return Response
@@ -173,7 +180,7 @@ class SecurityController extends AbstractController
             $user->setResetToken($token);
             $manager->flush();
 
-            $customMailer->sendForgottenPasswordMail($token,$user);
+            $customMailer->sendForgottenPasswordMail($token, $user);
 
             return $this->redirectToRoute('home');
         }
