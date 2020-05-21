@@ -170,11 +170,11 @@
 
 {% endmacro %}
 
-{# Displays te comment section if edit mode is false #}
+{# Displays the comment section if edit mode is false #}
 {% macro displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) %}
     <div class="divider"></div>
 
-    {% if is_granted('ROLE_USER') %}
+    {% if is_granted('ROLE_AUTHENTICATED_USER') %}
 
         {{ form_start(commentForm) }}
         {{ form_widget(commentForm) }}

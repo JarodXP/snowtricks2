@@ -111,6 +111,6 @@ abstract class AbstractLister
      */
     public function getTotalPages(Paginator $list):int
     {
-        return (int) round(count($list) / (int) $this->queryParameters[self::LIMIT_FIELD]);
+        return (int) ceil(count($list) / (int) $this->queryParameters[self::LIMIT_FIELD]);
     }
 }
