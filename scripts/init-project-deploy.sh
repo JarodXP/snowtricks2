@@ -6,4 +6,4 @@ cd /var/www/snowtricks-test || exit
 source "/var/www/snowtricks-test/scripts/init-database-prod.sh"
 
 cd /var/www/snowtricks-test || exit
-source "/var/www/snowtricks-test/scripts/init-medias-prod.sh"
+source "/var/www/snowtricks-test/scripts/init-medias.sh"
