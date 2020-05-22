@@ -1,0 +1,28 @@
+div[class^="flash"]{
+  position: fixed;
+  width: 100%;
+  height: 30px;
+  padding-left: 20px;
+  bottom: $mobile-nav-height;
+  z-index: 9999;
+  color: white;
+  box-shadow: 0 -5px 10px $dark-primary-color;
+}
+
+.flash-error, .flash-danger{
+  background: $flash-error-gradient;
+}
+
+.flash-notice{
+  background: $flash-notice-gradient;
+}
+
+.flash-warning{
+  background: $flash-warning-gradient;
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+  div[class^="flash"]{
+    top:$desktop-nav-height;
+  }
+}

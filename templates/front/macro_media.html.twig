@@ -1,0 +1,62 @@
+{# Display the page title depending on whether it's a new media or not #}
+{% macro displayTitle(media,mediaType) %}
+
+    {% if media.id is null %}
+        {% set action = 'Upload' %}
+    {% else %}
+        {% set action = 'Edit' %}
+    {% endif %}
+
+    {% if mediaType == 'embed' %}
+        {% set action = 'Embed' %}
+        {% set mediaType = 'video' %}
+    {% endif %}
+
+    {{ action ~ ' ' ~ mediaType }}
+
+{% endmacro %}
+
+{# Display the current media depending on the type #}
+{% macro displayCurrentMedia(media,mediaType) %}
+
+    {% if media.id is not null and mediaType == 'image' %}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/' ~ media.fileName) ~ '" alt="Media thumbnail">' %}
+    {% elseif media.id is null and mediaType == 'image' %}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/default_image.jpg') ~ '" alt="Media thumbnail">' %}
+    {% elseif media.id is not null and mediaType == 'video'%}
+        {% set thumbnail = '<video id="thumbnailMedia"><source src="' ~ asset('/media/tricks_media/' ~ fileName) ~ '"></video>' %}
+    {% elseif media.id is null and mediaType == 'video'%}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/default-video.png')~'" alt="Media thumbnail">' %}
+    {% elseif media.id is not null and mediaType == 'embed'%}
+        {% set thumbnail = '<div id="thumbnailMedia">' ~ media.htmlCode | raw ~'</div>' %}
+    {% elseif media.id is null and mediaType == 'embed'%}
+        {% set thumbnail = '<img id="thumbnailMedia" src="' ~ asset('/media/tricks_media/default-video.png') ~ '" alt="Media thumbnail">' %}
+    {% endif %}
+
+    <div id="current-media">
+        {{ thumbnail | raw }}
+    </div>
+
+{% endmacro %}
+
+{# Display the form fields depending on whether it's an image or video #}
+{% macro displayForm(media, mediaForm, mediaType) %}
+
+    {% if(media.id is null) %}
+        {% set required = {'attr': {'required': 'required'}} %}
+    {% else %}
+        {% set required = {} %}
+    {% endif %}
+
+    {% if mediaType == 'image' %}
+        {{ form_row(mediaForm.image, required) }}
+        {{ form_row(mediaForm.alt) }}
+        {{ form_row(mediaForm.mainImage) }}
+    {% elseif mediaType == 'video' %}
+        {{ form_row(mediaForm.video, required) }}
+    {% else %}
+        {{ form_row(mediaForm.htmlCode) }}
+        {{ form_row(mediaForm.mediaName) }}
+    {% endif %}
+
+{% endmacro %}

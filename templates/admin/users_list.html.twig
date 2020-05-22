@@ -1,13 +1,14 @@
 {% extends 'admin/layout.html.twig' %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
 
 {% block title %}Admin Users{% endblock %}
 
 {% block mainContent %}
-    <div id="admin-users-list" class="admin-content">
+    <div id="admin-list" class="admin-content">
         <h1>List of users</h1>
-        <form>
-            <table class="jxp-admin-table">
-                <thead>
+        <div class="table-wrapper">
+            <table class="table table-hover">
+                <thead class="thead-dark">
                 <tr>
                     <th>Avatar</th>
                     <th>Username</th>
@@ -24,7 +25,7 @@
                     <tr>
                         <td>
                             <div class="jxp-avatar-thumbnail">
-                                <img src="/media/{{ user.avatar.filename }}" alt="{{ user.avatar.alt }}">
+                                <img src="/media/avatars/{{ user.avatar.fileName }}" alt="{{ user.avatar.alt }}">
                             </div>
                         </td>
                         <td>{{ user.username }}</td>
@@ -32,28 +33,27 @@
                         <td>{{ user.lastName }}</td>
                         <td>{{ user.dateAdded |date('Y-m-d') }}</td>
                         <td>{{ user.email }}</td>
-                        <td>{{ user.role.name }}</td>
-                        <td class="table-edit-cell"><i class="far fa-edit"></i><i class="far fa-trash-alt"></i></td>
+                        <td>{% for role in user.roles %} {{ role | userRole }} {% endfor %}</td>
+                        <td class="remove-icon">
+                            {{ buttons.editUsersBtns(user.username, 'icon', 'icon')  | raw }}
+                        </td>
                     </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-        </form>
-
-        <div class="jxp-table-pagination">
-            <select id="limit" class="jxp-pagination-limit">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <div class="jxp-pagination-pages">
-                <i class="fas fa-chevron-circle-left"></i>
-                <p>Page 1 / 1</p>
-                <i class="fas fa-chevron-circle-right"></i>
-            </div>
         </div>
 
+        {% include 'admin/_admin_pagination.html.twig' %}
+
     </div>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+    {# Encore JS #}
+    {{ encore_entry_script_tags('admin-users') }}
+
 {% endblock %}

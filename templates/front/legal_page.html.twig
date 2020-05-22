@@ -1,0 +1,17 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}{{ page.name }}{% endblock %}
+
+{% block mainContent %}
+    <div id="legal-page">
+
+        <div class="form-card">
+            <h1>{{ page.name }}</h1>
+
+            <article>
+                {{ page.content | raw }}
+            </article>
+        </div>
+
+    </div>
+{% endblock %}

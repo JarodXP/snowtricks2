@@ -1,30 +1,33 @@
 {% extends 'base.html.twig' %}
 
+{% import 'macro_connected_block.html.twig' as blockConnected %}
+
 {% block body %}
 
     <!--Desktop nav-->
-    <nav id="desktop-nav" class="admin-nav">
-        <div id="nav-logo">SNOWTRICKS</div>
-        <ul class="nav-menu">
-            <li class="menu-item"><a href="/admin/tricks">Tricks</a></li>
-            <li class="menu-item"><a href="/admin/users">Users</a></li>
-            {% include '_connected_desktop.html.twig' %}
-
-        </ul>
+    <nav id="desktop-admin-nav" class="desktop-nav navbar navbar-expand-md fixed-top">
+        <a id="nav-logo" class="navbar-brand" href="{{ path('home') }}">SNOWTRICKS</a>
+        <div id="desktop-front-menu" class="collapse navbar-collapse nav-menu">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin_legal_list') }}">LegalPages</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin-tricks') }}">Tricks</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('admin-users') }}">Users</a></li>
+                {{ blockConnected.connection('admin','desktop') }}
+            </ul>
+        </div>
     </nav>
     <!--end Desktop nav-->
 
     <!--Mobile nav-->
-    <nav id="mobile-nav" class="hidden admin-nav">
+
+    <nav id="mobile-admin-nav" class="mobile-nav navbar navbar-expand-sm fixed-bottom" >
         <ul class="nav-menu">
-            <li class="menu-item"><a href="/"><i class="fas fa-users"></i></a></li>
-            <li class="menu-item"><a href="/#tricks"><i class="fas fa-snowboarding"></i></a></li>
-            {% include '_connected_mobile.html.twig' %}
+            <li class="nav-item"><a href="{{ path('admin-users') }}"><i class="fas fa-users"></i></a></li>
+            <li class="nav-item"><a href="{{ path('admin-tricks') }}"><i class="fas fa-snowboarding"></i></a></li>
+            {{ blockConnected.connection('admin','mobile') }}
         </ul>
     </nav>
     <!--end Mobile nav-->
-
-    {% include '_connected_submenu.html.twig' %}
 
     <div id="main-wrapper">
 
@@ -33,16 +36,7 @@
     </div>
 
     <footer>
-        <p><a href="/">Retour au site</a></p>
+        <p><a href="/">Back to site</a></p>
     </footer>
-
-{% endblock %}
-
-{% block footerScripts %}
-
-    {{ parent() }}
-
-    {# Encore JS #}
-    {{ encore_entry_script_tags('admin') }}
 
 {% endblock %}

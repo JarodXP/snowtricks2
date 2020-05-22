@@ -1,16 +1,17 @@
 {% extends 'admin/layout.html.twig' %}
+{% import 'macro_edit_btns.html.twig' as buttons %}
 
 {% block title %}Admin Tricks{% endblock %}
 
 {% block mainContent %}
-    <div id="admin-trick-list" class="admin-content">
+    <div id="admin-list" class="admin-content">
         <h1>List of tricks</h1>
-        <form>
-            <table class="jxp-admin-table">
-                <thead>
+        <div class="table-wrapper">
+            <table class="table table-hover">
+                <thead class="thead-dark">
                 <tr>
                     <th>Trick Name</th>
-                    <th>Trick TrickGroup</th>
+                    <th>Trick Group</th>
                     <th>Author</th>
                     <th>Date Added</th>
                     <th>Date Modified</th>
@@ -24,39 +25,43 @@
                 {% for trick in tricks %}
 
                     <tr>
-                        <td><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></td>
+                        <td><a href="/tricks/{{ trick.slug }}">{{ trick.name }}</a></td>
                         <td>{{ trick.trickGroup.name }}</td>
-                        <td>{{ trick.author.username }}</td>
+                        <td><a href="/member/edit/{{ trick.author.username }}">{{ trick.author.username }}</a></td>
                         <td>{{ trick.dateAdded | date('Y-m-d') }}</td>
                         <td>{{ trick.dateModified | date('Y-m-d') }}</td>
-                        <td>{{ trick.status }}</td>
+                        <td class="status-cell">{{ trick.status }}</td>
                         <td>
-                            <label class="jxp-admin-toggle">
-                                <input id="publish-{{ trick.name }}" type="checkbox" data-slug="{{ trick.name }}">
-                                <span class="jxp-toggle-slider"></span>
-                            </label>
+                            <form id="status-form">
+                                <label class="jxp-admin-toggle">
+                                    <input id="publish-{{ trick.slug }}" class="status-toggler" type="checkbox" data-slug="{{ trick.slug }}"
+                                            {% if trick.status == 1 %} checked {% endif %}>
+                                    <span class="jxp-toggle-slider"></span>
+                                </label>
+                                <input type="hidden" name="token" value="{{ csrf_token('change-status') }}"/>
+                            </form>
+
                         </td>
-                        <td class="remove-icon"><a href="/admin/remove-{{ trick.name }}"><i class="far fa-trash-alt"></i></a></td>
+                        <td class="remove-icon">
+                            {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon')  | raw }}
+                        </td>
                     </tr>
                 {% endfor %}
 
                 </tbody>
             </table>
-        </form>
-
-        <div class="jxp-table-pagination">
-            <select id="limit" class="jxp-pagination-limit">
-                <option value="10">10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-            </select>
-            <div class="jxp-pagination-pages">
-                <i class="fas fa-chevron-circle-left"></i>
-                <p>Page 1 / 1</p>
-                <i class="fas fa-chevron-circle-right"></i>
-            </div>
         </div>
 
+        {% include 'admin/_admin_pagination.html.twig' %}
+
     </div>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+    {# Encore JS #}
+    {{ encore_entry_script_tags('admin-tricks') }}
+
 {% endblock %}

@@ -1,0 +1,16 @@
+{% import 'macro_pagination.html.twig' as pagination %}
+<div id="admin-pagination" aria-label="pagination-nav">
+    {{ form_start(paginationForm) }}
+
+    {{ form_row(paginationForm.order,{'attr':{'value':params.order}}) }}
+    {{ form_row(paginationForm.direction,{'attr':{'value':params.direction}}) }}
+    {{ form_row(paginationForm.filter,{'attr':{'value':params.filter}}) }}
+
+    {{ form_row(paginationForm.limit) }}
+    <button class="btn btn-primary" type="submit">Find</button>
+
+    {{ form_end(paginationForm) }}
+
+    {# Last argument for paginationNav is mandatory and must be an array #}
+    {{ pagination.paginationNav(currentPage, pages, paginationForm, route, {}) }}
+</div>

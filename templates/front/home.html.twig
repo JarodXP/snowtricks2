@@ -1,42 +1,37 @@
 {% extends 'front/layout.html.twig' %}
+{% import 'front/macro_trick.html.twig' as displayTrick %}
 
 {% block title %}Snowtricks{% endblock %}
 
-{% block metaDescription %}Les meilleurs tricks de Snowboard{% endblock %}
+{% block metaDescription %}All you want to know about snowboard tricks{% endblock %}
 
 {% block mainContent %}
 
     <!--header-->
     <header id="home-header">
 
-        <h1>Figures de Style</h1>
-        <p class="scroll-arrow"><a href="/#trick-list"><i class="fas fa-arrow-circle-down jxp-clickable"></i></a></p>
+        <h1>Tricky Tricks</h1>
+        <p class="scroll-arrow"><a href="{{ path('home')~'#trick-list' }}"><i class="fas fa-arrow-circle-down jxp-clickable"></i></a></p>
 
     </header>
     <!--end header-->
 
     <section id="section-trick">
 
-        <div id="trick-list">
+        <h3>Tricks</h3>
 
-            {% for trick in tricks %}
+        <a id="new-trick" class="btn btn-secondary" href="{{ path('edit-trick',{'trickSlug':'new'}) }}">Create Trick</a>
 
-                <div class="trick-card">
-                    <img class="trick-image" src="/media/{{ trick.mainImage.fileName }}" alt="snowboard trick ollie">
-                    <div class="trick-text">
-                        <p class="trick-name"><a href="/tricks/{{ trick.name }}">{{ trick.name }}</a></p>
-                        <p>
-                            <a class="trick-icons" href="/tricks/?edit={{ trick.name }}"><i class="far fa-edit"></i></a>
-                            <a class="trick-icons" href="/tricks/?remove={{ trick.name }}"><i class="far fa-trash-alt"></i></a>
-                        </p>
-                    </div>
-                </div>
-            {% endfor %}
-
-        </div>
-
-        <a class="jxp-btn-load">Plus   </a>
+        {% include 'front/_trick_list.html.twig' %}
 
     </section>
+
+{% endblock %}
+
+{% block footerScripts %}
+
+    {# Encore scripts #}
+    {{ parent() }}
+    {{ encore_entry_script_tags('home_page') }}
 
 {% endblock %}

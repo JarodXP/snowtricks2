@@ -7,7 +7,7 @@
 #media-slider-element{
   display: grid;
   grid-template-columns: 5% 90% 5%;
-  color: $contrast-color;
+  color: $secondary;
   margin-bottom: 15%;
 }
 
@@ -16,33 +16,62 @@
   justify-content: center;
   align-items: center;
   font-size: 2rem;
-  margin: 0 10px;
 
   &>i{
+    @extend .jxp-clickable;
+
     border-radius: 50%;
   }
+}
+
+#slider-left-arrow {
+  margin: 0 15px 0 0;
+}
+
+#slider-right-arrow {
+  margin: 0 0 0 15px;
 }
 
 #media-slider-bar{
   width: 100%;
   margin-top: 20px;
+  padding: 5px 0;
   overflow: hidden;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+}
+
+#media-slider-toggle{
+  text-align: center;
+
+  &>a{
+    color: white;
+  }
 }
 
 .media-slider-thumbnail{
+  @extend .jxp-clickable;
+
+  display: flex;
+  flex-direction: column;
   width: 120px;
   margin: 1% 2%;
   border-radius: 5px;
-  border: 1px solid $secondary-color;
-  box-shadow: 2px 2px 5px $dark-primary-color;
-  transition: margin-left 0.5s ease-out;
+  transition: margin-left 0.5s ease-out, box-shadow 0.15s ease-out;
 
-  &>img, &>iframe{
+  &>img, &>iframe, &>video{
     width: inherit;
     height: 90px;
     object-fit: cover;
+    border-radius: 5px;
+  }
+}
+
+.carousel-item {
+  text-align: center;
+
+  & iframe{
+    max-width: 100%;
   }
 }
 
@@ -53,11 +82,38 @@
 }
 
 .carousel-control-prev-icon{
-  background-image: url("/images/chevron-left-solid.svg");
+  background-image: url("/icons/chevron-left-solid.svg");
 }
 
 .carousel-control-next-icon{
-  background-image: url("/images/chevron-right-solid.svg");
+  background-image: url("/icons/chevron-right-solid.svg");
+}
+
+#add-media{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &>a{
+    margin: 10px auto;
+  }
+}
+
+#current-media{
+
+  &>#thumbnailMedia, & iframe{
+    display: block;
+    margin: auto;
+    width: 120px;
+    height:90px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px $dark-primary-color;
+  }
+}
+
+#thumbnailMedia{
+  object-fit: cover;
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
@@ -74,4 +130,16 @@
     width: 150% !important;
     left: -25% !important;
   }
+
+  #add-media{
+    margin: 1.3rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    &>a{
+      margin: 0 auto;
+    }
+  }
+
 }

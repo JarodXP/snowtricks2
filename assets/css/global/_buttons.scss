@@ -1,0 +1,54 @@
+.btn{
+  @extend .jxp-clickable;
+}
+
+.btn-primary:hover{
+  border-color: $primary;
+  background-color: $primary;
+}
+
+.btn-secondary:hover{
+  border-color: $secondary;
+  background-color: $secondary;
+  color: white!important;
+}
+
+.load-btn{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.5rem;
+}
+
+.block-edit{
+  background-color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+
+  & a, & form, & button{
+    color: $secondary;
+    margin: 0 auto;
+    font-size: 1.3rem;
+  }
+}
+
+.remove-btn{
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0;
+
+  &>i{
+    color: $secondary;
+    margin: 0 auto;
+  }
+
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+  .load-btn{
+    font-size: 1.2rem;
+  }
+}

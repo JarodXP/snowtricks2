@@ -1,0 +1,37 @@
+{% macro connection (layout, device) %}
+
+    {# Sets the variables used for specific HTML depending on the layout (front or admin) and the device (desktop or mobile) #}
+    {% if device == 'desktop' %}
+        {% set dropType = 'dropdown' %}
+        {% set usernameLabel = '<p>'~app.user.username~'</p>' %}
+    {% else %}
+        {% set dropType = 'dropup' %}
+        {% set usernameLabel = '' %}
+    {% endif %}
+
+    {% if layout == 'front' and 'ROLE_ADMIN' in app.user.roles %}
+        {% set specificLinks = '<a class="dropdown-item" href="'~path('admin')~'">Admin Zone</a>' %}
+    {% elseif layout == 'admin' and device == 'mobile' %}
+        {% set specificLinks = '<a class="dropdown-item" href="'~path('home')~'">Back to site</a>' %}
+    {% else %}
+        {% set specificLinks = '' %}
+    {% endif %}
+
+
+    <li class="nav-item {{ dropType }}">
+        <div class="connection-block dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="jxp-avatar-thumbnail">
+                <img src="/media/avatars/{{ avatarFilename(app.user.avatar) }}" alt="avatar">
+            </div>
+            {{ usernameLabel | raw }}
+        </div>
+
+        <div id="connection-menu" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" href="{{ path('member-profile',{ username: app.user.username }) }}">Profile</a>
+            <a class="dropdown-item" href="{{ path('app_logout') }}">Disconnect</a>
+            {{ specificLinks | raw }}
+        </div>
+
+    </li>
+
+{% endmacro %}

@@ -1,16 +1,19 @@
 #trick-tags{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   flex-wrap: wrap;
   font-size: 0.8rem;
+
+  & p{
+    margin: 40px 10px 0 10px;
+  }
 
   & a, & p{
     padding: 5px 10px;
     color: white;
     text-decoration: none;
-    background-color: $primary-color;
+    background-color: $primary;
     border-radius: 5px;
-    margin: 10px;
   }
 }
 

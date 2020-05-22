@@ -1,0 +1,55 @@
+{% extends 'front/layout.html.twig' %}
+
+{% block title %}Member Profile{% endblock %}
+
+{% block mainContent %}
+    <div id="member-profile">
+
+        <div class="form-card">
+            <h1>Profile</h1>
+
+            {{ form_start(formProfile) }}
+
+            <div id="form-group-avatar" class="form-group">
+                <div class="avatar-container">
+                    <img id="member-avatar-img" src="{{ asset('media/avatars/'~avatarFilename(user.avatar)) }}" alt="avatar picture">
+                </div>
+
+                {{ form_widget(formProfile.avatar) }}
+            </div>
+
+            {{ form_row(formProfile.username) }}
+
+            {{ form_row(formProfile.email) }}
+
+            <a id="btn-change-pwd" class="btn btn-secondary" href="{{ path('app_reset_password',{'token':user.resetToken}) }}">Change Password</a>
+
+            {{ form_row(formProfile.firstName) }}
+
+            {{ form_row(formProfile.lastName) }}
+
+            {{ form_end(formProfile) }}
+
+            <div class="jxp-group-btn">
+                <button type="submit" class="btn btn-primary" form="profile-form">Save</button>
+                <form action="{{ path('remove-account',{'username':user.username}) }}" method="post">
+                    <input type="hidden" name="remove_token" value="{{ csrf_token('delete-user') }}">
+                    <button class="btn btn-danger" >Remove account</button>
+                </form>
+                <a class="btn btn-dark" href="{{ path('home') }}">Back Home</a>
+            </div>
+        </div>
+
+
+
+    </div>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {# Encore scripts #}
+    {{ parent() }}
+    {{ encore_entry_script_tags('member-profile-page') }}
+
+
+{% endblock %}

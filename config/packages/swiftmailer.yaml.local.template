@@ -1,0 +1,14 @@
+# Don't use environment variables if you use stream options (ie: local config)
+swiftmailer:
+  transport:
+  username:
+  password:
+  host:
+  port:
+  encryption:
+  auth_mode: login
+  stream_options:
+    ssl:
+      allow_self_signed: true
+      verify_peer: false
+      verify_peer_name: false

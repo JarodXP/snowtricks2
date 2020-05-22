@@ -1,0 +1,211 @@
+{# Formats the template trick.html.twig depending on the edit mode
+   If editMode is false, displays the trick
+   If true, displays the form to edit the trick #}
+
+{# Displays the title #}
+{% macro displayTitle(trick, editMode) %}
+
+    {% if editMode == true and trick.id is not null %}
+        {% set action = "Edit" %}
+        {% set trickName = trick.name %}
+    {% elseif editMode == true and trick.id is null %}
+        {% set action = "New" %}
+        {% set trickName = "Trick" %}
+    {% else %}
+        {% set action = "" %}
+        {% set trickName = trick.name %}
+    {% endif %}
+
+    {{ action~' '~trickName }}
+
+{% endmacro %}
+
+{# Sets a default image if no mainImage available #}
+{% macro displayMainImage(trick,class) %}
+    {% if trick.id is not null and trick.mainImage is not null %}
+        <img class="{{ class }}" src="{{ asset('/media/tricks_media/'~trick.mainImage.filename) }}" alt="{{ trick.mainImage.alt }}">
+
+    {% else %}
+        <img class="{{ class }}" src="{{ asset('/media/tricks_media/default_image.jpg') }}" alt="trick image">
+
+    {% endif %}
+
+
+{% endmacro %}
+
+{# if edit mode, adds the buttons edit and remove on the header main image  #}
+{% macro displayHeader(editMode, trick) %}
+
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
+    <div id="trick-main-image" xmlns="http://www.w3.org/1999/html">
+        {% if trick.id is not null and editMode == true %}
+            {% if trick.mainImage is null %}
+                {% set editBtns = buttons.editTrickMediaBtns('new', 'image', trick.slug, 'icon', null) %}
+            {% else %}
+                {% set editBtns = buttons.editTrickMediaBtns(trick.mainImage.id, 'image', trick.slug, 'icon', 'icon') %}
+            {% endif %}
+
+            <div class="block-edit">
+                {{ editBtns | raw }}
+            </div>
+
+        {% elseif(trick.id is not null and is_granted('edit', trick)) %}
+
+            <div class="block-edit">
+                {{ buttons.editTrickBtns(trick.slug, 'icon', 'icon') | raw }}
+            </div>
+
+        {% endif %}
+
+        {{ _self.displayMainImage(trick) }}
+        <h1>{{  _self.displayTitle(trick, editMode) }}</h1>
+    </div>
+
+{% endmacro %}
+
+{# Displays the media thumbnails internals depending on the edit mode  #}
+{% macro displayMedias(editMode, media, trick) %}
+
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
+    {% set mediaType = 'image' %}
+
+    {# Sets the modal attributes for the slider and the edit buttons #}
+    {% if editMode == false %}
+        {% set modalAttributes = 'data-toggle="modal" data-target="#carouselLightBox"' %}
+        {% set editBtns = '' %}
+        {% set editBtnsVideo = '' %}
+        {% set editBtnsEmbedMedia = '' %}
+
+    {% else %}
+        {% set modalAttributes = '' %}
+        {% set editBtns = buttons.editTrickMediaBtns(media.id, 'image', trick.slug, 'icon', 'icon') %}
+        {% set editBtnsVideo = buttons.editTrickMediaBtns(media.id, 'video', trick.slug, 'icon', 'icon') %}
+        {% set editBtnsEmbedMedia = buttons.editEmbedMediaBtns(media.id, 'embedMedia', trick.slug, 'icon', 'icon') %}
+    {% endif %}
+
+    {% if (media.mimeType is defined) %}
+        {% if (media.mimeType | slice(0,5)) == 'video' %}
+
+            <div class="media-slider-thumbnail">
+
+                <video {{ modalAttributes | raw }}>
+                    <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
+                    Sorry, your browser doesn\'t support embedded videos.
+                </video>
+
+                {% if editMode == true %}
+                    <div class="block-edit">
+                        {{ editBtnsVideo | raw }}
+                    </div>
+                {% endif %}
+            </div>
+
+        {% else %}
+
+            <div class="media-slider-thumbnail" {{ modalAttributes | raw }}>
+                <img src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.alt }}">
+                {% if editMode == true %}
+                    <div class="block-edit">
+                        {{ editBtns | raw }}
+                    </div>
+                {% endif %}
+            </div>
+
+        {% endif %}
+    {% else %}
+        <div class="media-slider-thumbnail embed-thumbnail" {{ modalAttributes | raw }}>
+
+            {{ media.htmlCode | raw }}
+
+            {% if editMode == true %}
+                <div class="block-edit">
+                    {{ editBtnsEmbedMedia | raw }}
+                </div>
+            {% endif %}
+        </div>
+
+
+    {% endif %}
+
+
+{% endmacro %}
+
+{# Displays either the trick description or the description form depending on the edit mode  #}
+{% macro displayDescriptionSection(editMode, trick, trickForm) %}
+
+    {% import 'macro_edit_btns.html.twig' as buttons %}
+
+    {% if editMode == true %}
+
+        {{ form_start(trickForm) }}
+
+        {{ form_widget(trickForm) }}
+
+        <div class="jxp-group-btn">
+            <button type="submit" class="btn btn-primary">Save</button>
+
+            {% if trick.id is not null %}
+                {{ buttons.editTrickBtns(trick.slug, null, 'button')  | raw }}
+            {% endif %}
+
+            <a href="{{ path('home') }}" class="btn btn-dark">Back</a>
+
+        </div>
+
+        {{ form_end(trickForm) }}
+
+    {% else %}
+
+        <div id="trick-description">
+            {{ trick.description | raw }}
+        </div>
+
+        <div id="trick-tags">
+            <p>{{ trick.trickGroup.name }}</p>
+            <p>Créé le: {{ trick.dateAdded | date('d-m-Y') }}</p>
+
+            {% if trick.dateModified is not null %}
+                <p>Modifié le: {{ trick.dateModified }}</p>
+            {% endif %}
+
+        </div>
+
+    {% endif %}
+
+{% endmacro %}
+
+{# Displays the comment section if edit mode is false #}
+{% macro displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) %}
+    <div class="divider"></div>
+
+    {% if is_granted('ROLE_ACTIVATED_USER') %}
+
+        {{ form_start(commentForm) }}
+        {{ form_widget(commentForm) }}
+
+        <div class="jxp-group-btn">
+            <button class="btn btn-primary">Send Comment</button>
+        </div>
+
+        {{ form_end(commentForm) }}
+
+    {% else %}
+        <div id="cta-signup-comments">
+            <p>If you want to participate, signin or sign up for free.</p>
+            <div class="jxp-group-btn">
+                <a class="btn btn-primary" href="{{ path('app_login') }}">Sign In</a>
+                <a class="btn btn-secondary" href="{{ path('app_signup') }}">Sign Up</a>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if comments is empty %}
+        <p class="comment-group">Something to say? Please, write a comment!</p>
+    {% else %}
+
+        {% include 'front/_comments.html.twig' %}
+
+    {% endif %}
+{% endmacro %}

@@ -4,80 +4,17 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
 
-.jxp-btn{
-  @extend .jxp-clickable;
-
-  display: block;
-  max-width: 160px;
-  font-size: 1rem;
-  text-wrap: normal;
-  text-align: center;
-  border-radius: 5px;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  text-decoration: none;
-  margin: 5px auto;
-}
-
-.jxp-btn-primary{
-  @extend .jxp-btn;
-
-  background-color: $primary-color;
-}
-
-.jxp-btn-contrast{
-  @extend .jxp-btn;
-
-  background-color: $contrast-color;
-}
-
-.jxp-btn-load{
-  @extend .jxp-btn;
-
-  background-color: $contrast-color;
-
-  &:after{
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    content: "\f110";
-    margin-left: 15px;
-  }
-}
-
-.jxp-btn-remove{
-  @extend .jxp-btn;
-
-  background-color: darkred;
-  color: white;
-
-  &:after{
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    content: "\f2ed";
-    margin-left: 15px;
-  }
-}
-
-.jxp-btn-save{
-  @extend .jxp-btn;
-
-  background-color: forestgreen;
-  color: white;
-
-  &:after{
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    content: "\f0c7";
-    margin-left: 15px;
+  & .btn{
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
 }
 
 .jxp-clickable{
   box-shadow: 5px 5px 5px $dark-primary-color;
   cursor: pointer;
+  transition: box-shadow 0.15s ease-in-out;
 }
 
 .jxp-clickable:active{
@@ -86,7 +23,7 @@
 
 @media (orientation:landscape) and (min-width: 576px) {
   .jxp-clickable{
-    box-shadow: none;
+    box-shadow: 2px 2px 2px $dark-primary-color;
   }
 
   .jxp-clickable:hover{
@@ -97,5 +34,13 @@
     box-shadow: 2px 2px 2px $dark-primary-color;
   }
 
+  .jxp-group-btn{
+    display: flex;
+    flex-direction: row;
 
+    & .btn{
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
 }

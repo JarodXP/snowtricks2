@@ -3,6 +3,7 @@
 .idea/**
 
 ###> symfony/framework-bundle ###
+/config/packages/dev/swiftmailer.yaml
 /.env.local
 /.env.local.php
 /.env.*.local
@@ -28,3 +29,5 @@ yarn-error.log
 #PHP version
 /.php-version
 
+#php_cs_fixer
+/.php_cs.cache

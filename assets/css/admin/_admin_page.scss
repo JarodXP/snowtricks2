@@ -8,13 +8,14 @@
           "form form form"
           "pagination pagination pagination";
   place-items: center;
+  padding-top: 30px;
 
   & h1{
     grid-area: title;
     font-size: 1.5rem;
   }
 
-  & form{
+  & .table-wrapper{
     box-sizing: border-box;
     max-width: 100%;
     grid-area: form;
@@ -26,12 +27,40 @@
     overflow: auto;
   }
 
-  & .jxp-table-pagination{
+  & .table{
+    text-align: center;
+
+    & i{
+      font-size: 1.2rem;
+    }
+  }
+
+  & #admin-pagination{
     grid-area: pagination;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+
+    & select{
+      width: 80px;
+      margin-bottom: 20px;
+      margin-left: 20px;
+    }
+  }
+
+  & .remove-icon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $secondary;
   }
 
   & .remove-icon>a{
-    color: $contrast-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $secondary;
   }
 }
 
@@ -43,6 +72,15 @@
             ". pagination .";
 
     min-height: calc(100vh - #{$desktop-nav-height});
-  }
 
+    & #admin-pagination{
+      flex-direction: row;
+      justify-content: space-around;
+
+      & select{
+        margin-right: 20px;
+        margin-top: 0;
+      }
+    }
+  }
 }

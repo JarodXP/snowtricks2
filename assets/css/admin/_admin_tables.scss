@@ -1,16 +1,44 @@
 .table-edit-cell>i{
   margin: 10px 0;
   font-size: 1.3rem;
-  color: $contrast-color;
+  color: $secondary;
   cursor: pointer;
 }
 
-.jxp-pagination-pages>i{
-  border-radius: 50%;
+.table td, .table th{
+  vertical-align: middle!important;
+}
+
+#pagination {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.admin-content #admin-pagination {
+  align-items: flex-end;
+  margin: 30px auto 60px auto;
+
+  & select {
+    width: 80px;
+  }
+
+  & .form-group{
+    margin: 0;
+  }
+
+  & select, & .btn, & ul{
+    margin: 0 20px
+  }
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
   .table-edit-cell>i {
     margin: 0 10px;
+  }
+
+  #pagination {
+    margin-bottom: 0;
   }
 }

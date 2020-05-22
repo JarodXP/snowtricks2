@@ -1,0 +1,117 @@
+#mobile-front-nav, #mobile-admin-nav{
+  background: $secondary-gradient;
+  box-shadow: 0 -5px 10px $dark-primary-color;
+  justify-content: center;
+
+  & .nav-menu{
+    width: 100%;
+  }
+
+  & .dropdown-menu{
+    left: -120%;
+  }
+
+  & .dropdown-toggle::after{
+    display: none;
+  }
+}
+
+.nav-link{
+  color: white;
+}
+
+.nav-menu{
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10%;
+  align-items: center;
+
+  & .jxp-avatar-thumbnail {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.nav-item{
+  font-size: 1.5rem;
+  margin: 1px 5px;
+  list-style-type: none;
+  padding: 0 5px;
+}
+
+.nav-item>a{
+  text-decoration: none;
+  color: white;
+}
+
+#connection-menu{
+  background-color: $primary;
+
+  & .dropdown-item{
+    color: white;
+  }
+
+  & .dropdown-item:hover{
+    color: $primary;
+  }
+
+  &>a{
+    color: white;
+    text-decoration: none;
+    text-shadow: none;
+  }
+}
+
+@media (orientation:landscape) and (min-width: 576px) {
+  #desktop-front-nav {
+    background: $primary-gradient;
+    box-shadow: 0 5px 10px $dark-primary-color;
+  }
+
+  #desktop-admin-nav {
+    background: $secondary-gradient;
+    box-shadow: 0 5px 10px $dark-primary-color;
+  }
+
+  #desktop-front-menu{
+    justify-content: flex-end;
+    margin-right: 5%;
+  }
+
+  #nav-logo {
+    font-family: $font-stack-title;
+    color: white;
+    margin-left: 5%;
+    padding: 10px 0;
+    @include transform(rotate(-8deg));
+    text-shadow: 1px 1px 1px $dark-primary-color;
+  }
+
+  .nav-menu {
+    margin-right: 5%;
+    padding: 0;
+
+    & .jxp-avatar-thumbnail {
+      width: 35px;
+      height: 35px;
+    }
+  }
+
+  .nav-item {
+    font-size: 1rem;
+  }
+
+  .connection-block{
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    color: white;
+    border-left: 3px solid white;
+    padding-left: 20px;
+    align-items: center;
+
+    &>p{
+      margin: 0 10px;
+    }
+  }
+}

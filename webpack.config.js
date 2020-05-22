@@ -24,8 +24,14 @@ Encore
      * and one CSS file (e.g. app.scss) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('home_page', './assets/js/home_page.js')
     .addEntry('trick_page', './assets/js/trick_page.js')
-    .addEntry('admin', './assets/js/admin.js')
+    .addEntry('admin-tricks', './assets/js/admin-tricks.js')
+    .addEntry('admin-users', './assets/js/admin-users.js')
+    .addEntry('admin-legal', './assets/js/admin-legal.js')
+    .addEntry('member-profile-page', './assets/js/member_profile_page.js')
+    .addEntry('edit-trick-media', './assets/js/edit_media_page.js')
+
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
@@ -70,7 +76,7 @@ Encore
 
     // uncomment if you use API Platform Admin (composer req api-admin)
     //.enableReactPreset()
-    //.addEntry('admin', './assets/js/admin.js')
+    //.addEntry('admin', './assets/js/admin-tricks.js')
 ;
 
 module.exports = Encore.getWebpackConfig();

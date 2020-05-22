@@ -1,0 +1,52 @@
+{% extends 'admin/layout.html.twig' %}
+
+{% import 'macro_edit_btns.html.twig' as buttons %}
+
+    {% if page.slug is null %}
+        {% set actionTitle = 'Create new legal page' %}
+    {% else %}
+        {% set actionTitle = 'Edit' %}
+    {% endif %}
+
+{% block title %}{{ actionTitle }} {{ page.name }}{% endblock %}
+
+{% block mainContent %}
+    <div id="admin-list" class="admin-content">
+        <h1>{{ actionTitle }} {{ page.name }}</h1>
+
+        <div id="legal-wrapper" class="table-wrapper">
+
+            {{ form_start(legalPageForm) }}
+            {{ form_widget(legalPageForm) }}
+
+            <div class="jxp-group-btn">
+                <button type="submit" class="btn btn-primary">Save</button>
+
+                {% if page.slug is not null %}
+                    {{ buttons.editLegalBtns(page.slug, null ,'button')  | raw }}
+                {% endif %}
+
+                <a href="{{ path('admin_legal_list') }}" class="btn btn-dark">Back</a>
+
+            </div>
+
+            {{ form_end(legalPageForm) }}
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block footerScripts %}
+
+    {{ parent() }}
+
+    <script src="https://cdn.tiny.cloud/1/5wssjxvguotys7da1sjed9fyyrjavpfxmi2v8emgh1b9tx3i/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'advlist autolink lists link image charmap print preview hr anchor pagebreak',
+            toolbar_mode: 'floating',
+        });
+    </script>
+
+{% endblock %}

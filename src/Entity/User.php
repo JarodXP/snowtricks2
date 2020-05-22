@@ -1,84 +1,150 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
+use App\CustomServices\Removable;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTimeInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this username")
+ * @UniqueEntity(fields={"email"}, message="This email address is already used.")
  */
-class User implements UserInterface
+class User implements UserInterface, Removable
 {
+    /**
+     * @var string token to be used if password forgotten
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private ?string $resetToken;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
+    private ?string $username = null;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private ?string $password = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Trick", mappedBy="author")
      */
-    private $tricks;
+    private ?Collection $tricks = null;
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Media", cascade={"persist", "remove"})
      */
-    private $avatar;
+    private ?Media $avatar = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="user", orphanRemoval=true)
      */
-    private $comments;
+    private ?Collection $comments = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $firstName;
+    private ?string $firstName = null;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lastName;
+    private ?string $lastName = null;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $email;
+    private ?string $email = null;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $dateAdded;
+    private DateTimeInterface $dateAdded;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $activated = false;
 
     public function __construct()
     {
         $this->tricks = new ArrayCollection();
         $this->comments = new ArrayCollection();
-        $this->dateAdded = new \DateTime("now");
+        $this->dateAdded = new DateTime("now");
     }
 
-    public function getId(): ?int
+    /**
+     * Replaces default serialization by avoiding unnecessary attributes.
+     * Used to avoid strict type issue while hydrating.
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'password' => $this->getPassword(),
+            'roles' => $this->getRoles(),
+            'username' => $this->getUsername()
+        ];
+    }
+
+    /**
+     * Replaces default unserialization by avoiding unnecessary attributes.
+     * Used to avoid strict type issue while hydrating.
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'];
+        $this->password = $data['password'];
+        $this->roles = $data['roles'];
+        $this->username = $data['username'];
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    /**
+     * @param string|null $resetToken
+     */
+    public function setResetToken(?string $resetToken): void
+    {
+        $this->resetToken = $resetToken;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId():? int
     {
         return $this->id;
     }
@@ -88,12 +154,16 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername():?string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
-    public function setUsername(string $username): self
+    /**
+     * @param string|null $username
+     * @return $this
+     */
+    public function setUsername(?string $username): self
     {
         $this->username = $username;
 
@@ -112,6 +182,10 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
+    /**
+     * @param array $roles
+     * @return $this
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -122,14 +196,20 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return (string) $this->password;
     }
 
-    public function setPassword(string $password): self
+    /**
+     * @param string|null $password
+     * @return $this
+     */
+    public function setPassword(?string $password): self
     {
-        $this->password = $password;
+        if ($password !== null) {
+            $this->password = $password;
+        }
 
         return $this;
     }
@@ -150,13 +230,17 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Trick[]
+     * @return Collection
      */
-    public function getTricks(): Collection
+    public function getTricks(): ?Collection
     {
         return $this->tricks;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function addTrick(Trick $trick): self
     {
         if (!$this->tricks->contains($trick)) {
@@ -167,6 +251,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Trick $trick
+     * @return $this
+     */
     public function removeTrick(Trick $trick): self
     {
         if ($this->tricks->contains($trick)) {
@@ -180,11 +268,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return Media|null
+     */
     public function getAvatar(): ?Media
     {
         return $this->avatar;
     }
 
+    /**
+     * @param Media|null $avatar
+     * @return $this
+     */
     public function setAvatar(?Media $avatar): self
     {
         $this->avatar = $avatar;
@@ -193,13 +288,17 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Comment[]
+     * @return Collection
      */
-    public function getComments(): Collection
+    public function getComments(): ?Collection
     {
         return $this->comments;
     }
 
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
     public function addComment(Comment $comment): self
     {
         if (!$this->comments->contains($comment)) {
@@ -210,6 +309,10 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
     public function removeComment(Comment $comment): self
     {
         if ($this->comments->contains($comment)) {
@@ -223,11 +326,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getFirstName(): ?string
     {
         return $this->firstName;
     }
 
+    /**
+     * @param string|null $firstName
+     * @return $this
+     */
     public function setFirstName(?string $firstName): self
     {
         $this->firstName = $firstName;
@@ -235,11 +345,18 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLastName(): ?string
     {
         return $this->lastName;
     }
 
+    /**
+     * @param string|null $lastName
+     * @return $this
+     */
     public function setLastName(?string $lastName): self
     {
         $this->lastName = $lastName;
@@ -247,26 +364,59 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    /**
+     * @param string|null $email
+     * @return $this
+     */
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getDateAdded(): ?DateTimeInterface
+    /**
+     * @return DateTimeInterface
+     */
+    public function getDateAdded(): DateTimeInterface
     {
         return $this->dateAdded;
     }
 
+    /**
+     * @param DateTimeInterface $dateAdded
+     * @return $this
+     */
     public function setDateAdded(DateTimeInterface $dateAdded): self
     {
         $this->dateAdded = $dateAdded;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function getActivated(): ?bool
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param bool $activated
+     * @return $this
+     */
+    public function setActivated(bool $activated): self
+    {
+        $this->activated = $activated;
 
         return $this;
     }

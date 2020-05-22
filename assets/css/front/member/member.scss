@@ -1,37 +1,11 @@
-#user-profile{
-  display: grid;
-  grid-template-columns: 5% 90% 5%;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-          ". title ."
-          ". form .";
-  place-items: center;
-
-
-  &>h1{
-    font-size: 2rem;
-    grid-area: title;
-    margin: 20px 0;
-  }
-
-  &>.jxp-form {
-    background-color: white;
-    grid-area: form;
-    width: 100%;
-    height: max-content;
-    padding: 5%;
-
-    & .jxp-form-input{
-      width: 100%;
-    }
-  }
+#member-profile{
 
   & .avatar-container{
     width: 60px;
     height: 60px;
     border-radius: 50%;
     margin: 0 20px;
-    border: 1px $secondary-color;
+    border: 1px $ice-blue;
     box-shadow: 5px 5px 5px $dark-primary-color;
 
     &>img{
@@ -43,36 +17,10 @@
     }
   }
 
-  & .jxp-form-multifields{
-    width: 100%;
-    display: flex;
-    align-items: center;
-  }
-
-  & .jxp-form-field-block{
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px  0;
-
-    &>label{
-      margin-bottom: 10px;
-      display: block;
-    }
-  }
-
-  & #profile-avatar-section{
-    justify-content: center;
-  }
-
-  & #name-section{
-    justify-content: space-between;
-
-    &>.jxp-form-field-block{
-      width: 40%;
-    }
+  & #btn-change-pwd{
+    width: 40%;
+    display: block;
+    margin: 0 auto 1.3rem auto;
   }
 
   & .jxp-group-btn{
@@ -81,13 +29,13 @@
 }
 
 @media (orientation:landscape) and (min-width: 576px) {
-  #user-profile{
-    grid-template-columns: 35% 30% 35%;
-    margin-bottom: 20px;
 
-    & form{
-      border-radius: 5px;
-      box-shadow: 15px 15px 15px $dark-primary-color;
-    }
+  #form-group-avatar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
   }
+
+
 }

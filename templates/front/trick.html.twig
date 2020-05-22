@@ -1,8 +1,15 @@
 {% extends 'front/layout.html.twig' %}
+{% import 'front/macro_trick.html.twig' as displayTrick %}
 
-{% block title %}Ollie{% endblock %}
+{% block title %}{{ displayTrick.displayTitle(trick, editMode) }}{% endblock %}
 
-{% block metaDescription %}Fiche détaillée du trick de snowboard Ollie{% endblock %}
+{% block metaDescription %}
+
+    {% if trick.id is not null %}
+        {{ trick.description }}
+    {% endif %}
+
+{% endblock %}
 
 {% block stylesheets %}
 
@@ -15,131 +22,74 @@
 {% block mainContent %}
 
     <div id="card-background">
-        <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
+        {{ displayTrick.displayMainImage(trick) }}
     </div>
 
-    <article id="trick-card">
-        <div id="trick-main-image">
-            {{ editModeBtns(edit) | raw }}
-            <img src="/media/{{ trick.mainImage.fileName }}" alt="{{ trick.mainImage.alt }}">
-            <h1>{{ trick.name }}</h1>
-        </div>
+    <article id="trick-card" class="page-card">
+        {{ displayTrick.displayheader(editMode, trick) }}
 
         <section id="trick-medias">
             <div id="media-slider-element">
                 <div id="slider-left-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-left clickable"></i></div>
                 <div id="media-slider-bar">
 
-                    {% for media in trick.medias %}
+                    {# Formats the media thumbnail bar depending on the edit mode #}
+                    {% if trick.id is not null %}
+                        {% set medias = trick.medias|merge(trick.embedMedias) %}
 
-                        {% if (media.mimeType | slice(0,5)) == 'video'  %}
+                        {% for media in medias %}
 
-                            <video class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
-                                <source src="/media/{{ media.fileName }}" type="{{ media.mimeType }}">
+                            {{ displayTrick.displayMedias(editMode, media, trick) }}
 
-                                Sorry, your browser doesn't support embedded videos.
-                            </video>
+                        {% endfor %}
 
-                        {% else %}
-
-                            <div class="media-slider-thumbnail" {{ editModeModal(edit) | raw }}>
-                                <img src="/media/{{ media.fileName }}" alt="{{ media.alt }}">
-                                {{ editModeBtns(edit) | raw }}
-                            </div>
-
-                        {% endif %}
-
-                    {% endfor %}
+                    {% endif %}
 
                 </div>
                 <div id="slider-right-arrow" class="media-slider-arrow"><i class="fas fa-chevron-circle-right clickable"></i></div>
             </div>
 
-            <div id="media-slider-toggle">
-                <a class="jxp-btn-contrast">Voir les medias</a>
-            </div>
-        </section>
+            {% if trick.id is not null and editMode == true %}
+                <div id="add-media">
+                    <a class="btn btn-secondary"
+                       href="{{ path('trick_media',{'trickSlug':trick.slug, 'mediaType':'image', 'mediaId': "new"}) }}">Upload Picture</a>
+                    <a class="btn btn-secondary"
+                       href="{{ path('trick_media',{'trickSlug':trick.slug, 'mediaType':'video', 'mediaId': "new"}) }}">Upload Video</a>
+                    <a class="btn btn-secondary"
+                       href="{{ path('embed_media',{'trickSlug':trick.slug, 'mediaId': "new"}) }}">Embed Video</a>
+                </div>
+            {% endif %}
 
-        <section id="trick-description">
-
-            {% if edit == true %}
-                <form id="edit-trick-form" class="jxp-form">
-                    <div id="group-title" class="jxp-form-field-block">
-                        <label for="trick-title">Titre: </label>
-                        <input id="trick-title" class="jxp-form-input">
-                    </div>
-
-                    <div id="group-description" class="jxp-form-field-block">
-                        <label for="description">Description de la figure: </label>
-                        <textarea id="description" class="tiny-area" cols="60" rows="50"></textarea>
-                    </div>
-
-                    <div id="group-cat" class="jxp-form-field-block">
-                        <label for="trick-group">Trick TrickGroup :</label>
-                        <input list="trick-group-list" type="text" id="trick-group" class="jxp-form-input">
-                        <datalist id="trick-group-list">
-                            <option value="Stances">
-                            <option value="Straight Airs">
-                            <option value="Grabs">
-                            <option value="Spins">
-                        </datalist>
-                    </div>
-
-                    <div class="jxp-group-btn">
-                        <button class="jxp-btn-save">Enregistrer</button>
-                        <button class="jxp-btn-remove">Supprimer</button>
-                    </div>
-                </form>
-
-            {% else %}
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed varius enim tortor, eu porttitor quam tincidunt id. Phasellus viverra, tellus vel lacinia dictum, nunc felis sagittis nisi, vel interdum tortor ex ac quam. Nunc mollis magna nisl, eget elementum elit faucibus at nullam.</p>
-                <p>Cras ut nisl vitae mauris lacinia tempor. Nunc et porttitor elit. In accumsan turpis risus, fringilla lobortis nibh suscipit sed. Sed efficitur suscipit orci et convallis. Proin a ligula eget magna fringilla luctus. Aenean molestie sem eu malesuada accumsan. Praesent maximus sed. </p>
-
-                <div id="trick-tags">
-                    <p>Straight Airs</p>
-                    <p>Créé le: 26/02/2019</p>
-                    <p>Modifié le: 03/01/2020</p>
+            {% if trick.id is not null and trick.medias is not empty %}
+                <div id="media-slider-toggle">
+                    <a class="btn btn-secondary">See medias</a>
                 </div>
             {% endif %}
         </section>
 
-        {% if edit != true %}
+        {# Displays the trick info either as text or a form depending on the edit mode #}
+        <section id="trick-description">
+            {% if editMode == false %}
+                {% set trickForm = null %}
+            {% endif %}
+
+            {{ displayTrick.displayDescriptionSection(editMode, trick, trickForm) }}
+        </section>
+
+        {# If in edit mode, the comment section is not displayed #}
+        {% if editMode != true %}
+
             <section id="comments">
-                <div class="divider"></div>
-
-                <form id="comment-form">
-                    <label for="comment" class="hidden"></label>
-                    <textarea id="comment" class="jxp-form-input" name="comment"></textarea>
-                    <button class="jxp-btn-primary">Envoyer</button>
-                </form>
-
-                {% if trick.comments is empty %}
-                    <p class="comment-group">Something to say? Please, right a comment!</p>
-                {% else %}
-
-                    {% for comment in trick.comments %}
-
-                        <div class="comment-group">
-                            <div class="avatar-container">
-                                <div class="jxp-avatar-thumbnail">
-                                    <img src="/media/{{ comment.user.avatar.fileName }}" alt="{{ comment.user.avatar.alt }}">
-                                </div>
-                            </div>
-                            <p class="comment-content">{{ comment.content }}</p>
-                        </div>
-
-                    {% endfor %}
-
-                {% endif %}
-
-                <a href="" class="jxp-btn-load">Charger plus</a>
+                {{ displayTrick.displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) }}
             </section>
+
 
         {% endif %}
 
     </article>
 
-    {% if edit != true %}
+    {# The slider in lightbox is not displayed in edit mode #}
+    {% if editMode != true %}
         <!-- Lightbox -->
         <div class="modal fade" id="carouselLightBox" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -148,20 +98,31 @@
                     <div id="carouselControls" class="carousel slide" data-ride="false">
                         <div class="carousel-inner">
 
-                            {% for media in trick.medias %}
+                            {% set medias = trick.medias|merge(trick.embedMedias) %}
 
-                                {% if (media.mimeType | slice(0,5)) == 'video'  %}
+                            {% for media in medias %}
 
-                                    <video controls class="carousel-item">
-                                        <source src="/media/{{ media.fileName }}" type="{{ media.mimeType }}">
+                                {% if media.mimeType is defined %}
+                                    {% if (media.mimeType | slice(0,5)) == 'video'  %}
 
-                                        Sorry, your browser doesn't support embedded videos.
-                                    </video>
+                                        <video controls class="carousel-item">
+                                            <source src="{{ asset('/media/tricks_media/'~media.fileName) }}" type="{{ media.mimeType }}">
+
+                                            Sorry, your browser doesn't support embedded videos.
+                                        </video>
+
+                                    {% else %}
+
+                                        <div class="carousel-item">
+                                            <img class="d-block w-100" src="{{ asset('/media/tricks_media/'~media.fileName) }}" alt="{{ media.fileName }}">
+                                        </div>
+
+                                    {% endif %}
 
                                 {% else %}
 
                                     <div class="carousel-item">
-                                        <img class="d-block w-100" src="/media/{{ media.fileName }}" alt="{{ media.fileName }}">
+                                        {{ media.htmlCode | raw }}
                                     </div>
 
                                 {% endif %}
@@ -192,10 +153,5 @@
     {# Encore scripts #}
     {{ parent() }}
     {{ encore_entry_script_tags('trick_page') }}
-
-    {% if edit == true %}
-        {# TinyMCE #}
-        {{ tinyMCE() | raw }}
-    {% endif %}
 
 {% endblock %}

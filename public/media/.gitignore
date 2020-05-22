@@ -1,0 +1,9 @@
+#Avatars files
+/avatars/*
+!/avatars/default_avatar.jpg
+
+#Tricks media files
+/tricks_media/*
+!/tricks_media/default_image.jpg
+
+
