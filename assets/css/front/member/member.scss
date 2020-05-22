@@ -1,10 +1,10 @@
 #member-profile{
 
   & .avatar-container{
-    width: 60px;
-    height: 60px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    margin: 0 20px;
+    margin: 20px;
     border: 1px $ice-blue;
     box-shadow: 5px 5px 5px $dark-primary-color;
 
@@ -28,14 +28,23 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px) {
+#form-group-avatar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+@include media-breakpoint-up(lg) {
 
   #form-group-avatar{
-    display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
   }
 
-
+  #member-profile .avatar-container{
+    width: 60px;
+    height: 60px;
+    margin: 0 20px;
+  }
 }

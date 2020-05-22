@@ -21,7 +21,7 @@ div[class^="flash"]{
   background: $flash-warning-gradient;
 }
 
-@media (orientation:landscape) and (min-width: 576px) {
+@include media-breakpoint-up(lg) {
   div[class^="flash"]{
     top:$desktop-nav-height;
   }

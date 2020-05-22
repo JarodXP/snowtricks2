@@ -50,7 +50,7 @@
             </div>
 
             {% if trick.id is not null and editMode == true %}
-                <div id="add-media">
+                <div id="add-media" class="jxp-group-btn">
                     <a class="btn btn-secondary"
                        href="{{ path('trick_media',{'trickSlug':trick.slug, 'mediaType':'image', 'mediaId': "new"}) }}">Upload Picture</a>
                     <a class="btn btn-secondary"
@@ -83,6 +83,9 @@
                 {{ displayTrick.displayComments(trick, comments, commentForm, paginationForm, currentPage, pages) }}
             </section>
 
+            <div class="jxp-group-btn">
+                <a class="btn btn-secondary" href="{{ path('home') }}">Back</a>
+            </div>
 
         {% endif %}
 

@@ -164,10 +164,10 @@
 
         <div id="trick-tags">
             <p>{{ trick.trickGroup.name }}</p>
-            <p>Créé le: {{ trick.dateAdded | date('d-m-Y') }}</p>
+            <p>Published on: {{ trick.dateAdded | date('d-m-Y') }}</p>
 
             {% if trick.dateModified is not null %}
-                <p>Modifié le: {{ trick.dateModified }}</p>
+                <p>Modified on: {{ trick.dateModified }}</p>
             {% endif %}
 
         </div>

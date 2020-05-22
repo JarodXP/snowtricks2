@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  font-size: 0.8rem;
 
   & p{
     margin: 40px 10px 0 10px;
@@ -15,12 +14,4 @@
     background-color: $primary;
     border-radius: 5px;
   }
-}
-
-@media (orientation:landscape) and (min-width: 576px) {
-
-  #trick-tags{
-    font-size: 1rem;
-  }
-
 }

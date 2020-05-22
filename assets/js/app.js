@@ -27,7 +27,7 @@ const navElement = {
         const mobileNav = document.getElementsByClassName('mobile-nav')[0];
 
         //Toggles the ".collapse" class
-        if(document.body.clientWidth < 576){
+        if(document.body.clientWidth < 992){
             if(!desktopNav.classList.contains('collapse')){
                 desktopNav.classList.add('collapse');
             }

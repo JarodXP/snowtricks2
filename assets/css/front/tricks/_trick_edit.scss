@@ -1,6 +1,6 @@
 #trick-main-image>.block-edit{
   position: absolute;
-  width: 80px;
+  width: 200px;
   top: 10px;
   right: 10px;
   z-index: 1;
@@ -18,7 +18,7 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px) {
+@include media-breakpoint-up(lg) {
   #group-title,#group-cat{
     width: 80%;
     justify-content: center;
@@ -33,5 +33,10 @@
 
   #group-description>label{
     margin-bottom: 20px;
+  }
+
+  #trick-main-image>.block-edit {
+    position: absolute;
+    width: 80px;
   }
 }
