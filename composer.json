@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-json": "*",
+        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "sensio/framework-extra-bundle": "^5.5",
         "symfony/asset": "4.4.*",
         "symfony/console": "4.4.*",
@@ -37,7 +38,6 @@
         "symfony/yaml": "4.4.*"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^3.3",
         "friendsofphp/php-cs-fixer": "3.0.x-dev",
         "symfony/debug-pack": "^1.0",
         "symfony/profiler-pack": "*",
