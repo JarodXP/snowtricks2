@@ -5,11 +5,11 @@ files:
     destination: /var/www/snowtricks
 hooks:
   BeforeInstall:
-    - location: scripts/clear-project.sh
+    - location: scripts/clear-project-prod.sh
       timeout: 300
       runas: root
   AfterInstall:
-    - location: scripts/permissions.sh
+    - location: scripts/permissions-prod.sh
       timeout: 300
       runas: root
     - location: scripts/init-medias.sh
