@@ -33,7 +33,7 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px) {
+@include media-breakpoint-up(lg) {
   .table-edit-cell>i {
     margin: 0 10px;
   }

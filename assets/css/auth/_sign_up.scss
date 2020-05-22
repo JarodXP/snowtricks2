@@ -38,8 +38,7 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px) {
-
+@include media-breakpoint-up(lg) {
   #form-wrapper {
     position: static;
     grid-template-columns: 30% 40% 30%;

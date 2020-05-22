@@ -27,13 +27,13 @@
   align-items: center;
 
   & .jxp-avatar-thumbnail {
-    width: 30px;
-    height: 30px;
+    width: 80px;
+    height: 80px;
   }
 }
 
 .nav-item{
-  font-size: 1.5rem;
+  font-size: 5rem;
   margin: 1px 5px;
   list-style-type: none;
   padding: 0 5px;
@@ -49,6 +49,7 @@
 
   & .dropdown-item{
     color: white;
+    font-size: 3rem;
   }
 
   & .dropdown-item:hover{
@@ -62,7 +63,12 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px) {
+#pagination-nav button{
+  padding: 0.75rem 3rem;
+  font-size: 5rem;
+}
+
+@include media-breakpoint-up(lg) {
   #desktop-front-nav {
     background: $primary-gradient;
     box-shadow: 0 5px 10px $dark-primary-color;
@@ -113,5 +119,14 @@
     &>p{
       margin: 0 10px;
     }
+  }
+
+  #connection-menu .dropdown-item{
+    font-size: 1rem;
+  }
+
+  #pagination-nav button{
+    padding: 0.75rem 0.5rem;
+    font-size: inherit;
   }
 }

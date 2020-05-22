@@ -20,7 +20,9 @@
 
         <h3>Tricks</h3>
 
-        <a id="new-trick" class="btn btn-secondary" href="{{ path('edit-trick',{'trickSlug':'new'}) }}">Create Trick</a>
+        <div id="new-trick-wrapper">
+            <a id="new-trick" class="btn btn-secondary" href="{{ path('edit-trick',{'trickSlug':'new'}) }}">Create Trick</a>
+        </div>
 
         {% include 'front/_trick_list.html.twig' %}
 

@@ -19,14 +19,19 @@
     font-family: $font-stack-title;
     color: $secondary;
     text-shadow: 2px 2px 2px $dark-primary-color;
+    font-size: 8rem;
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px){
+@include media-breakpoint-up(lg) {
 
   #trick-main-image>img{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
+  }
+
+  #trick-main-image>h1{
+    font-size: 4.5rem;
   }
 }
 

@@ -30,8 +30,8 @@
   }
 
   & .jxp-avatar-thumbnail{
-    width: 50px;
-    height: 50px;
+    width: 100px;
+    height: 100px;
   }
 
   & .comment-container{
@@ -59,7 +59,7 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px){
+@include media-breakpoint-up(lg) {
 
   #comment-form{
     justify-content: space-between;
@@ -79,5 +79,10 @@
 
   .comment-group {
     margin: 5% 0;
+
+    & .jxp-avatar-thumbnail{
+      width: 50px;
+      height: 50px;
+    }
   }
 }

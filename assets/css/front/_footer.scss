@@ -2,7 +2,7 @@ footer{
   display: none;
 }
 
-@media (orientation:landscape) and (min-width: 576px){
+@include media-breakpoint-up(lg) {
 
   footer{
     position: relative;

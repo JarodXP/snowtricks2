@@ -12,7 +12,7 @@
 
   & h1{
     grid-area: title;
-    font-size: 1.5rem;
+    margin: 60px auto;
   }
 
   & .table-wrapper{
@@ -30,8 +30,12 @@
   & .table{
     text-align: center;
 
+    & button{
+      margin: 0 10px;
+    }
+
     & i{
-      font-size: 1.2rem;
+      font-size: 3.5rem;
     }
   }
 
@@ -46,6 +50,10 @@
       width: 80px;
       margin-bottom: 20px;
       margin-left: 20px;
+    }
+
+    & #pagination-nav {
+      margin-top: 60px;
     }
   }
 
@@ -64,7 +72,7 @@
   }
 }
 
-@media (orientation:landscape) and (min-width: 576px){
+@include media-breakpoint-up(lg) {
   .admin-content{
     grid-template-areas:
             ". title ."
@@ -72,6 +80,10 @@
             ". pagination .";
 
     min-height: calc(100vh - #{$desktop-nav-height});
+
+    & .table i{
+      font-size: 1.5rem;
+    }
 
     & #admin-pagination{
       flex-direction: row;
@@ -82,5 +94,10 @@
         margin-top: 0;
       }
     }
+
+    & #pagination-nav {
+      margin-top: 0;
+    }
+
   }
 }
