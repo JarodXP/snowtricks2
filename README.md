@@ -1,3 +1,5 @@
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=JarodXP_snowtricks2&metric=security_rating)](https://sonarcloud.io/dashboard?id=JarodXP_snowtricks2) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=JarodXP_snowtricks2&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=JarodXP_snowtricks2) 
+
 #Welcome to the Snowtricks Project
 
 This project is a demo of a community platform to share snowboard tricks.
