@@ -1,4 +1,6 @@
-#Welcome to the Snowtricks Project
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=JarodXP_snowtricks2&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=JarodXP_snowtricks2) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=JarodXP_snowtricks2&metric=security_rating)](https://sonarcloud.io/dashboard?id=JarodXP_snowtricks2)
+
+# Welcome to the Snowtricks Project  
 
 This project is a demo of a community platform to share snowboard tricks.
 
@@ -9,11 +11,11 @@ These are the main constraints for this project:
  - Respect all the Symfony Best Practices
  - Respect the PHP standards PSR-1, PSR-12 and PSR-4
  
-##Get the project
+## Get the project
  You can directly clone it on GitHub:
  https://github.com/JarodXP/snowtricks2
  
-##Requirements for the project
+## Requirements for the project
 To be able to use all the features you must at least:
 - have a web server with PHP 7.4 or above
 - have Composer installed (https://getcomposer.org/download/)
@@ -21,14 +23,14 @@ To be able to use all the features you must at least:
 - have a MySQL database
 - have an SMTP server
 
-##Setup your environment  
+## Setup your environment  
 1. Rename your .env file into .env.local and fill in the required environment variables  
 2. Rename either /config/packages/swiftmailer.yaml.local.template (for local development environment) or   
 /config/packages/swiftmailer.yaml.dist (for production environment) into swiftmailer.yaml
 3. Complete the swiftmailer config with your environment variables
 
-##Project initialization
-###With scripts
+## Project initialization
+### With scripts
 Once cloned, you can launch a script to initialize all automatically: 
 scripts\init-project.sh (for local development environment)
 
@@ -37,7 +39,7 @@ This script includes the following ones that you can also run step by step
 - scripts\init-database.sh
 - scripts\init-medias.sh
 
-###Manually
+### Manually
 If the scripts don't work or if you prefer setting up the project manually, follow these instructions step by step:
 1. Install dependencies  
 `composer install --no-interaction`  
